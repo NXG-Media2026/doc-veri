@@ -1,7 +1,7 @@
 ---
 import { navigation } from '../data/navigation';
 import { siteConfig, type Locale } from '../data/site';
-import { t, localizePath, getTranslatedPath } from '../i18n/utils';
+import { t, localizePath } from '../i18n/utils';
 import LanguageSwitcher from './LanguageSwitcher.astro';
 
 interface Props {
@@ -10,14 +10,27 @@ interface Props {
   hreflang?: Array<{ lang: string; href: string }>;
 }
 
-const { locale = 'de', currentPath = '/', hreflang } = Astro.props;
+const { locale = 'nl', currentPath = '/', hreflang } = Astro.props;
 const navItems = navigation[locale];
 const showLanguageSwitcher = siteConfig.languageSwitcherEnabled;
+const buttonItem = navItems.find((item) => item.isButton);
+const linkItems = navItems.filter((item) => !item.isButton);
 
 function isActive(href: string): boolean {
-  if (href === '/') return currentPath === href;
+  if (href === '/' || href === '/en/' || href === '/es/') return currentPath === href;
   return currentPath.startsWith(href);
 }
+
+const ariaLabel: Record<Locale, string> = {
+  nl: 'Hoofdnavigatie',
+  en: 'Main navigation',
+  es: 'Navegación principal',
+};
+const mobileAriaLabel: Record<Locale, string> = {
+  nl: 'Mobiele navigatie',
+  en: 'Mobile navigation',
+  es: 'Navegación móvil',
+};
 ---
 
 <header class="sticky top-0 z-50 bg-bg/95 backdrop-blur-sm border-b border-border">
@@ -28,8 +41,8 @@ function isActive(href: string): boolean {
         {siteConfig.name}
       </a>
 
-      <nav class="hidden lg:flex items-center gap-1" aria-label={locale === 'en' ? 'Main navigation' : 'Hauptnavigation'}>
-        {navItems.map((item) => (
+      <nav class="hidden lg:flex items-center gap-1" aria-label={ariaLabel[locale]}>
+        {linkItems.map((item) => (
           item.children ? (
             <div class="group relative">
               <a
@@ -62,19 +75,6 @@ function isActive(href: string): boolean {
                 </ul>
               </div>
             </div>
-          ) : item.href === '/quiz' ? (
-            <a
-              href={item.href}
-              class:list={[
-                'inline-flex items-center gap-1.5 px-3 py-3 min-h-[44px] text-sm font-medium transition-colors rounded-button',
-                isActive(item.href) ? 'text-accent' : 'text-accent hover:text-accent-dark',
-              ]}
-            >
-              <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9 5.25h.008v.008H12v-.008z" />
-              </svg>
-              {item.label}
-            </a>
           ) : (
             <a
               href={item.href}
@@ -94,12 +94,14 @@ function isActive(href: string): boolean {
           </div>
         )}
 
-        <a
-          href={getTranslatedPath('/angebot', locale)}
-          class="ml-3 inline-flex items-center px-4 py-2 text-sm font-medium text-text-inverse bg-primary hover:bg-primary-dark transition-colors rounded-button"
-        >
-          {t('cta.discover', locale)}
-        </a>
+        {buttonItem && (
+          <a
+            href={buttonItem.href}
+            class="ml-3 inline-flex items-center px-4 py-2 text-sm font-medium text-text-inverse bg-primary hover:bg-primary-dark transition-colors rounded-button"
+          >
+            {buttonItem.label}
+          </a>
+        )}
       </nav>
 
       <button
@@ -122,10 +124,10 @@ function isActive(href: string): boolean {
   <nav
     id="mobile-nav"
     class="hidden lg:hidden fixed top-16 left-0 w-full h-[calc(100dvh-4rem)] z-40 bg-bg overflow-y-auto"
-    aria-label={locale === 'en' ? 'Mobile navigation' : 'Mobile Navigation'}
+    aria-label={mobileAriaLabel[locale]}
   >
     <div class="px-4 py-6 space-y-1">
-      {navItems.map((item) => (
+      {linkItems.map((item) => (
         item.children ? (
           <details class="group">
             <summary class="flex items-center justify-between py-3 min-h-[44px] text-lg font-medium text-text cursor-pointer list-none">
@@ -161,19 +163,6 @@ function isActive(href: string): boolean {
               ))}
             </ul>
           </details>
-        ) : item.href === '/quiz' ? (
-          <a
-            href={item.href}
-            class:list={[
-              'flex items-center gap-2 py-3 text-lg font-medium transition-colors',
-              isActive(item.href) ? 'text-accent' : 'text-accent hover:text-accent-dark',
-            ]}
-          >
-            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9 5.25h.008v.008H12v-.008z" />
-            </svg>
-            {item.label}
-          </a>
         ) : (
           <a
             href={item.href}
@@ -194,12 +183,14 @@ function isActive(href: string): boolean {
         </div>
       )}
 
-      <a
-        href={getTranslatedPath('/angebot', locale)}
-        class="block w-full mt-4 py-3 text-center text-base font-medium text-text-inverse bg-primary hover:bg-primary-dark transition-colors rounded-button"
-      >
-        {t('cta.discover', locale)}
-      </a>
+      {buttonItem && (
+        <a
+          href={buttonItem.href}
+          class="block w-full mt-4 py-3 text-center text-base font-medium text-text-inverse bg-primary hover:bg-primary-dark transition-colors rounded-button"
+        >
+          {buttonItem.label}
+        </a>
+      )}
     </div>
   </nav>
 </header>

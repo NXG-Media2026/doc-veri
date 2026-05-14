@@ -1,0 +1,104 @@
+slug: expert-growth
+hubSlug: expert-growth-accelerator
+title: "Expert Growth Accelerator"
+shortTitle: "Expert Growth"
+heroImage: "clusters/expert-growth-hero.webp"
+locales:
+  - nl
+  - en
+brandFocus: personal
+citableDefinition:
+  nl: >
+    De Expert Growth Accelerator is een vast traject voor coaches en
+    experts die hun expertise willen vertalen naar een online
+    instaproute — met storytelling, masterclasses, mini-producten,
+    emailflows en advertenties die samen leiden naar kopers, klanten
+    of leden.
+  en: >
+    The Expert Growth Accelerator is a structured engagement for
+    coaches and experts who want to turn their expertise into an
+    online entry route — with storytelling, masterclasses, mini-products,
+    email flows and ads working together to create buyers, clients
+    or members.
+hubIntro:
+  nl: >
+    Veel coaches en experts hebben de kennis al binnen. Wat ontbreekt
+    is een systeem dat die kennis omzet in voorspelbare leads,
+    productverkoop en coaching-aanvragen. Hier laat ik zien hoe ik dat
+    bouw, met cases van klanten die dit al doen.
+  en: >
+    Many coaches and experts already have the expertise. What is often
+    missing is a system that turns that expertise into predictable leads,
+    product sales and coaching enquiries. This hub shows how I build
+    that system, with cases from clients already using it.
+featuredCases:
+  - cases/coach-josine
+  - cases/tessa-youlife
+  - cases/happy-with-yoga
+featuredGuides:
+  - guides/contentladder-voor-experts
+  - guides/email-flow-architectuur
+primaryProduct: services/expert-growth-accelerator
+secondaryProducts: []
+crossSellProducts:
+  - products/instagram-leads-playbook
+leadMagnets:
+  primary:
+    slug: instagram-leads-playbook
+    type: micro-product
+    title: "Instagram Leads Playbook voor Coaches"
+    deliveryUrl: "TBD"
+    emailTag: "purchase_instagram_playbook"
+crossClusters:
+  - cluster: ai-vindbaarheid
+    relationship: >
+      Coaches en experts die online groeien hebben ook AI-vindbaarheid
+      nodig, anders wordt hun expertise niet aangehaald door AI-tools.
+    bridgeText:
+      nl: >
+        Bouw je je expertbrand al goed, maar word je niet aanbevolen
+        door ChatGPT, Perplexity of Gemini? Dan loont een
+        AI-vindbaarheidscheck.
+      en: >
+        Building your expert brand, but not getting mentioned by
+        ChatGPT, Perplexity or Gemini? An AI visibility check is worth
+        running.
+    priority: 1
+    showOn: [hub, articles, services]
+calendlyContext: coaching-only
+audience:
+  primaryICP: "Coaches and experts with proven expertise, ready to scale through a system"
+  metaPixelEvent: "ViewContent_ExpertGrowth"
+  emailListTag: "cluster_expert_growth"
+  retargetingAudienceId: "TBD"
+analytics:
+  primarySuccessEvent: "expert_growth_call_booked"
+  secondarySuccessEvents:
+    - "instagram_playbook_purchase"
+    - "expert_growth_service_pageview"
+    - "case_study_pageview"
+  funnelOrder:
+    - "expert_growth_cluster_pageview"
+    - "case_study_pageview"
+    - "expert_growth_service_view"
+    - "expert_growth_calendly_open"
+    - "expert_growth_call_booked"
+hubFaq:
+  - question:
+      nl: "Voor wie is de Expert Growth Accelerator?"
+      en: "Who is the Expert Growth Accelerator for?"
+    answer:
+      nl: "De Expert Growth Accelerator is voor coaches, specialisten en kennisondernemers die al expertise of een aanbod hebben, maar nog geen online systeem dat voorspelbaar leads, kopers of klanten oplevert."
+      en: "The Expert Growth Accelerator is for coaches, specialists and knowledge experts who already have expertise or an offer, but not yet an online system that predictably creates leads, buyers or clients."
+  - question:
+      nl: "Is dit alleen marketing of ook strategie?"
+      en: "Is this only marketing or also strategy?"
+    answer:
+      nl: "Dit traject combineert strategie en uitvoering: positionering, storytelling, aanbodstructuur, mini-producten, masterclasses, emailflows, ads en meetbaarheid worden als één systeem gebouwd."
+      en: "This engagement combines strategy and execution: positioning, storytelling, offer architecture, mini-products, masterclasses, email flows, ads and measurement are built as one system."
+  - question:
+      nl: "Moet ik zelf ook input leveren?"
+      en: "Do I need to provide input myself?"
+    answer:
+      nl: "Ja. Jij brengt de expertise, verhalen, klantinzichten en inhoud. Joost bouwt daar de structuur, copy, pagina's, emails en advertenties omheen."
+      en: "Yes. You bring the expertise, stories, client insights and substance. Joost builds the structure, copy, pages, emails and ads around that."

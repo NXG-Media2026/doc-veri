@@ -1,144 +1,159 @@
 ---
-import { t } from '../i18n/utils';
-import type { Locale } from '../data/site';
-
-interface Testimonial {
-  name: string;
-  text: string;
-  rating?: number;
-  outcome?: string;
-}
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import type { Testimonial } from '../data/testimonials';
 
 interface Props {
-  title?: string;
   testimonials: Testimonial[];
-  locale?: Locale;
+  locale?: string;
 }
 
-const { title, testimonials, locale = 'de' } = Astro.props;
-const heading = title ?? t('testimonial.heading', locale);
+const { testimonials, locale = 'nl' } = Astro.props;
+const [featured, ...rest] = testimonials;
+const colors = ['bg-accent', 'bg-primary', 'bg-amber-500', 'bg-emerald-500', 'bg-rose-500'];
 
-function renderStars(rating: number): string {
-  return '★'.repeat(Math.round(rating)) + '☆'.repeat(5 - Math.round(rating));
+// Load all logo/photo images from logos dir
+const logoFiles = import.meta.glob<{ default: ImageMetadata }>(
+  '/src/assets/images/logos/*.{webp,avif,png,jpg}',
+  { eager: true },
+);
+
+function getImage(filename?: string): ImageMetadata | undefined {
+  if (!filename) return undefined;
+  const key = `/src/assets/images/logos/${filename}`;
+  return logoFiles[key]?.default;
 }
 
 function getInitials(name: string): string {
-  return name.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase();
+  return name
+    .split(' ')
+    .map((w) => w[0])
+    .join('')
+    .toUpperCase()
+    .slice(0, 2);
 }
 
-const avatarColors = [
-  'bg-accent-light text-accent',
-  'bg-amber-100 text-amber-700',
-  'bg-emerald-100 text-emerald-700',
-  'bg-blue-100 text-blue-700',
-  'bg-rose-100 text-rose-700',
-];
-
-const featured = testimonials[0];
-const rest = testimonials.slice(1);
+function renderStars(rating: number = 5): string {
+  return '★'.repeat(rating) + '☆'.repeat(5 - rating);
+}
 ---
 
-<section class="py-16 md:py-24 lg:py-32 bg-bg-alt">
-  <div class="max-w-7xl mx-auto px-4 md:px-6">
-    <div class="text-center mb-12 md:mb-16 js-reveal">
-      <h2 class="font-heading text-3xl md:text-4xl text-text">
-        {heading}
-      </h2>
-    </div>
+<section class="py-16 md:py-24">
+  <div class="max-w-4xl mx-auto px-4 md:px-6">
 
+    {/* Featured testimonial */}
     {featured && (
-      <article
-        class="testimonial testimonial--featured max-w-3xl mx-auto mb-10 md:mb-14 js-reveal"
-        aria-label={`Erfahrungsbericht von ${featured.name}`}
-      >
-        <div class="bg-white rounded-card p-8 md:p-12 border-l-4 border-accent shadow-sm">
-          <svg class="w-10 h-10 md:w-12 md:h-12 text-accent/15 mb-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-            <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
-          </svg>
-
-          {featured.rating && (
-            <div
-              class="text-accent text-lg tracking-wider mb-5"
-              role="img"
-              aria-label={`${featured.rating} von 5 Sternen`}
-            >
-              <span aria-hidden="true">{renderStars(featured.rating)}</span>
+      <div class="mb-12 border-l-4 border-accent bg-bg-alt rounded-card p-8 md:p-10">
+        <div class="flex items-center gap-4 mb-6">
+          {/* Photo > Logo > Initials */}
+          {getImage(featured.photo) ? (
+            <div class="w-14 h-14 rounded-full overflow-hidden border-2 border-border shrink-0">
+              <Image
+                src={getImage(featured.photo)!}
+                alt={featured.name}
+                width={56}
+                height={56}
+                class="w-full h-full object-cover"
+                loading="lazy"
+              />
             </div>
-          )}
-
-          <blockquote class="text-text text-lg md:text-xl leading-relaxed mb-8">
-            <p>"{featured.text}"</p>
-          </blockquote>
-
-          <footer class="flex items-center gap-4">
-            <div
-              class:list={[
-                'w-12 h-12 rounded-full flex items-center justify-center text-sm font-semibold shrink-0',
-                avatarColors[0],
-              ]}
-              aria-hidden="true"
-            >
+          ) : getImage(featured.logo) ? (
+            <div class="w-14 h-14 rounded-full bg-white flex items-center justify-center overflow-hidden border border-border shrink-0 p-1.5">
+              <Image
+                src={getImage(featured.logo)!}
+                alt={featured.outcome ?? featured.name}
+                width={48}
+                height={48}
+                class="w-full h-full object-contain"
+                loading="lazy"
+              />
+            </div>
+          ) : (
+            <div class:list={[
+              'w-14 h-14 rounded-full flex items-center justify-center text-white font-bold text-lg shrink-0',
+              colors[0],
+            ]}>
               {getInitials(featured.name)}
             </div>
-            <div>
-              <cite class="not-italic font-medium text-text block">{featured.name}</cite>
-              {featured.outcome && (
-                <span class="text-sm text-text-muted">{featured.outcome}</span>
-              )}
-            </div>
-          </footer>
+          )}
+          <div>
+            <p class="font-heading text-lg text-text">{featured.name}</p>
+            {featured.outcome && featured.website ? (
+              <a href={featured.website} target="_blank" rel="noopener noreferrer" class="text-sm text-accent hover:text-accent-dark transition-colors underline underline-offset-2">
+                {featured.outcome}
+              </a>
+            ) : featured.outcome ? (
+              <p class="text-sm text-text-muted">{featured.outcome}</p>
+            ) : null}
+          </div>
         </div>
-      </article>
+        <div class="text-accent text-xl mb-4 tracking-wide" aria-label={`${featured.rating ?? 5} van 5 sterren`}>
+          {renderStars(featured.rating)}
+        </div>
+        <blockquote class="text-text leading-relaxed text-lg md:text-xl italic">
+          &ldquo;{featured.text}&rdquo;
+        </blockquote>
+      </div>
     )}
 
+    {/* Remaining testimonials — 2 col grid */}
     {rest.length > 0 && (
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto">
-        {rest.map((item, idx) => (
-          <article
-            class:list={[
-              'testimonial',
-              'bg-white rounded-card p-6 flex flex-col',
-              'border-l-4 border-accent/30',
-              'shadow-sm',
-              'js-reveal',
-            ]}
-            aria-label={`Erfahrungsbericht von ${item.name}`}
-            style={`--reveal-delay: ${idx * 120}ms`}
-          >
-            {item.rating && (
-              <div
-                class="text-accent text-sm tracking-wider mb-3"
-                role="img"
-                aria-label={`${item.rating} von 5 Sternen`}
-              >
-                <span aria-hidden="true">{renderStars(item.rating)}</span>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {rest.map((t, i) => (
+          <div class="bg-bg-alt border border-border rounded-card p-6">
+            <div class="flex items-center gap-3 mb-4">
+              {/* Photo > Logo > Initials */}
+              {getImage(t.photo) ? (
+                <div class="w-10 h-10 rounded-full overflow-hidden border-2 border-border shrink-0">
+                  <Image
+                    src={getImage(t.photo)!}
+                    alt={t.name}
+                    width={40}
+                    height={40}
+                    class="w-full h-full object-cover"
+                    loading="lazy"
+                  />
+                </div>
+              ) : getImage(t.logo) ? (
+                <div class="w-10 h-10 rounded-full bg-white flex items-center justify-center overflow-hidden border border-border shrink-0 p-1">
+                  <Image
+                    src={getImage(t.logo)!}
+                    alt={t.outcome ?? t.name}
+                    width={36}
+                    height={36}
+                    class="w-full h-full object-contain"
+                    loading="lazy"
+                  />
+                </div>
+              ) : (
+                <div class:list={[
+                  'w-10 h-10 rounded-full flex items-center justify-center text-white font-bold text-sm shrink-0',
+                  colors[(i + 1) % colors.length],
+                ]}>
+                  {getInitials(t.name)}
+                </div>
+              )}
+              <div>
+                <p class="font-heading text-base text-text">{t.name}</p>
+                {t.outcome && t.website ? (
+                  <a href={t.website} target="_blank" rel="noopener noreferrer" class="text-xs text-accent hover:text-accent-dark transition-colors underline underline-offset-2">
+                    {t.outcome}
+                  </a>
+                ) : t.outcome ? (
+                  <p class="text-xs text-text-muted">{t.outcome}</p>
+                ) : null}
               </div>
-            )}
-
-            <blockquote class="flex-1 text-text text-sm leading-relaxed mb-5">
-              <p>"{item.text}"</p>
+            </div>
+            <div class="text-accent text-base mb-3 tracking-wide" aria-label={`${t.rating ?? 5} van 5 sterren`}>
+              {renderStars(t.rating)}
+            </div>
+            <blockquote class="text-text-muted leading-relaxed text-sm">
+              &ldquo;{t.text}&rdquo;
             </blockquote>
-
-            <footer class="flex items-center gap-3 pt-4 border-t border-border">
-              <div
-                class:list={[
-                  'w-9 h-9 rounded-full flex items-center justify-center text-xs font-semibold shrink-0',
-                  avatarColors[(idx + 1) % avatarColors.length],
-                ]}
-                aria-hidden="true"
-              >
-                {getInitials(item.name)}
-              </div>
-              <div class="min-w-0">
-                <cite class="not-italic text-sm font-medium text-text block">{item.name}</cite>
-                {item.outcome && (
-                  <span class="text-xs text-text-muted">{item.outcome}</span>
-                )}
-              </div>
-            </footer>
-          </article>
+          </div>
         ))}
       </div>
     )}
+
   </div>
 </section>

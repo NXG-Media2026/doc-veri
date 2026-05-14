@@ -1,0 +1,139 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import BreadcrumbNav from '../components/BreadcrumbNav.astro';
+import { siteConfig } from '../data/site';
+import { t, localizePath } from '../i18n/utils';
+
+const locale = 'nl';
+const breadcrumbs = [
+  { label: t('breadcrumb.home', locale), href: localizePath('/', locale) },
+  { label: 'Privacy' },
+];
+---
+
+<BaseLayout title={`Privacyverklaring | ${siteConfig.name}`} description="Privacyverklaring van NXG Media — hoe wij omgaan met je persoonsgegevens." locale={locale}>
+  <BreadcrumbNav items={breadcrumbs} />
+
+  <article class="py-12 md:py-16 lg:py-20">
+    <div class="max-w-3xl mx-auto px-4 md:px-6 prose prose-lg">
+      <h1>Privacyverklaring</h1>
+      <p class="text-sm text-text-muted">Laatst bijgewerkt: 3 september 2025</p>
+
+      <h2>1. Wie zijn wij?</h2>
+      <p>Deze privacyverklaring is van NXG-Media, ook handelend onder de namen Marketingmetjoost en Magic AI Hub.</p>
+      <ul>
+        <li>Adres: Amendijk 1, 3829DS Hooglanderveen, Nederland</li>
+        <li>KVK-nummer: 78318122</li>
+        <li>BTW-identificatienummer: NL003318346B95</li>
+        <li>Tel: +34 645 80 73 02</li>
+        <li>E-mail: <a href="mailto:info@nxg-media.com">info@nxg-media.com</a></li>
+        <li>Eigenaar / verantwoordelijke: Joost van Putten</li>
+      </ul>
+
+      <h2>2. Welke persoonsgegevens verwerken wij?</h2>
+      <p>Wij verwerken onder meer:</p>
+      <ul>
+        <li>Voor- en achternaam</li>
+        <li>Bedrijfsnaam en functie</li>
+        <li>Contactgegevens (adres, telefoonnummer, e-mail)</li>
+        <li>Betaalgegevens (via Plug & Pay / KNAB)</li>
+        <li>Inlog- en accountgegevens</li>
+        <li>Profielinformatie (bio, social links, profielfoto)</li>
+        <li>Gebruik van onze tools, cursussen en gamificatie-data</li>
+        <li>Nieuwsbrief- en marketingvoorkeuren</li>
+        <li>Technische gegevens zoals IP-adres en browserinformatie</li>
+        <li>Video-interacties (bij gebruik van Vimeo/YouTube)</li>
+      </ul>
+
+      <h2>3. Bijzondere en/of gevoelige gegevens</h2>
+      <p>Wij verzamelen niet bewust gegevens van kinderen jonger dan 16 jaar zonder toestemming van ouders of voogd. Indien dit toch gebeurt, verwijderen wij deze gegevens na melding.</p>
+
+      <h2>4. Doeleinden van verwerking</h2>
+      <p>Wij gebruiken persoonsgegevens voor:</p>
+      <ul>
+        <li>Uitvoering van onze diensten (cursussen, abonnementen, advies)</li>
+        <li>Klantenservice en support</li>
+        <li>Financi&euml;le administratie en wettelijke verplichtingen</li>
+        <li>Nieuwsbrieven en marketing (alleen met jouw toestemming)</li>
+        <li>Leadgeneratie en remarketing via Meta, Google en MailerLite</li>
+        <li>Verbetering van ons platform en diensten</li>
+        <li>Beveiliging en misbruikpreventie</li>
+      </ul>
+
+      <h2>5. Grondslagen</h2>
+      <ul>
+        <li>Uitvoering van een overeenkomst</li>
+        <li>Toestemming (voor marketing en tracking)</li>
+        <li>Wettelijke verplichting (boekhouding, belastingen)</li>
+        <li>Gerechtvaardigd belang (optimalisatie, beveiliging, direct marketing)</li>
+      </ul>
+
+      <h2>6. Delen met derden</h2>
+      <p>Wij delen persoonsgegevens alleen met derden die ons helpen bij de uitvoering van onze diensten of wanneer dit wettelijk verplicht is. Met deze partijen sluiten wij verwerkersovereenkomsten.</p>
+      <p>Externe partijen die wij gebruiken:</p>
+      <ul>
+        <li>Zapier / Make (automatisering)</li>
+        <li>Calendly (agendaplanning en gesprekken)</li>
+        <li>OpenAI (AI-functionaliteiten)</li>
+        <li>MailerLite (e-mailmarketing)</li>
+        <li>Google Analytics & Meta Pixel (statistieken & marketing)</li>
+        <li>Plug & Pay / KNAB (betalingen)</li>
+        <!-- scanner.nxg-media.com verwerkt ook gegevens; toevoegen zodra scanner-privacybeleid is vastgesteld -->
+        <li>Vimeo & YouTube (videohosting)</li>
+        <li>Notion (interne organisatie)</li>
+      </ul>
+
+      <h2>7. Bewaartermijnen</h2>
+      <p>Wij bewaren gegevens niet langer dan noodzakelijk:</p>
+      <ul>
+        <li>Sessies & login-gegevens: kortdurend (max. 7 dagen)</li>
+        <li>Betaal- en transactiegegevens: minimaal 7 jaar (wettelijk verplicht)</li>
+        <li>Marketinggegevens: tot 2 jaar na laatste interactie of totdat je je afmeldt</li>
+        <li>Tijdelijke bestanden/links: zeer kortdurend (enkele minuten)</li>
+        <li>Gebruikersprofielen en voortgang: zolang je een account hebt</li>
+        <li>Audit logs en beveiligingsgegevens: zolang nodig voor beveiliging en compliance</li>
+      </ul>
+
+      <h2>8. Cookies en tracking</h2>
+      <p>Wij gebruiken cookies en vergelijkbare technieken om onze website en diensten goed te laten werken.</p>
+      <p>Soorten cookies die wij gebruiken:</p>
+      <ul>
+        <li>Functioneel (nodig voor inloggen, sessiebeheer)</li>
+        <li>Analytisch (geanonimiseerde statistieken via Google Analytics)</li>
+        <li>Marketing (bijv. Meta Pixel voor advertenties, alleen na toestemming)</li>
+      </ul>
+      <p>Bij je eerste bezoek tonen wij een cookiebanner waarmee je jouw voorkeuren kunt instellen. Je kunt cookies later altijd verwijderen of aanpassen via je browserinstellingen.</p>
+
+      <h2>9. Beveiliging</h2>
+      <p>Wij nemen passende maatregelen om je gegevens te beschermen:</p>
+      <ul>
+        <li>SSL/HTTPS op alle domeinen</li>
+        <li>Sterke authenticatie en sessiebeheer</li>
+        <li>Encryptie en hashing van gevoelige data</li>
+        <li>Toegangsbeperkingen voor medewerkers</li>
+        <li>Regelmatige monitoring en logging</li>
+        <li>Rate limiting en andere beveiligingslagen tegen misbruik</li>
+      </ul>
+
+      <h2>10. Jouw rechten</h2>
+      <p>Je hebt recht op:</p>
+      <ul>
+        <li>Inzage in je gegevens</li>
+        <li>Correctie</li>
+        <li>Verwijdering</li>
+        <li>Beperking van verwerking</li>
+        <li>Bezwaar tegen verwerking</li>
+        <li>Gegevensoverdraagbaarheid</li>
+        <li>Intrekking van toestemming</li>
+      </ul>
+      <p>Je kunt deze rechten uitoefenen door een mail te sturen naar <a href="mailto:info@nxg-media.com">info@nxg-media.com</a>. Wij reageren binnen 30 dagen.</p>
+      <p>Ook heb je het recht een klacht in te dienen bij de <a href="https://autoriteitpersoonsgegevens.nl" target="_blank" rel="noopener noreferrer">Autoriteit Persoonsgegevens (AP)</a>.</p>
+
+      <h2>11. Wijzigingen</h2>
+      <p>Wij behouden ons het recht voor deze verklaring aan te passen. Bekijk regelmatig de nieuwste versie op onze website.</p>
+
+      <h2>Contact voor privacyvragen</h2>
+      <p>Heb je vragen over deze privacyverklaring of wil je gebruik maken van je rechten? Neem contact op via: <a href="mailto:info@nxg-media.com">info@nxg-media.com</a></p>
+    </div>
+  </article>
+</BaseLayout>

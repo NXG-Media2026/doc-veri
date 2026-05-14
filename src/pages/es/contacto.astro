@@ -1,0 +1,24 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CalendlyEmbed from '../../components/CalendlyEmbed.astro';
+import { siteConfig } from '../../data/site';
+
+const locale = 'es';
+---
+
+<BaseLayout title={`Contacto | ${siteConfig.name}`} description="Contacta con NXG Media o reserva una llamada con Joost." locale={locale}>
+  <section class="py-12 md:py-16 lg:py-20">
+    <div class="max-w-3xl mx-auto px-4 md:px-6">
+      <h1 class="font-heading text-3xl md:text-4xl text-text mb-6">Contacto</h1>
+      <p class="text-lg text-text-muted leading-relaxed mb-8">
+        ¿Quieres saber cómo mejorar tu visibilidad ante IA? Reserva una llamada sin compromiso o envía un email.
+      </p>
+      <div class="bg-white rounded-card p-6 border border-border mb-8">
+        <p class="text-text mb-2"><strong>Email:</strong> <a href={`mailto:${siteConfig.email}`} class="text-accent hover:text-accent-dark">{siteConfig.email}</a></p>
+        <p class="text-text"><strong>LinkedIn:</strong> <a href={siteConfig.socials.linkedin} class="text-accent hover:text-accent-dark" target="_blank" rel="noopener noreferrer">Joost van Putten</a></p>
+      </div>
+    </div>
+  </section>
+
+  <CalendlyEmbed pageType="contact" pageSlug="contacto" locale={locale} />
+</BaseLayout>

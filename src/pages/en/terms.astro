@@ -2,65 +2,63 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import BreadcrumbNav from '../../components/BreadcrumbNav.astro';
 import { siteConfig } from '../../data/site';
-import { generateBreadcrumbs } from '../../data/schema';
 import { t, localizePath } from '../../i18n/utils';
 
 const locale = 'en';
-
 const breadcrumbs = [
   { label: t('breadcrumb.home', locale), href: localizePath('/', locale) },
-  { label: t('nav.agb', locale) },
+  { label: 'Terms' },
 ];
-
-const breadcrumbSchema = breadcrumbs.map((b) => ({
-  name: b.label,
-  url: b.href ? `${siteConfig.url}${b.href}` : `${siteConfig.url}/en/terms`,
-}));
 ---
 
-<BaseLayout
-  title={`Terms & Conditions | ${siteConfig.name}`}
-  description={`Terms and conditions for ${siteConfig.name}.`}
-  noindex={true}
-  locale="en"
->
+<BaseLayout title={`Terms & Conditions | ${siteConfig.name}`} description="Terms and conditions of NXG Media for services, audits and digital products." locale={locale}>
   <BreadcrumbNav items={breadcrumbs} />
 
   <article class="py-12 md:py-16 lg:py-20">
-    <div class="max-w-3xl mx-auto px-4 md:px-6">
-      <h1 class="font-heading text-3xl md:text-4xl text-text mb-8">Terms &amp; Conditions</h1>
+    <div class="max-w-3xl mx-auto px-4 md:px-6 prose prose-lg">
+      <h1>Terms & Conditions</h1>
+      <p class="text-sm text-text-muted">Last updated: 3 September 2025</p>
 
-      <div class="prose prose-lg max-w-none">
-        <div class="bg-bg-alt border border-border rounded-card p-6 mb-8">
-          <p class="text-text-muted text-sm mb-2">
-            <strong>Note:</strong> As {siteConfig.name} is operated from Germany, the legally binding terms and conditions (AGB) are available in German.
-          </p>
-          <a
-            href="/agb"
-            class="inline-flex items-center text-sm font-medium text-accent hover:text-accent-dark transition-colors"
-          >
-            View terms &amp; conditions (German)
-            <svg class="w-4 h-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
-            </svg>
-          </a>
-        </div>
+      <p>NXG Media is registered in the Netherlands (KVK 78318122). These terms are governed by Dutch law.</p>
 
-        <h2>Overview</h2>
-        <p>
-          The following is a summary of key terms. The full, legally binding terms are available in German via the link above.
-        </p>
-        <ul>
-          <li>All digital products are delivered electronically after purchase.</li>
-          <li>Coaching sessions are subject to the cancellation policy outlined in the full terms.</li>
-          <li>German law applies to all contracts.</li>
-        </ul>
+      <h2>Company</h2>
+      <p>NXG-Media, also operating under the names Marketingmetjoost and Magic AI Hub.<br />
+      Amendijk 1, 3829DS Hooglanderveen, the Netherlands.<br />
+      Responsible person: Joost van Putten.<br />
+      Email: <a href="mailto:info@nxg-media.com">info@nxg-media.com</a></p>
 
-        <h2>Contact</h2>
-        <p>
-          For questions about these terms, please contact us at <a href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a>.
-        </p>
-      </div>
+      <h2>Services and audits</h2>
+      <p>NXG Media provides online growth systems, strategic advice, content guidance and AI visibility audits. Audits deliver analysis and recommendations based on the situation at the time of execution. Results are informational and do not constitute a guarantee of specific outcomes.</p>
+
+      <h2>AI visibility disclaimer</h2>
+      <p>AI visibility is a new and evolving field. NXG Media does not guarantee rankings, mentions or recommendations in AI tools such as ChatGPT, Perplexity, Google AI Overviews or Gemini. The audit identifies technical, content and authority improvements that may improve machine readability, citability and trust signals.</p>
+
+      <h2>Digital products</h2>
+      <p>NXG Media offers digital products such as e-books, playbooks, templates and courses. Due to the nature of digital products, returns after delivery are not possible unless required by law.</p>
+
+      <h2>Payments</h2>
+      <p>Payments for digital products are processed via Plug & Pay. Service payments are invoiced with a 14-day payment term unless otherwise agreed.</p>
+
+      <h2>Intellectual property</h2>
+      <p>All materials produced by NXG Media remain intellectual property of NXG Media unless otherwise agreed in writing. Clients receive a non-exclusive, non-transferable licence for personal use. Redistribution, resale or publication without written permission is not permitted.</p>
+
+      <h2>Client responsibilities</h2>
+      <p>The client is responsible for providing timely and accurate information, complying with applicable laws when using delivered advice, and maintaining backups of their own data.</p>
+
+      <h2>No guaranteed results</h2>
+      <p>NXG Media delivers best-effort obligations, not guaranteed outcomes. Results depend on external factors including market conditions, competition, algorithm changes and client effort.</p>
+
+      <h2>Liability</h2>
+      <p>NXG Media's liability is limited to the amount paid for the relevant service or product. NXG Media is not liable for indirect damages, consequential damages, lost profits or missed savings.</p>
+
+      <h2>Cancellation</h2>
+      <p>Ongoing service agreements may be terminated by either party with 30 days written notice unless otherwise agreed. Amounts already invoiced remain due.</p>
+
+      <h2>Governing law</h2>
+      <p>These terms are governed by Dutch law. Disputes are subject to the exclusive jurisdiction of the court in Utrecht, the Netherlands.</p>
+
+      <h2>Binding version</h2>
+      <p>The legally binding terms are available in Dutch at <a href="/voorwaarden/">/voorwaarden/</a>.</p>
     </div>
   </article>
 </BaseLayout>

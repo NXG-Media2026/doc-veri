@@ -1,197 +1,135 @@
 export const ui = {
-  de: {
+  nl: {
     // Navigation
     'nav.home': 'Home',
-    'nav.angebot': 'Angebot',
-    'nav.produkte': 'Produkte',
-    'nav.coaching': 'Coaching',
-    'nav.mitgliedschaft': 'Mitgliedschaft',
-    'nav.about': 'Über mich',
-    'nav.contact': 'Kontakt',
-    'nav.faq': 'FAQ',
-    'nav.blog': 'Blog',
-    'nav.themen': 'Themen',
-    'nav.glossar': 'Glossar',
-    'nav.privacy': 'Datenschutz',
-    'nav.impressum': 'Impressum',
-    'nav.agb': 'AGB',
+    'nav.expertGrowth': 'Expert Growth',
+    'nav.aiVindbaarheid': 'AI Vindbaarheid',
+    'nav.cases': 'Cases',
+    'nav.producten': 'Producten',
+    'nav.about': 'Over Joost',
+    'nav.contact': 'Contact',
+    'nav.guides': 'Guides',
 
     // CTAs
-    'cta.discover': 'Entdecken',
-    'cta.learnMore': 'Mehr erfahren',
-    'cta.viewAll': 'Alle ansehen',
-    'cta.backToOverview': 'Zurück zur Übersicht',
-    'cta.buyNow': 'Jetzt kaufen',
-    'cta.contact': 'Kontakt aufnehmen',
-    'cta.bookCall': 'Erstgespräch buchen',
-    'cta.joinCommunity': 'Community beitreten',
-    'cta.downloadFree': 'Kostenlos herunterladen',
-    'cta.subscribe': 'Anmelden',
-    'cta.startQuiz': 'Quiz starten',
+    'cta.discover': 'Ontdek',
+    'cta.learnMore': 'Meer lezen',
+    'cta.viewAll': 'Bekijk alles',
+    'cta.backToOverview': 'Terug naar overzicht',
+    'cta.buyNow': 'Nu kopen',
+    'cta.contact': 'Neem contact op',
+    'cta.bookCall': 'Plan een gesprek',
+    'cta.subscribe': 'Aanmelden',
+    'cta.runScan': 'Doe de AI-vindbaarheidsscan',
+    'cta.viewCases': 'Bekijk cases',
+    'cta.viewAudit': 'Bekijk de audit-aanpak',
+    'cta.discussGrowth': 'Bespreek jouw groeiroute',
+    'cta.exploreExpertGrowth': 'Bekijk Expert Growth',
 
-    // Testimonials
-    'testimonial.heading': 'Das sagen meine Kundinnen',
+    // Testimonials / Proof
+    'testimonial.heading': 'Wat klanten zeggen',
+    'proof.heading': 'Resultaten van klanten',
 
     // FAQ
-    'faq.heading': 'Häufig gestellte Fragen',
-    'faq.moreLink': 'Mehr Fragen? Besuche unsere FAQ-Seite',
+    'faq.heading': 'Veelgestelde vragen',
 
     // Social
-    'social.followCta': '@doc.veri auf Instagram folgen',
+    'social.followCta': 'Volg @joost.van.putten op Instagram',
 
     // Product pages
-    'product.whatIsInside': 'Das steckt drin',
-    'product.whoIsThisFor': 'Für wen ist das?',
-    'product.price': 'Preis',
-    'product.allProducts': 'Alle Produkte',
+    'product.whatIsInside': 'Wat zit erin',
+    'product.whoIsThisFor': 'Voor wie is dit?',
+    'product.price': 'Prijs',
+    'product.allProducts': 'Alle producten',
+    'product.comingSoon': 'Binnenkort beschikbaar',
+    'product.format': 'Formaat',
 
-    // Coaching pages
-    'coaching.outcomes': 'Das erreichst du',
-    'coaching.methodology': 'So arbeiten wir',
-    'coaching.includes': 'Das ist enthalten',
-    'coaching.allCoaching': 'Alle Coaching-Angebote',
+    // Service pages
+    'service.forYouIf': 'Dit is voor jou als…',
+    'service.notForYouIf': 'Dit is niet voor jou als…',
+    'service.method': 'Zo werken we',
+    'service.mechanism': 'Het mechanisme',
+    'service.failedSolutions': 'Wat niet werkt',
+    'service.problemRecognition': 'Herken je dit?',
+    'service.allServices': 'Alle diensten',
+
+    // Case pages
+    'case.whatWeBuilt': 'Wat we gebouwd hebben',
+    'case.proofStats': 'Resultaten',
+    'case.strategicLesson': 'Strategische les',
+    'case.startSituation': 'Beginsituatie',
+    'case.allCases': 'Alle cases',
+
+    // Guide pages
+    'guide.allGuides': 'Alle guides',
+    'guide.by': 'Door',
 
     // E-E-A-T bylines
-    'eeat.writtenBy': 'Geschrieben von',
-    'eeat.reviewedBy': 'Geprüft von',
-    'eeat.lastReviewed': 'Zuletzt geprüft',
-    'eeat.viewProfile': 'Profil ansehen',
+    'eeat.writtenBy': 'Geschreven door',
+    'eeat.viewProfile': 'Profil bekijken',
 
-    // About / credentials labels
-    'about.education': 'Ausbildung',
-    'about.credentials': 'Qualifikationen',
-    'about.languages': 'Sprachen',
-    'about.memberships': 'Mitgliedschaften',
-    'about.publications': 'Publikationen & Vorträge',
-
-    // Blog / articles
-    'blog.allArticles': 'Alle Artikel',
-    'blog.latestArticles': 'Neueste Artikel',
-    'blog.viewAll': 'Alle Artikel ansehen',
-    'blog.by': 'Von',
-    'blog.updated': 'Aktualisiert',
-    'blog.relatedArticles': 'Verwandte Artikel',
-    'blog.relatedProducts': 'Passende Produkte',
-    'blog.readingTime': 'Min. Lesezeit',
-    'breadcrumb.blog': 'Blog',
-
-    // Pillar / topics
-    'pillar.relatedArticles': 'Artikel zum Thema',
-    'pillar.relatedProducts': 'Passende Produkte',
-    'breadcrumb.themen': 'Themen',
-
-    // Quiz
-    'quiz.heading': 'Finde deinen Typ',
-    'quiz.startButton': 'Quiz starten',
-    'quiz.emailGate': 'Trage deine E-Mail ein, um deine personalisierten Ergebnisse zu erhalten.',
-    'quiz.resultHeading': 'Dein Ergebnis',
+    // About
+    'about.heading': 'Over Joost',
 
     // Newsletter
-    'newsletter.heading': 'Newsletter',
-    'newsletter.subtitle': 'Evidenzbasierte Impulse zu Hormonen, Training und Ernährung — direkt in dein Postfach.',
-    'newsletter.placeholder': 'Deine E-Mail-Adresse',
-    'newsletter.button': 'Anmelden',
-    'newsletter.success': 'Willkommen! Prüfe dein Postfach.',
-    'newsletter.sending': 'Einen Moment…',
-    'newsletter.error': 'Etwas ist schiefgelaufen. Bitte versuche es erneut.',
+    'newsletter.heading': 'Nieuwsbrief',
+    'newsletter.subtitle': 'Praktische inzichten over online groei, AI-vindbaarheid en expertpositionering — direct in je inbox.',
+    'newsletter.placeholder': 'Je e-mailadres',
+    'newsletter.button': 'Aanmelden',
+    'newsletter.success': 'Welkom! Check je inbox.',
+    'newsletter.sending': 'Even geduld…',
+    'newsletter.error': 'Er ging iets mis. Probeer het opnieuw.',
 
     // General
-    'general.readMore': 'Weiterlesen',
-    'general.close': 'Schließen',
-    'general.menu': 'Menü',
-    'general.language': 'Sprache',
-    'general.skipToContent': 'Zum Inhalt springen',
-    'general.wissen': 'Wissen',
-    'general.kontakt': 'Kontakt',
-    'general.freeMasterclass': 'Kostenlose Masterclass',
-    'general.discoverOffers': 'Angebot entdecken',
-    'general.quickAccess': 'Schnellzugriff',
+    'general.readMore': 'Lees meer',
+    'general.close': 'Sluiten',
+    'general.menu': 'Menu',
+    'general.language': 'Taal',
+    'general.skipToContent': 'Ga naar inhoud',
 
     // Footer
-    'footer.rights': 'Alle Rechte vorbehalten',
-    'footer.privacy': 'Datenschutz',
-    'footer.impressum': 'Impressum',
-    'footer.agb': 'AGB',
-
-    // Lead magnet
-    'leadMagnet.whatYouGet': 'Das bekommst du',
-    'leadMagnet.downloadHeading': 'Jetzt kostenlos sichern',
-    'leadMagnet.downloadSubtext': 'Trage deine E-Mail-Adresse ein und erhalte den kostenlosen Download direkt in dein Postfach.',
-    'leadMagnet.emailPlaceholder': 'Deine E-Mail-Adresse',
-    'leadMagnet.successHeading': 'Geschafft!',
-    'leadMagnet.successMessage': 'Prüfe dein Postfach — der Download ist unterwegs.',
+    'footer.rights': 'Alle rechten voorbehouden',
+    'footer.privacy': 'Privacy',
+    'footer.voorwaarden': 'Voorwaarden',
 
     // Breadcrumbs
     'breadcrumb.home': 'Home',
-    'breadcrumb.produkte': 'Produkte',
-    'breadcrumb.coaching': 'Coaching',
-    'breadcrumb.angebot': 'Angebot',
-    'breadcrumb.glossar': 'Glossar',
-    'breadcrumb.leadMagnet': 'Kostenlose Ressourcen',
-    'breadcrumb.masterclass': 'Masterclass',
+    'breadcrumb.cases': 'Cases',
+    'breadcrumb.diensten': 'Diensten',
+    'breadcrumb.producten': 'Producten',
+    'breadcrumb.guides': 'Guides',
 
-    // Glossary
-    'glossar.allTerms': 'Alle Glossar-Begriffe',
-    'glossar.background': 'Hintergrund',
-    'glossar.relatedArticle': 'Vertiefender Artikel',
-    'glossar.readArticle': 'Artikel lesen',
-    'glossar.relatedTerms': 'Verwandte Begriffe',
+    // Cluster
+    'cluster.relatedTopics': 'Verwante onderwerpen',
+    'cluster.moreAbout': 'Meer over',
+    'cluster.guidesAbout': 'Guides over',
 
-    // Layout strings (ArticleLayout, HybridProductLayout, ClusterHubLayout, CoachingLayout)
-    'layout.applyKnowledge': 'Dieses Wissen in die Praxis umsetzen?',
-    'layout.applyKnowledgeSub': 'Entdecke meine Produkte und Coaching-Angebote — wissenschaftlich fundiert und auf dich zugeschnitten.',
-    'layout.discoverOffers': 'Angebot entdecken',
-    'product.perfectForYou': 'Perfekt für dich, wenn…',
-    'product.notForYouIf': 'Nicht das Richtige, wenn…',
-    'product.relatedLearning': 'Mehr zum Thema',
-    'product.freeArticles': 'Kostenlose Artikel aus unserem Wissensbereich.',
-    'product.youMayAlsoLike': 'Das könnte dich auch interessieren',
-    'product.readyToStart': 'Bereit loszulegen?',
-    'product.questionsAbout': 'Fragen zum Produkt?',
-    'product.getInTouch': 'Schreib mir — ich helfe dir gerne weiter.',
-    'product.recommended': 'Empfohlen',
-    'product.notReadyYet': 'Noch nicht bereit?',
-    'product.getFreeGuide': 'Hol dir den kostenlosen Guide',
-    'product.digitalProductAlt': 'digitales Produkt von doc.veri',
-    'product.bundleEyebrow': 'Auch als Bundle erhältlich',
-    'product.bundleHeadline': 'Willst du das Thema vollständiger verstehen?',
-    'product.bundleCta': 'Bundle ansehen',
-    'cluster.articlesAbout': 'Artikel zu',
-    'cluster.glossary': 'Glossar',
-    'cluster.readDefinition': 'Definition lesen',
-    'cluster.relatedTopics': 'Verwandte Themen',
-    'cluster.moreAbout': 'Mehr zum Thema',
-    'cluster.evidenceBased': 'wissenschaftlich fundiert',
-    'blog.read': 'Lesen',
-    'coaching.readyForNext': 'Bereit für den nächsten Schritt?',
-    'coaching.bookFreeSub': 'Buche dein kostenloses Erstgespräch — unverbindlich und persönlich.',
-    'coaching.bookFreeBtn': 'Erstgespräch buchen',
-    'coaching.calendlyTitle': 'Kostenloses Erstgespräch buchen',
-    'coaching.calendlySub': 'Wähle einen Termin, der dir passt — 15 Minuten, unverbindlich und persönlich.',
-    'coaching.emptyState': 'Coaching-Angebote werden in Kürze veröffentlicht.',
-    'coaching.pageTitle': 'Coaching',
-    'coaching.pageDescription': 'Individuelles Coaching für deine Gesundheitsziele — persönlich begleitet, evidenzbasiert und auf dich zugeschnitten.',
+    // Calendly
+    'calendly.title': 'Plan een gesprek',
+    'calendly.subtitle': 'Kies een moment dat je uitkomt — vrijblijvend en persoonlijk.',
 
-    // Schema labels
-    'schema.glossaryName': 'Glossar der Frauen-Gesundheit',
+    // Homepage
+    'homepage.heroHeading': 'Bouw een online groeisysteem rond jouw expertise',
+    'homepage.recognition': 'Herken je dit?',
+    'homepage.principle': 'Wat NXG Media bouwt',
+    'homepage.proofWall': 'Resultaten van klanten',
+    'homepage.buildingBlocks': 'De bouwstenen',
+    'homepage.aboutJoost': 'Over Joost',
+    'homepage.newsletter': 'Blijf op de hoogte',
+
+    // Schema
+    'schema.glossaryName': 'NXG Media Kennisbank',
   },
 
   en: {
     // Navigation
     'nav.home': 'Home',
-    'nav.angebot': 'Offers',
-    'nav.produkte': 'Products',
-    'nav.coaching': 'Coaching',
-    'nav.mitgliedschaft': 'Membership',
-    'nav.about': 'About',
+    'nav.expertGrowth': 'Expert Growth',
+    'nav.aiVindbaarheid': 'AI Visibility',
+    'nav.cases': 'Cases',
+    'nav.producten': 'Products',
+    'nav.about': 'About Joost',
     'nav.contact': 'Contact',
-    'nav.faq': 'FAQ',
-    'nav.blog': 'Blog',
-    'nav.themen': 'Topics',
-    'nav.glossar': 'Glossary',
-    'nav.privacy': 'Privacy',
-    'nav.impressum': 'Legal Notice',
-    'nav.agb': 'Terms',
+    'nav.guides': 'Guides',
 
     // CTAs
     'cta.discover': 'Explore',
@@ -200,72 +138,62 @@ export const ui = {
     'cta.backToOverview': 'Back to overview',
     'cta.buyNow': 'Buy now',
     'cta.contact': 'Get in touch',
-    'cta.bookCall': 'Book a free call',
-    'cta.joinCommunity': 'Join the community',
-    'cta.downloadFree': 'Download for free',
+    'cta.bookCall': 'Book a call',
     'cta.subscribe': 'Subscribe',
-    'cta.startQuiz': 'Start quiz',
+    'cta.runScan': 'Run the AI visibility scan',
+    'cta.viewCases': 'View cases',
+    'cta.viewAudit': 'View the audit approach',
+    'cta.discussGrowth': 'Discuss your growth route',
+    'cta.exploreExpertGrowth': 'Explore Expert Growth',
 
-    // Testimonials
-    'testimonial.heading': 'What my clients say',
+    // Testimonials / Proof
+    'testimonial.heading': 'What clients say',
+    'proof.heading': 'Client results',
 
     // FAQ
     'faq.heading': 'Frequently asked questions',
-    'faq.moreLink': 'More questions? Visit our FAQ page',
 
     // Social
-    'social.followCta': 'Follow @doc.veri on Instagram',
+    'social.followCta': 'Follow @joost.van.putten on Instagram',
 
     // Product pages
     'product.whatIsInside': "What's inside",
     'product.whoIsThisFor': 'Who is this for?',
     'product.price': 'Price',
     'product.allProducts': 'All products',
+    'product.comingSoon': 'Coming soon',
+    'product.format': 'Format',
 
-    // Coaching pages
-    'coaching.outcomes': 'What you will achieve',
-    'coaching.methodology': 'How we work together',
-    'coaching.includes': "What's included",
-    'coaching.allCoaching': 'All coaching offers',
+    // Service pages
+    'service.forYouIf': 'This is for you if…',
+    'service.notForYouIf': 'This is not for you if…',
+    'service.method': 'How we work',
+    'service.mechanism': 'The mechanism',
+    'service.failedSolutions': 'What doesn\'t work',
+    'service.problemRecognition': 'Do you recognise this?',
+    'service.allServices': 'All services',
+
+    // Case pages
+    'case.whatWeBuilt': 'What we built',
+    'case.proofStats': 'Results',
+    'case.strategicLesson': 'Strategic lesson',
+    'case.startSituation': 'Starting situation',
+    'case.allCases': 'All cases',
+
+    // Guide pages
+    'guide.allGuides': 'All guides',
+    'guide.by': 'By',
 
     // E-E-A-T bylines
     'eeat.writtenBy': 'Written by',
-    'eeat.reviewedBy': 'Reviewed by',
-    'eeat.lastReviewed': 'Last reviewed',
     'eeat.viewProfile': 'View profile',
 
-    // About / credentials labels
-    'about.education': 'Education',
-    'about.credentials': 'Qualifications',
-    'about.languages': 'Languages',
-    'about.memberships': 'Memberships',
-    'about.publications': 'Publications & Talks',
-
-    // Blog / articles
-    'blog.allArticles': 'All articles',
-    'blog.latestArticles': 'Latest articles',
-    'blog.viewAll': 'View all articles',
-    'blog.by': 'By',
-    'blog.updated': 'Updated',
-    'blog.relatedArticles': 'Related articles',
-    'blog.relatedProducts': 'Related products',
-    'blog.readingTime': 'min read',
-    'breadcrumb.blog': 'Blog',
-
-    // Pillar / topics
-    'pillar.relatedArticles': 'Articles on this topic',
-    'pillar.relatedProducts': 'Related products',
-    'breadcrumb.themen': 'Topics',
-
-    // Quiz
-    'quiz.heading': 'Find your type',
-    'quiz.startButton': 'Start quiz',
-    'quiz.emailGate': 'Enter your email to receive your personalised results.',
-    'quiz.resultHeading': 'Your result',
+    // About
+    'about.heading': 'About Joost',
 
     // Newsletter
     'newsletter.heading': 'Newsletter',
-    'newsletter.subtitle': 'Evidence-based insights on hormones, training and nutrition — straight to your inbox.',
+    'newsletter.subtitle': 'Practical insights on online growth, AI visibility and expert positioning — straight to your inbox.',
     'newsletter.placeholder': 'Your email address',
     'newsletter.button': 'Subscribe',
     'newsletter.success': 'Welcome! Check your inbox.',
@@ -278,80 +206,128 @@ export const ui = {
     'general.menu': 'Menu',
     'general.language': 'Language',
     'general.skipToContent': 'Skip to content',
-    'general.wissen': 'Knowledge',
-    'general.kontakt': 'Contact',
-    'general.freeMasterclass': 'Free Masterclass',
-    'general.discoverOffers': 'Explore offers',
-    'general.quickAccess': 'Quick access',
 
     // Footer
     'footer.rights': 'All rights reserved',
     'footer.privacy': 'Privacy',
-    'footer.impressum': 'Legal Notice',
-    'footer.agb': 'Terms',
-
-    // Lead magnet
-    'leadMagnet.whatYouGet': "What you'll get",
-    'leadMagnet.downloadHeading': 'Get it for free',
-    'leadMagnet.downloadSubtext': 'Enter your email address and get the free download straight to your inbox.',
-    'leadMagnet.emailPlaceholder': 'Your email address',
-    'leadMagnet.successHeading': 'Done!',
-    'leadMagnet.successMessage': 'Check your inbox — your download is on its way.',
+    'footer.voorwaarden': 'Terms',
 
     // Breadcrumbs
     'breadcrumb.home': 'Home',
-    'breadcrumb.produkte': 'Products',
-    'breadcrumb.coaching': 'Coaching',
-    'breadcrumb.angebot': 'Offers',
-    'breadcrumb.glossar': 'Glossary',
-    'breadcrumb.leadMagnet': 'Free Resources',
-    'breadcrumb.masterclass': 'Masterclass',
+    'breadcrumb.cases': 'Cases',
+    'breadcrumb.diensten': 'Services',
+    'breadcrumb.producten': 'Products',
+    'breadcrumb.guides': 'Guides',
 
-    // Glossary
-    'glossar.allTerms': 'All glossary terms',
-    'glossar.background': 'Background',
-    'glossar.relatedArticle': 'Related article',
-    'glossar.readArticle': 'Read article',
-    'glossar.relatedTerms': 'Related terms',
-
-    // Layout strings
-    'layout.applyKnowledge': 'Put this knowledge into practice?',
-    'layout.applyKnowledgeSub': 'Discover my products and coaching — evidence-based and tailored to you.',
-    'layout.discoverOffers': 'Explore offers',
-    'product.perfectForYou': 'Perfect for you if…',
-    'product.notForYouIf': 'Not for you if…',
-    'product.relatedLearning': 'Learn more about',
-    'product.freeArticles': 'Free articles from our knowledge base.',
-    'product.youMayAlsoLike': 'You may also like',
-    'product.readyToStart': 'Ready to get started?',
-    'product.questionsAbout': 'Questions about this product?',
-    'product.getInTouch': 'Get in touch — I\'m happy to help.',
-    'product.recommended': 'Recommended',
-    'product.notReadyYet': 'Not ready yet?',
-    'product.getFreeGuide': 'Get the free guide',
-    'product.digitalProductAlt': 'digital product by doc.veri',
-    'product.bundleEyebrow': 'Also available as a bundle',
-    'product.bundleHeadline': 'Want the fuller picture?',
-    'product.bundleCta': 'View bundle',
-    'cluster.articlesAbout': 'Articles about',
-    'cluster.glossary': 'Glossary',
-    'cluster.readDefinition': 'Read definition',
+    // Cluster
     'cluster.relatedTopics': 'Related topics',
     'cluster.moreAbout': 'More about',
-    'cluster.evidenceBased': 'evidence-based',
-    'blog.read': 'Read',
-    'coaching.readyForNext': 'Ready for the next step?',
-    'coaching.bookFreeSub': 'Book your free initial call — no obligation, completely personal.',
-    'coaching.bookFreeBtn': 'Book a free call',
-    'coaching.calendlyTitle': 'Book a free initial call',
-    'coaching.calendlySub': 'Pick a time that works for you — 15 minutes, no obligation, completely personal.',
-    'coaching.emptyState': 'Coaching offerings will be published soon.',
-    'coaching.pageTitle': 'Coaching',
-    'coaching.pageDescription': 'Individual coaching for your health goals — personally guided, evidence-based, and tailored to you.',
+    'cluster.guidesAbout': 'Guides about',
 
-    // Schema labels
-    'schema.glossaryName': "Women's Health Glossary",
+    // Calendly
+    'calendly.title': 'Book a call',
+    'calendly.subtitle': 'Pick a time that works for you — no obligation, completely personal.',
+
+    // Homepage
+    'homepage.heroHeading': 'Build an online growth system around your expertise',
+    'homepage.recognition': 'Do you recognise this?',
+    'homepage.principle': 'What NXG Media builds',
+    'homepage.proofWall': 'Client results',
+    'homepage.buildingBlocks': 'The building blocks',
+    'homepage.aboutJoost': 'About Joost',
+    'homepage.newsletter': 'Stay in the loop',
+
+    // Schema
+    'schema.glossaryName': 'NXG Media Knowledge Base',
+  },
+
+  es: {
+    // Navigation
+    'nav.home': 'Inicio',
+    'nav.aiVindbaarheid': 'Visibilidad IA',
+    'nav.cases': 'Casos',
+    'nav.about': 'Sobre Joost',
+    'nav.contact': 'Contacto',
+
+    // CTAs
+    'cta.discover': 'Explorar',
+    'cta.learnMore': 'Leer más',
+    'cta.viewAll': 'Ver todo',
+    'cta.backToOverview': 'Volver al resumen',
+    'cta.contact': 'Contactar',
+    'cta.bookCall': 'Reservar una llamada',
+    'cta.subscribe': 'Suscribirse',
+    'cta.runScan': 'Solicita un análisis de visibilidad IA',
+    'cta.viewCases': 'Ver casos',
+    'cta.viewAudit': 'Ver el enfoque de auditoría',
+
+    // Testimonials / Proof
+    'testimonial.heading': 'Lo que dicen los clientes',
+    'proof.heading': 'Resultados de clientes',
+
+    // FAQ
+    'faq.heading': 'Preguntas frecuentes',
+
+    // Service pages
+    'service.forYouIf': 'Esto es para ti si…',
+    'service.notForYouIf': 'Esto no es para ti si…',
+    'service.method': 'Cómo trabajamos',
+    'service.mechanism': 'El mecanismo',
+    'service.failedSolutions': 'Lo que no funciona',
+    'service.problemRecognition': '¿Te suena familiar?',
+
+    // Case pages
+    'case.allCases': 'Todos los casos',
+    'case.comingSoon': 'Casos próximamente',
+
+    // E-E-A-T bylines
+    'eeat.writtenBy': 'Escrito por',
+    'eeat.viewProfile': 'Ver perfil',
+
+    // About
+    'about.heading': 'Sobre Joost',
+
+    // Newsletter
+    'newsletter.heading': 'Newsletter',
+    'newsletter.subtitle': 'Información práctica sobre visibilidad ante IA para clínicas y negocios locales.',
+    'newsletter.placeholder': 'Tu email',
+    'newsletter.button': 'Suscribirse',
+    'newsletter.success': '¡Bienvenido! Revisa tu inbox.',
+    'newsletter.sending': 'Un momento…',
+    'newsletter.error': 'Algo salió mal. Inténtalo de nuevo.',
+
+    // General
+    'general.readMore': 'Leer más',
+    'general.close': 'Cerrar',
+    'general.menu': 'Menú',
+    'general.language': 'Idioma',
+    'general.skipToContent': 'Ir al contenido',
+
+    // Footer
+    'footer.rights': 'Todos los derechos reservados',
+    'footer.privacy': 'Privacidad',
+    'footer.voorwaarden': 'Términos',
+
+    // Breadcrumbs
+    'breadcrumb.home': 'Inicio',
+    'breadcrumb.cases': 'Casos',
+    'breadcrumb.diensten': 'Servicios',
+
+    // Cluster
+    'cluster.relatedTopics': 'Temas relacionados',
+
+    // Calendly
+    'calendly.title': 'Reserva una llamada',
+    'calendly.subtitle': 'Elige un momento que te convenga — sin compromiso y personal.',
+
+    // Homepage
+    'homepage.heroHeading': 'Visibilidad ante IA para clínicas locales',
+    'homepage.recognition': '¿Te suena familiar?',
+    'homepage.aboutJoost': 'Sobre Joost',
+
+    // Schema
+    'schema.glossaryName': 'Base de conocimiento NXG Media',
   },
 } as const;
 
-export type UIKey = keyof typeof ui.de;
+export type UIKey = keyof typeof ui.nl;

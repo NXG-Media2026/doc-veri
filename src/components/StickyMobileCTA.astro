@@ -1,7 +1,7 @@
 ---
 import { trackOnClick } from '../lib/analytics';
 import { type Locale } from '../data/site';
-import { t, getTranslatedPath } from '../i18n/utils';
+import { t, getCollectionBasePath } from '../i18n/utils';
 import type { PageType } from '../lib/analytics';
 
 interface Props {
@@ -10,23 +10,24 @@ interface Props {
   pageSlug?: string;
 }
 
-const { locale = 'de', pageType = 'page', pageSlug = '' } = Astro.props;
+const { locale = 'nl', pageType = 'page', pageSlug = '' } = Astro.props;
+const contactHref = getCollectionBasePath('contact', locale);
 ---
 
 <div
   class="fixed bottom-0 inset-x-0 z-50 md:hidden animate-slide-up-cta"
   role="complementary"
-  aria-label={t('general.quickAccess', locale)}
+  aria-label={t('nav.contact', locale)}
 >
   <div class="h-4 bg-gradient-to-t from-bg-white to-transparent pointer-events-none"></div>
 
   <div class="bg-bg-white border-t border-border px-4 py-3 flex gap-3 safe-bottom">
     <a
-      href={getTranslatedPath('/angebot', locale)}
+      href={contactHref}
       class="flex-1 inline-flex items-center justify-center gap-2 px-4 py-3 text-sm font-medium text-text-inverse bg-primary rounded-button transition-colors active:bg-primary-dark"
-      onclick={trackOnClick('product_cta_click', { page_type: pageType, page_slug: pageSlug, locale, cta_location: 'sticky_mobile' })}
+      onclick={trackOnClick('contact_cta_click', { page_type: pageType, page_slug: pageSlug, locale, cta_location: 'sticky_mobile' })}
     >
-      {t('general.discoverOffers', locale)}
+      {t('cta.bookCall', locale)}
     </a>
   </div>
 </div>

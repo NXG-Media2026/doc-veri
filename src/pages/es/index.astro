@@ -1,0 +1,99 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { siteConfig } from '../../data/site';
+import { generateOrganization, generateWebSite } from '../../data/schema';
+import { buildHreflangTrilingual } from '../../i18n/hreflang';
+
+const locale = 'es';
+const hreflang = buildHreflangTrilingual('/', '/en/', '/es/');
+---
+
+<BaseLayout
+  title={`${siteConfig.name} — ${siteConfig.tagline.es}`}
+  description="Visibilidad ante IA para clínicas y negocios locales. Descubre cómo aparecer en ChatGPT, Gemini y otros asistentes de IA."
+  hreflang={hreflang}
+  schemas={[generateOrganization(), generateWebSite(locale)]}
+  locale={locale}
+>
+  {/* Hero — AI visibility only */}
+  <section class="py-16 md:py-24 lg:py-32">
+    <div class="max-w-4xl mx-auto px-4 md:px-6 text-center">
+      <h1 class="font-heading text-4xl md:text-5xl lg:text-6xl text-text mb-6 leading-tight">
+        Visibilidad ante IA para clínicas locales
+      </h1>
+      <p class="text-lg md:text-xl text-text-muted leading-relaxed mb-10 max-w-2xl mx-auto">
+        Cuando alguien le pregunta a ChatGPT por un especialista en tu zona, ¿apareces tú? Descubre tu visibilidad ante IA con un análisis gratuito.
+      </p>
+      <a
+        href="https://scanner.nxg-media.com"
+        class="inline-flex items-center px-8 py-4 text-base font-medium text-text-inverse bg-primary hover:bg-primary-dark transition-colors rounded-button shadow-lg"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Solicita un análisis de visibilidad IA
+        <svg class="ml-2 w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
+        </svg>
+      </a>
+    </div>
+  </section>
+
+  {/* What is AI visibility */}
+  <section class="py-12 md:py-16 bg-bg-alt">
+    <div class="max-w-3xl mx-auto px-4 md:px-6">
+      <h2 class="font-heading text-2xl md:text-3xl text-text mb-6">¿Qué es la visibilidad ante IA?</h2>
+      <p class="text-text-muted leading-relaxed mb-4">
+        Los asistentes de IA como ChatGPT, Gemini y Perplexity responden cada vez más preguntas de pacientes y clientes. Si tu clínica o negocio no aparece en esas respuestas, pierdes visibilidad frente a la competencia.
+      </p>
+      <p class="text-text-muted leading-relaxed">
+        La visibilidad ante IA no depende de los anuncios ni del SEO clásico. Requiere datos estructurados, autoridad temática y contenido citable — exactamente lo que analizamos en nuestro escáner.
+      </p>
+    </div>
+  </section>
+
+  {/* How it works */}
+  <section class="py-12 md:py-16">
+    <div class="max-w-3xl mx-auto px-4 md:px-6">
+      <h2 class="font-heading text-2xl md:text-3xl text-text mb-8">Cómo funciona</h2>
+      <div class="space-y-6">
+        <div class="flex gap-4">
+          <span class="shrink-0 w-10 h-10 rounded-full bg-accent text-white flex items-center justify-center font-heading font-bold">1</span>
+          <div>
+            <h3 class="font-heading text-lg text-text mb-1">Análisis gratuito</h3>
+            <p class="text-text-muted">Ejecutamos el escáner de visibilidad IA en tu negocio y tu zona.</p>
+          </div>
+        </div>
+        <div class="flex gap-4">
+          <span class="shrink-0 w-10 h-10 rounded-full bg-accent text-white flex items-center justify-center font-heading font-bold">2</span>
+          <div>
+            <h3 class="font-heading text-lg text-text mb-1">Informe con recomendaciones</h3>
+            <p class="text-text-muted">Recibes un informe claro con tu puntuación y los pasos concretos para mejorar.</p>
+          </div>
+        </div>
+        <div class="flex gap-4">
+          <span class="shrink-0 w-10 h-10 rounded-full bg-accent text-white flex items-center justify-center font-heading font-bold">3</span>
+          <div>
+            <h3 class="font-heading text-lg text-text mb-1">Implementación opcional</h3>
+            <p class="text-text-muted">Si quieres, te ayudamos a implementar las mejoras — sin compromiso.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {/* About Joost */}
+  <section class="py-12 md:py-16 bg-bg-alt">
+    <div class="max-w-3xl mx-auto px-4 md:px-6">
+      <h2 class="font-heading text-2xl md:text-3xl text-text mb-6">Sobre Joost</h2>
+      <p class="text-text-muted leading-relaxed mb-4">
+        Joost van Putten es el fundador de NXG Media. Trabaja desde Valencia y ayuda a clínicas y negocios locales a ser visibles en los asistentes de IA que cada vez más personas usan para buscar servicios.
+      </p>
+      <a href="/es/sobre-joost/" class="inline-flex items-center text-accent hover:text-accent-dark transition-colors font-medium">
+        Más sobre Joost
+        <svg class="w-4 h-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+        </svg>
+      </a>
+    </div>
+  </section>
+</BaseLayout>

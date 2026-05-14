@@ -1,0 +1,191 @@
+---
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import BaseLayout from './BaseLayout.astro';
+import BreadcrumbNav from '../components/BreadcrumbNav.astro';
+import CTABand from '../components/CTABand.astro';
+import { siteConfig, type Locale } from '../data/site';
+import { generateBreadcrumbs, generateCaseStudy } from '../data/schema';
+import { t, localizePath, getCollectionBasePath } from '../i18n/utils';
+
+interface Props {
+  caseData: {
+    title: string;
+    pageSlug: string;
+    cluster: string;
+    brandFocus: string;
+    clientType: string;
+    relationshipSince: string;
+    phase: string;
+    entryRoute: string;
+    startSituation: string;
+    whatWeBuilt: string[];
+    proofStats: Array<{ value: string; label: string }>;
+    strategicLesson: string;
+    screenshots?: string[];
+  };
+  locale?: Locale;
+}
+
+const { caseData, locale = 'nl' } = Astro.props;
+
+const caseImages = import.meta.glob<{ default: ImageMetadata }>('/src/assets/images/cases/*.webp', { eager: true });
+const screenshots = (caseData.screenshots ?? [])
+  .map((filename) => caseImages[`/src/assets/images/cases/${filename}`]?.default)
+  .filter((img): img is ImageMetadata => !!img);
+const casesBase = getCollectionBasePath('cases', locale);
+const pageUrl = `${casesBase}/${caseData.pageSlug}`;
+
+const breadcrumbs = [
+  { label: t('breadcrumb.home', locale), href: localizePath('/', locale) },
+  { label: t('breadcrumb.cases', locale), href: casesBase },
+  { label: caseData.title },
+];
+
+const breadcrumbSchema = breadcrumbs.map((b) => ({
+  name: b.label,
+  url: b.href ? `${siteConfig.url}${b.href}` : `${siteConfig.url}${pageUrl}`,
+}));
+
+const seoTitle = `${caseData.title} | ${siteConfig.name}`;
+const seoDescription = caseData.startSituation.slice(0, 155);
+
+const clusterCtaMap: Record<string, { text: string; href: string }> = {
+  'expert-growth': {
+    text: locale === 'en' ? 'Explore Expert Growth' : 'Bekijk Expert Growth',
+    href: locale === 'en' ? '/en/expert-growth-accelerator/' : '/expert-growth-accelerator/',
+  },
+  'ai-vindbaarheid': {
+    text: locale === 'en' ? 'Run the AI visibility scan' : 'Doe de AI-vindbaarheidsscan',
+    href: locale === 'en' ? '/en/ai-visibility/' : '/ai-vindbaarheid/',
+  },
+};
+
+const cta = clusterCtaMap[caseData.cluster] ?? clusterCtaMap['expert-growth'];
+---
+
+<BaseLayout
+  title={seoTitle}
+  description={seoDescription}
+  schemas={[
+    generateBreadcrumbs(breadcrumbSchema),
+    generateCaseStudy({
+      title: caseData.title,
+      url: `${siteConfig.url}${pageUrl}`,
+      description: caseData.startSituation,
+      clientName: caseData.title.split('—')[0]?.trim() ?? caseData.title,
+      results: caseData.proofStats,
+    }),
+  ]}
+  locale={locale}
+>
+  <BreadcrumbNav items={breadcrumbs} />
+
+  <article class="py-12 md:py-16 lg:py-20">
+    <div class="max-w-3xl mx-auto px-4 md:px-6">
+      {/* Meta */}
+      <div class="flex flex-wrap items-center gap-3 mb-4">
+        <span class="inline-flex items-center px-3 py-1 text-xs font-medium bg-accent/10 text-accent rounded-full">
+          {caseData.clientType}
+        </span>
+        <span class="text-sm text-text-muted">
+          {locale === 'en' ? 'Since' : 'Sinds'} {caseData.relationshipSince}
+        </span>
+      </div>
+
+      <h1 class="font-heading text-3xl md:text-4xl lg:text-5xl text-text mb-6">
+        {caseData.title}
+      </h1>
+
+      {/* Proof Stats */}
+      {caseData.proofStats.length > 0 && (
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-10">
+          {caseData.proofStats.map((stat) => (
+            <div class="bg-bg-alt rounded-card p-5 text-center">
+              <span class="block text-2xl md:text-3xl font-heading font-bold text-accent">
+                {stat.value}
+              </span>
+              <span class="text-sm text-text-muted mt-1">{stat.label}</span>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* Start situation */}
+      <section class="mb-10">
+        <h2 class="font-heading text-xl md:text-2xl text-text mb-4">
+          {t('case.startSituation', locale)}
+        </h2>
+        <p class="text-text-muted leading-relaxed">{caseData.startSituation}</p>
+      </section>
+
+      {/* Markdown content */}
+      <div class="prose prose-lg max-w-none mb-12">
+        <slot />
+      </div>
+
+      {/* What we built */}
+      {caseData.whatWeBuilt.length > 0 && (
+        <section class="mb-10">
+          <h2 class="font-heading text-xl md:text-2xl text-text mb-6">
+            {t('case.whatWeBuilt', locale)}
+          </h2>
+          <ul class="space-y-3">
+            {caseData.whatWeBuilt.map((item) => (
+              <li class="flex items-start gap-3 text-text-muted">
+                <svg class="w-5 h-5 text-accent shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                </svg>
+                {item}
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+
+      {/* Screenshots */}
+      {screenshots.length > 0 && (
+        <section class="mb-12">
+          <h2 class="font-heading text-xl md:text-2xl text-text mb-6">
+            {locale === 'en' ? 'Results in practice' : 'Resultaten in de praktijk'}
+          </h2>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {screenshots.map((img, i) => {
+              const filename = Object.entries(caseImages).find(([, mod]) => mod.default === img)?.[0] ?? '';
+              const shortName = filename.split('/').pop()?.replace('.webp', '').replace(/-/g, ' ') ?? `screenshot ${i + 1}`;
+              return (
+              <Image
+                src={img}
+                alt={`${caseData.title} — ${shortName}`}
+                widths={[300, 500, 600]}
+                sizes="(max-width: 640px) 90vw, 45vw"
+                class="rounded-card border border-border shadow-sm"
+                loading="lazy"
+              />
+              );
+            })}
+          </div>
+        </section>
+      )}
+
+      {/* Strategic lesson */}
+      <section class="border-l-4 border-accent pl-6 md:pl-8 mb-12">
+        <h2 class="font-heading text-lg text-text mb-2">
+          {t('case.strategicLesson', locale)}
+        </h2>
+        <p class="text-text-muted leading-relaxed italic">{caseData.strategicLesson}</p>
+      </section>
+    </div>
+  </article>
+
+  <CTABand
+    title={cta.text}
+    subtitle={t('calendly.subtitle', locale)}
+    ctaText={cta.text}
+    ctaHref={cta.href}
+    eventName="case_study_pageview"
+    locale={locale}
+    pageType="case"
+    pageSlug={caseData.pageSlug}
+  />
+</BaseLayout>

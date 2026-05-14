@@ -1,0 +1,43 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import BreadcrumbNav from '../../components/BreadcrumbNav.astro';
+import { siteConfig } from '../../data/site';
+import { t, localizePath } from '../../i18n/utils';
+
+const locale = 'es';
+const breadcrumbs = [
+  { label: t('breadcrumb.home', locale), href: localizePath('/', locale) },
+  { label: 'Privacidad' },
+];
+---
+
+<BaseLayout title={`Privacidad | ${siteConfig.name}`} description="Politica de privacidad de NXG Media — como tratamos tus datos personales." locale={locale}>
+  <BreadcrumbNav items={breadcrumbs} />
+
+  <article class="py-12 md:py-16 lg:py-20">
+    <div class="max-w-3xl mx-auto px-4 md:px-6 prose prose-lg">
+      <h1>Privacidad</h1>
+      <p class="text-sm text-text-muted">Actualizado: 3 de septiembre de 2025</p>
+
+      <p>NXG Media est&aacute; registrada en los Pa&iacute;ses Bajos (KVK 78318122). Nuestra pol&iacute;tica de privacidad se rige por la legislaci&oacute;n neerlandesa y europea, incluido el RGPD.</p>
+
+      <h2>Responsable</h2>
+      <p>NXG-Media, tambi&eacute;n operando bajo los nombres Marketingmetjoost y Magic AI Hub.<br />
+      Amendijk 1, 3829DS Hooglanderveen, Pa&iacute;ses Bajos.<br />
+      Responsable: Joost van Putten.<br />
+      Email: <a href="mailto:info@nxg-media.com">info@nxg-media.com</a></p>
+
+      <h2>Datos que procesamos</h2>
+      <p>Podemos procesar: nombre, datos de empresa, informaci&oacute;n de contacto, datos de pago (v&iacute;a Plug & Pay / KNAB), credenciales de cuenta, informaci&oacute;n de perfil, datos de uso de herramientas y cursos, preferencias de newsletter, datos t&eacute;cnicos (IP, navegador) y datos de interacci&oacute;n de v&iacute;deo.</p>
+
+      <h2>Finalidades</h2>
+      <p>Utilizamos datos personales para: prestaci&oacute;n de servicios, atenci&oacute;n al cliente, administraci&oacute;n financiera, newsletters y marketing (solo con consentimiento), generaci&oacute;n de leads y remarketing v&iacute;a Meta/Google/MailerLite, mejora de la plataforma y seguridad.</p>
+
+      <h2>Tus derechos</h2>
+      <p>Bajo el RGPD tienes derecho a acceso, rectificaci&oacute;n, supresi&oacute;n, limitaci&oacute;n, oposici&oacute;n, portabilidad y retirada del consentimiento. Contacta con <a href="mailto:info@nxg-media.com">info@nxg-media.com</a> — respondemos en 30 d&iacute;as.</p>
+
+      <h2>Versi&oacute;n completa</h2>
+      <p>La pol&iacute;tica de privacidad jur&iacute;dicamente vinculante est&aacute; disponible en neerland&eacute;s en <a href="/privacy/">/privacy/</a>.</p>
+    </div>
+  </article>
+</BaseLayout>

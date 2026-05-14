@@ -1,93 +1,65 @@
-/**
- * Curated social storytelling posts — static config, no live embeds.
- *
- * These represent hand-picked Instagram/social posts that showcase
- * Verena's personality, expertise, and community. Used in the
- * SocialStorytellingGrid component on the homepage.
- *
- * To update: add/remove entries here. Images come from the assets folder
- * and are processed by Astro's image pipeline (WebP, responsive).
- */
+import type { ImageMetadata } from 'astro';
+
+import joostLaptop from '../assets/images/founder/joost-sitting-laptop-looking-working.webp';
+import joostFront from '../assets/images/founder/joost-sitting-laptop-lookingfront.webp';
+import joostPlayful from '../assets/images/founder/joost-standing-playfull.webp';
+import joostRelaxed from '../assets/images/founder/joost-standing-relaxed.webp';
+import joostWorking from '../assets/images/founder/joost-standing-workinglaptop.webp';
+import joostPortrait from '../assets/images/founder/joost-profielfoto-portrait.webp';
 
 export interface SocialPost {
-  /** Unique identifier */
   id: string;
-  /** Short title or caption hook (max ~60 chars) */
   title: string;
-  /** Post type — drives the badge label */
   type: 'reel' | 'carousel' | 'post' | 'story';
-  /** Link to the original post on Instagram */
   url: string;
-  /** Image import path — must be a static import above */
   image: ImageMetadata;
 }
 
-import type { ImageMetadata } from 'astro';
-
-// Static imports for Astro image pipeline
-import imgRunning from '../assets/images/Founder/lifestyle-running.jpg';
-import imgBeach from '../assets/images/Founder/portrait-beach.jpg';
-import imgLaughing from '../assets/images/Founder/lifestyle-laughing.jpg';
-import imgWater from '../assets/images/Founder/lifestyle-water.jpg';
-import imgSporty from '../assets/images/Founder/portrait-smilingsporty.jpg';
-import imgArmsUp from '../assets/images/Founder/lifestyle-arms-up.jpg';
-
-/**
- * Curated social posts — order matters (first 6 shown on homepage).
- *
- * Replace these with real Instagram post URLs and screenshots/photos
- * once Verena's account has enough content. For now these use
- * lifestyle photos as placeholders with realistic caption hooks.
- */
 export const socialPosts: SocialPost[] = [
   {
-    id: 'post-histamin-zyklus',
-    title: 'Histamin & Zyklus: warum es vor der Periode schlimmer wird',
-    type: 'carousel',
-    url: 'https://www.instagram.com/doc.veri/',
-    image: imgWater,
-  },
-  {
-    id: 'reel-morgenroutine',
-    title: 'Meine Morgenroutine als Ärztin & Ironman-Athletin',
+    id: 'funnel-converteert-niet',
+    title: 'Waarom je funnel niet converteert',
     type: 'reel',
-    url: 'https://www.instagram.com/doc.veri/',
-    image: imgRunning,
+    url: 'https://www.instagram.com/joostvanputten',
+    image: joostLaptop,
   },
   {
-    id: 'post-perimenopause-signs',
-    title: '5 Zeichen, dass deine Perimenopause begonnen hat',
+    id: 'ai-vindbaarheid-lagen',
+    title: '3 lagen van AI-vindbaarheid',
     type: 'carousel',
-    url: 'https://www.instagram.com/doc.veri/',
-    image: imgBeach,
+    url: 'https://www.instagram.com/joostvanputten',
+    image: joostFront,
   },
   {
-    id: 'reel-smoothie',
-    title: 'Histaminarmer Smoothie in 3 Minuten',
-    type: 'reel',
-    url: 'https://www.instagram.com/doc.veri/',
-    image: imgSporty,
-  },
-  {
-    id: 'post-cortisol',
-    title: 'Cortisol: warum du nicht einfach weniger Stress machen kannst',
+    id: 'nul-naar-10k',
+    title: 'Van 0 naar €10k/mnd productomzet',
     type: 'post',
-    url: 'https://www.instagram.com/doc.veri/',
-    image: imgLaughing,
+    url: 'https://www.instagram.com/joostvanputten',
+    image: joostPlayful,
   },
   {
-    id: 'reel-training-zyklus',
-    title: 'So passe ich mein Training an meinen Zyklus an',
+    id: 'chatgpt-concurrent',
+    title: 'ChatGPT noemt je concurrent, niet jou',
     type: 'reel',
-    url: 'https://www.instagram.com/doc.veri/',
-    image: imgArmsUp,
+    url: 'https://www.instagram.com/joostvanputten',
+    image: joostRelaxed,
+  },
+  {
+    id: 'mini-producten-kwalificatie',
+    title: 'Mini-producten als kwalificatiemachine',
+    type: 'carousel',
+    url: 'https://www.instagram.com/joostvanputten',
+    image: joostWorking,
+  },
+  {
+    id: 'systeem-30000-leads',
+    title: 'Het systeem achter 30.000 leads',
+    type: 'post',
+    url: 'https://www.instagram.com/joostvanputten',
+    image: joostPortrait,
   },
 ];
 
-/**
- * Get social posts for display (max N).
- * Returns empty array if no posts configured.
- */
 export function getSocialPosts(max: number = 6): SocialPost[] {
   return socialPosts.slice(0, max);
 }

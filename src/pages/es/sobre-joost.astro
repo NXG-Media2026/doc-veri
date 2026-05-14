@@ -1,0 +1,56 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CalendlyEmbed from '../../components/CalendlyEmbed.astro';
+import { siteConfig } from '../../data/site';
+import { generateProfilePage, generateFounderPerson } from '../../data/schema';
+
+const locale = 'es';
+---
+
+<BaseLayout
+  title={`Sobre Joost | ${siteConfig.name}`}
+  description="Joost van Putten — fundador de NXG Media. Ayuda a clínicas y negocios locales a ser visibles en asistentes de IA."
+  schemas={[generateProfilePage(), generateFounderPerson()]}
+  locale={locale}
+>
+  <section class="py-12 md:py-16 lg:py-20">
+    <div class="max-w-3xl mx-auto px-4 md:px-6">
+      <h1 class="font-heading text-3xl md:text-4xl lg:text-5xl text-text mb-6">Sobre Joost</h1>
+      <p class="text-lg text-text-muted leading-relaxed mb-6">
+        Joost van Putten es el fundador de NXG Media. Trabaja desde Valencia y los Países Bajos, ayudando a clínicas locales y negocios a mejorar su visibilidad ante asistentes de IA como ChatGPT, Gemini y Perplexity.
+      </p>
+      <p class="text-text-muted leading-relaxed mb-6">
+        NXG Media analiza la presencia digital de tu negocio y te muestra exactamente qué necesitas para que los asistentes de IA te recomienden cuando un posible cliente busca tus servicios.
+      </p>
+      <h2 class="font-heading text-xl text-text mb-4 mt-10">Especialidades</h2>
+      <ul class="space-y-2">
+        <li class="flex items-start gap-3 text-text-muted">
+          <svg class="w-5 h-5 text-accent shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+          </svg>
+          Visibilidad ante IA y citabilidad
+        </li>
+        <li class="flex items-start gap-3 text-text-muted">
+          <svg class="w-5 h-5 text-accent shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+          </svg>
+          Datos estructurados para negocios locales
+        </li>
+        <li class="flex items-start gap-3 text-text-muted">
+          <svg class="w-5 h-5 text-accent shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+          </svg>
+          Estrategia de contenido para autoridad temática
+        </li>
+        <li class="flex items-start gap-3 text-text-muted">
+          <svg class="w-5 h-5 text-accent shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+          </svg>
+          Visibilidad local para clínicas y prácticas
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <CalendlyEmbed pageType="about" pageSlug="sobre-joost" locale={locale} />
+</BaseLayout>

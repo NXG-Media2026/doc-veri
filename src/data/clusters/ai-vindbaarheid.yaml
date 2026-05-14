@@ -1,0 +1,123 @@
+slug: ai-vindbaarheid
+hubSlug: ai-vindbaarheid
+title: "AI Vindbaarheid voor lokale praktijken"
+shortTitle: "AI Vindbaarheid"
+heroImage: "clusters/ai-vindbaarheid-hero.webp"
+locales:
+  - nl
+  - en
+  - es
+brandFocus: company
+citableDefinition:
+  nl: >
+    AI-vindbaarheid is de mate waarin een lokaal bedrijf of praktijk
+    wordt aanbevolen door AI-tools zoals ChatGPT, Perplexity en Gemini
+    wanneer iemand zoekt naar hulp in haar omgeving. Het verschilt van
+    klassieke SEO omdat AI-tools vooral kijken naar citeerbaarheid,
+    context en autoriteit.
+  en: >
+    AI visibility is the extent to which a local business or practice
+    is recommended by AI tools such as ChatGPT, Perplexity and Gemini
+    when someone searches for help in their area. It differs from
+    classic SEO because AI tools rely heavily on citability, context
+    and authority.
+  es: >
+    La visibilidad ante IA es el grado en que una clínica o negocio
+    local es recomendado por herramientas como ChatGPT, Perplexity y
+    Gemini cuando alguien busca ayuda en su zona. Se diferencia del SEO
+    clásico porque la IA se basa en citabilidad, contexto y autoridad.
+hubIntro:
+  nl: >
+    AI-vindbaarheid is nog een nieuw speelveld. Daarom beginnen we niet
+    met grote beloftes, maar met een praktische scan: hoe zichtbaar is
+    jouw bedrijf nu in Google, ChatGPT, Perplexity en Gemini, en welke
+    technische, inhoudelijke en autoriteitssignalen ontbreken?
+  en: >
+    AI visibility is still a new playing field. That is why we do not
+    start with big promises, but with a practical audit: how visible is
+    your business today in Google, ChatGPT, Perplexity and Gemini, and
+    which technical, content and authority signals are missing?
+  es: >
+    La visibilidad ante IA todavía es un terreno nuevo. Por eso no
+    empezamos con grandes promesas, sino con una auditoría práctica:
+    cómo aparece hoy tu clínica en Google, ChatGPT, Perplexity y Gemini,
+    y qué señales técnicas, de contenido y autoridad faltan.
+featuredCases: []
+featuredGuides:
+  - guides/ai-vindbaarheid-uitgelegd
+  - guides/citeerbaarheid-checklist
+primaryProduct: services/ai-vindbaarheid-audit
+secondaryProducts: []
+crossSellProducts:
+  - products/ai-vindbaarheid-diy-boekjes
+leadMagnets:
+  primary:
+    slug: ai-vindbaarheid-scan
+    type: external-tool
+    title: "Gratis AI Vindbaarheidsscan"
+    deliveryUrl: "https://scanner.nxg-media.com"
+    emailTag: "scan_request_ai_vindbaarheid"
+  secondary:
+    slug: ai-vindbaarheid-diy-boekjes
+    type: micro-product
+    title: "AI Vindbaarheid DIY Boekjes Bundle"
+    deliveryUrl: "TBD"
+    emailTag: "purchase_diy_boekjes"
+crossClusters:
+  - cluster: expert-growth
+    relationship: >
+      Praktijken met een persoonlijk merk en sterke expertise-content
+      scoren vaak beter op citeerbaarheid in AI-tools.
+    bridgeText:
+      nl: >
+        Heb je naast lokale vindbaarheid ook ambities als expert?
+        Dan helpt het bouwen van een persoonlijk expertmerk ook bij
+        citeerbaarheid in AI-tools.
+      en: >
+        Have ambitions beyond local visibility? Building a stronger
+        personal expert profile can also improve AI citability.
+    priority: 2
+    showOn: [hub]
+calendlyContext: warm-only
+audience:
+  primaryICP: "Local private health practices and MKB businesses in NL, BE and ES — chiro, osteo, fysio, aesthetic clinic, cosmetic dentist, skin therapy and other local service providers"
+  metaPixelEvent: "ViewContent_AIVindbaarheid"
+  emailListTag: "cluster_ai_vindbaarheid"
+  retargetingAudienceId: "TBD"
+analytics:
+  primarySuccessEvent: "ai_vindbaarheid_call_booked"
+  secondarySuccessEvents:
+    - "scanner_request_submitted"
+    - "diy_boekjes_purchase"
+    - "audit_service_pageview"
+  funnelOrder:
+    - "ai_vindbaarheid_cluster_pageview"
+    - "scanner_request_submitted"
+    - "audit_service_view"
+    - "audit_calendly_open"
+    - "ai_vindbaarheid_call_booked"
+hubFaq:
+  - question:
+      nl: "Wat is AI-vindbaarheid?"
+      en: "What is AI visibility?"
+      es: "¿Qué es la visibilidad ante IA?"
+    answer:
+      nl: "AI-vindbaarheid is de mate waarin jouw bedrijf wordt genoemd of aanbevolen door AI-tools zoals ChatGPT, Perplexity en Gemini wanneer mensen zoeken naar hulp, diensten of specialisten."
+      en: "AI visibility is the extent to which your business is mentioned or recommended by AI tools such as ChatGPT, Perplexity and Gemini when people search for help, services or specialists."
+      es: "La visibilidad ante IA es el grado en que tu clínica o negocio aparece mencionado o recomendado por herramientas como ChatGPT, Perplexity y Gemini cuando alguien busca ayuda, servicios o especialistas."
+  - question:
+      nl: "Is AI-vindbaarheid al bewezen?"
+      en: "Is AI visibility proven already?"
+      es: "¿La visibilidad ante IA ya está probada?"
+    answer:
+      nl: "AI-vindbaarheid is een nieuw speelveld, daarom starten we met een praktische scan en audit in plaats van grote garanties. De scan laat zien waar je nu staat en welke verbeteringen logisch zijn."
+      en: "AI visibility is a new playing field, which is why we start with a practical scan and audit instead of big guarantees. The audit shows where you stand today and which improvements make sense."
+      es: "La visibilidad ante IA es un terreno nuevo, por eso empezamos con una auditoría práctica en lugar de grandes garantías. El análisis muestra dónde estás hoy y qué mejoras tienen sentido."
+  - question:
+      nl: "Voor wie is de AI-vindbaarheidsscan?"
+      en: "Who is the AI visibility scan for?"
+      es: "¿Para quién es el análisis de visibilidad ante IA?"
+    answer:
+      nl: "De AI-vindbaarheidsscan is voor lokale bedrijven, klinieken, praktijken en MKB-bedrijven die willen weten hoe zichtbaar ze zijn in Google, ChatGPT, Perplexity en Gemini."
+      en: "The AI visibility scan is for local businesses, clinics, practices and service providers that want to know how visible they are in Google, ChatGPT, Perplexity and Gemini."
+      es: "El análisis de visibilidad ante IA es para clínicas, consultas y negocios locales que quieren saber cómo aparecen en Google, ChatGPT, Perplexity y Gemini."

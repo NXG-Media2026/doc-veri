@@ -227,6 +227,37 @@ This checklist is duplicated in `CLAUDE.md` for in-context reference. Run throug
 
 - Working in `.claude/worktrees/<name>/` while editing files in the main project directory leads to git status inconsistencies. Always run `git status` from the directory where the actual changes live before committing.
 
+### Route translation (localizePath vs getCollectionBasePath)
+
+- `localizePath('/privacy', 'es')` returns `/es/privacy` — it does NOT translate the segment.
+- For translated URL slugs (privacy → privacidad, voorwaarden → terms), use `getCollectionBasePath()` or `getRouteSegment()`.
+- When adding new translated routes: (1) add to `routeSegments` in `routes.ts`, (2) expand the type union in `getCollectionBasePath()` in `utils.ts`, (3) use `getCollectionBasePath()` in Footer legal links.
+- Always click-test footer legal links in EVERY language after building.
+
+### Cookie consent / GDPR
+
+- GA4 and Meta Pixel must NEVER load in `BaseLayout <head>`. They must be dynamically loaded by `CookieConsent.astro` AFTER the user clicks "Accept all".
+- Only `getTrackingScript()` (the `window.trackEvent` wrapper) belongs in `<head>`.
+- Calendly and other third-party embeds must be click-to-load (placeholder button → dynamic script load on click).
+
+### npm audit
+
+- NEVER run `npm audit fix --force`. It upgrades Astro across major versions and breaks the build.
+- npm audit warnings are normal and should be ignored.
+- If someone already ran it: `git checkout -- package.json package-lock.json && rm -rf node_modules && npm install`.
+
+### Legal pages pattern
+
+- Privacy and Terms need a full binding version in the primary language.
+- Secondary language versions are summaries that link to the binding version.
+- Footer legal links must use `getCollectionBasePath()`, not `localizePath()`.
+
+### Separate repo for each client
+
+- Each client site must be its own GitHub repo, not a branch of the template.
+- Fork or copy the template, then push to a new repo.
+- Commit ALL client-specific changes before pushing — uncommitted changes don't transfer.
+
 ---
 
 ## What "done" looks like

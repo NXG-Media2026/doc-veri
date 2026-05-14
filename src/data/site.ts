@@ -1,78 +1,76 @@
-// ─── Env-var resolution (build-time) ────────────────────────────
-// Public env vars use the PUBLIC_ prefix (Astro convention).
-// Server-only secrets (API keys) are NEVER read here — they belong
-// in serverless functions / Cloudflare Workers.
 const ga4Id = import.meta.env.PUBLIC_GA_MEASUREMENT_ID ?? '';
 const gscId = import.meta.env.PUBLIC_GSC_VERIFICATION_ID ?? '';
 const metaPixelId = import.meta.env.PUBLIC_META_PIXEL_ID ?? '';
 const calendlyUrl = import.meta.env.PUBLIC_CALENDLY_URL ?? '';
-const skoolUrl = import.meta.env.PUBLIC_SKOOL_URL ?? '';
-const webinarUrl = import.meta.env.PUBLIC_WEBINAR_URL ?? '';
 const emailProvider = import.meta.env.PUBLIC_EMAIL_PROVIDER ?? 'placeholder';
 
 export const siteConfig = {
-  name: 'doc.veri',
-  shortName: 'doc.veri',
+  name: 'NXG Media',
+  shortName: 'NXG Media',
   tagline: {
-    de: 'Frauen-Gesundheit — wissenschaftlich fundiert, ohne Bro-Science',
-    en: "Women's health — evidence-based, no bro-science",
+    nl: 'Bouw een online groeisysteem rond jouw expertise.',
+    en: 'Build an online growth system around your expertise.',
+    es: 'Visibilidad ante IA para clínicas locales.',
   },
-  url: 'https://docveri.de',
-  defaultLocale: 'de' as const,
-  locales: ['de', 'en'] as const,
+  url: 'https://nxg-media.com',
+  defaultLocale: 'nl' as const,
+  locales: ['nl', 'en', 'es'] as const,
   languageSwitcherEnabled: true,
 
   analytics: {
     ga4MeasurementId: ga4Id,
     gscVerificationId: gscId,
     metaPixelId,
+    plausible: '',
+    gtm: '',
   },
 
-  email: 'info@docveri.de',
+  email: 'info@nxg-media.com',
+  phone: '',
 
   socials: {
-    instagram: 'https://www.instagram.com/doc.veri/',
-    linkedin: 'https://www.linkedin.com/in/dr-verena-anna-mann/',
+    linkedin: 'https://www.linkedin.com/in/joost-van-putten/',
+    instagram: 'https://www.instagram.com/joostvanputten',
     youtube: '',
   },
 
   founder: {
-    slug: 'dr-verena',
-    name: 'Dr. Verena Mann',
-    role: 'Notärztin & Ausdauer-Athletin',
-    bio: 'Notärztin, Ironman-Athletin und Gründerin von doc.veri. Dr. Verena Mann verbindet medizinisches Fachwissen mit jahrelanger Ausdauersport-Erfahrung, um zu erklären, was generischer Gesundheitsrat am weiblichen Körper falsch macht.',
-    description: 'Dr. Verena Mann ist eine approbierte Ärztin und Notärztin sowie leidenschaftliche Ausdauer-Athletin. Sie hat doc.veri gegründet, um Frauen wissenschaftlich fundiertes Wissen über Hormone, Training, Ernährung und Zyklus-bewusste Lebensführung zugänglich zu machen — ohne Bro-Science, ohne Schwurbel.',
+    slug: 'joost-van-putten',
+    name: 'Joost van Putten',
+    role: 'Founder & Online Growth Strategist',
+    bio: 'Founder van NXG Media. 7+ jaar ervaring in online groeisystemen. Meer dan €5 miljoen aan advertentiebudget beheerd voor coaches en experts. Bouwt systemen die gemiddeld 5-7x return on ad spend opleveren — met storytelling, productladders, emailflows, ads en AI-vindbaarheid als kern.',
+    description: 'Joost van Putten is de oprichter van NXG Media en heeft 7+ jaar ervaring in het bouwen van online groeisystemen voor coaches, kennisondernemers en lokale praktijken. Hij heeft meer dan €5 miljoen aan advertentiebudget beheerd en werkt met 50+ coaches aan systemen die gemiddeld 5-7x return on ad spend realiseren. Daarnaast bouwt NXG Media aan AI-vindbaarheid voor lokale praktijken en MKB.',
     qualifications: [
-      'Approbierte Ärztin',
-      'Notärztin',
-    ],
+      '7+ jaar ervaring in online marketing & funnelstrategie',
+      '50+ coaches en experts begeleid naar voorspelbare leadflow',
+      '€5M+ aan Meta Ads budget beheerd',
+      'Gemiddeld 5-7x ROAS voor klanten',
+    ] as string[],
     credentials: [
-      { name: 'Approbation als Ärztin', issuer: '', year: 0 },
-      { name: 'Zusatzbezeichnung Notfallmedizin', issuer: '', year: 0 },
-    ],
-    education: [
-      { institution: '', degree: 'Staatsexamen Medizin', year: 0 },
-    ],
-    languages: ['Deutsch', 'Englisch'],
-    memberships: [],
-    publications: [],
+      { name: 'Facebook Certified Media Buying Professional', issuer: 'Meta', year: 2019 },
+      { name: 'Google Analytics Academy', issuer: 'Google', year: 2019 },
+    ] as Array<{ name: string; issuer: string; year: number }>,
+    education: [] as Array<{ institution: string; degree: string; year: number }>,
+    languages: ['Nederlands', 'Engels', 'Spaans'],
+    memberships: [] as string[],
+    publications: [] as string[],
     knowsAbout: [
-      'Frauengesundheit',
-      'Hormonbalance',
-      'Ausdauertraining für Frauen',
-      'Zyklus-bewusstes Training',
-      'RED-S (Relatives Energiedefizit im Sport)',
-      'Perimenopause',
-      'Ernährung für Sportlerinnen',
+      'Online groeisystemen voor experts',
+      'Storytelling & content strategie',
+      'Mini-producten & productladders',
+      'Email marketing automatisering',
+      'Meta Ads voor coaches en experts',
+      'AI-vindbaarheid & citeerbaarheid',
+      'Lokale vindbaarheid voor praktijken',
     ],
-    image: '/images/founder/portrait-doctor.jpg',
+    image: '/images/joost-portrait.webp',
   },
 
+  locations: ['Valencia, ES', 'Nederland'],
+
   external: {
-    plugandpayBase: '',              // stays product-level for now
     calendlyUrl,
-    skoolUrl,
-    webinarUrl,
+    scannerUrl: 'https://scanner.nxg-media.com',
   },
 
   newsletter: {
@@ -85,21 +83,14 @@ export const siteConfig = {
     street: 'Amendijk 1',
     postalCode: '3829DS',
     city: 'Hooglanderveen',
-    country: 'Niederlande',
+    country: 'Nederland',
     registerNumber: 'KVK 78318122',
     taxId: 'NL003318346B95',
     email: 'info@nxg-media.com',
     phone: '+34 645 80 73 02',
-    contentResponsible: {
-      name: 'Dr. Verena Mann',
-      role: 'Inhaltlich Verantwortliche gemäß § 55 Abs. 2 RStV',
-    },
   },
 
-  medicalContentReview: {
-    reviewerSlug: 'dr-verena',
-    lastReviewedDate: '2026-05-01',
-  },
+  expertPersonId: 'https://nxg-media.com/#joost-van-putten',
 } as const;
 
 export type SiteConfig = typeof siteConfig;

@@ -1,43 +1,25 @@
 ---
-/**
- * CalendlyEmbed — reusable Calendly inline widget.
- *
- * TEMPORARY: Uses NXG-Media Calendly account. Replace with Verena's own
- * Calendly URL once her account is set up.
- *
- * Scoping: This component is ONLY used on coaching/trajectory pages.
- * Do NOT add it to homepage, footer, product pages, bundles, micro-products,
- * community, blogs, glossary, or standard product pages.
- *
- * The Calendly widget.js script is loaded async and only when this component
- * renders — it is NOT in any global layout or head.
- */
 import { trackOnClick } from '../lib/analytics';
 import { t } from '../i18n/utils';
 import type { Locale } from '../data/site';
+import type { PageType } from '../lib/analytics';
 
 interface Props {
-  /** Page type for analytics */
-  pageType?: 'coaching';
-  /** Page slug for analytics */
+  pageType?: PageType;
   pageSlug: string;
-  /** Section heading — set to empty string to hide */
   title?: string;
-  /** Subtitle below heading */
   subtitle?: string;
-  /** Locale for translations */
   locale?: Locale;
 }
 
 const {
-  pageType = 'coaching',
+  pageType = 'contact',
   pageSlug,
-  locale = 'de',
-  title = t('coaching.calendlyTitle', locale),
-  subtitle = t('coaching.calendlySub', locale),
+  locale = 'nl',
+  title = t('calendly.title', locale),
+  subtitle = t('calendly.subtitle', locale),
 } = Astro.props;
 
-// TODO: Replace with Verena's own Calendly URL once her account is set up
 const calendlyUrl = 'https://calendly.com/nxgmedia/gratis-15-minuten-strategiegesprek?hide_event_type_details=1&hide_gdpr_banner=1';
 ---
 
@@ -63,51 +45,87 @@ const calendlyUrl = 'https://calendly.com/nxgmedia/gratis-15-minuten-strategiege
     )}
 
     <div
-      class="calendly-inline-widget rounded-card overflow-hidden bg-white shadow-sm"
-      data-url={calendlyUrl}
-      style="min-width:320px;height:700px;"
-    ></div>
+      id="calendly-container"
+      class="rounded-card overflow-hidden bg-white shadow-sm"
+      data-calendly-url={calendlyUrl}
+      style="min-width:320px;min-height:700px;"
+    >
+      {/* Loading spinner shown until Calendly loads */}
+      <div id="calendly-loading" class="w-full flex flex-col items-center justify-center gap-4 py-16 text-center">
+        <svg class="w-10 h-10 text-accent animate-spin" fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+        <span class="text-sm text-text-muted">Agenda laden...</span>
+      </div>
+    </div>
   </div>
 </section>
 
-{/* Calendly widget script — loaded async, only when this component renders */}
-<script type="text/javascript" src="https://assets.calendly.com/assets/external/widget.js" async></script>
-
 <script>
-  // TODO: `discovery_call_click` currently fires on widget scroll-into-view,
-  // NOT on an actual click or booking. Replace later with either:
-  //   - a dedicated `calendly_widget_view` event for the impression, or
-  //   - a true Calendly CTA click / booking callback (Calendly.initInlineWidget
-  //     supports a `data-calendly-event-listener` for real booking events).
-  // Until then, interpret this event as "widget impression", not "user intent".
   (function () {
-    const section = document.getElementById('calendly');
-    if (!section || typeof IntersectionObserver === 'undefined') return;
+    const container = document.getElementById('calendly-container');
+    if (!container) return;
 
-    const pageType = section.dataset.analyticsPageType || 'coaching';
-    const pageSlug = section.dataset.analyticsPageSlug || '';
-    const locale = section.dataset.analyticsLocale || 'de';
+    let loaded = false;
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            if (typeof window.trackEvent === 'function') {
-              window.trackEvent('discovery_call_click', {
-                page_type: pageType,
-                page_slug: pageSlug,
-                locale: locale,
-                cta_location: 'inline',
-                provider: 'calendly',
-              });
-            }
-            observer.disconnect();
-          }
+    function loadCalendly() {
+      if (loaded) return;
+      loaded = true;
+
+      const url = container.dataset.calendlyUrl;
+      if (!url) return;
+
+      // Remove loading spinner
+      const loading = document.getElementById('calendly-loading');
+      if (loading) loading.remove();
+
+      // Create Calendly widget
+      const widget = document.createElement('div');
+      widget.className = 'calendly-inline-widget';
+      widget.dataset.url = url;
+      widget.style.minWidth = '320px';
+      widget.style.height = '700px';
+      container.appendChild(widget);
+
+      // Load Calendly script
+      const script = document.createElement('script');
+      script.src = 'https://assets.calendly.com/assets/external/widget.js';
+      script.async = true;
+      document.head.appendChild(script);
+
+      // Track event
+      const section = document.getElementById('calendly');
+      if (section && typeof window.trackEvent === 'function') {
+        const pageType = section.dataset.analyticsPageType || 'contact';
+        const pageSlug = section.dataset.analyticsPageSlug || '';
+        const locale = section.dataset.analyticsLocale || 'nl';
+        window.trackEvent('discovery_call_view', {
+          page_type: pageType,
+          page_slug: pageSlug,
+          locale: locale,
+          provider: 'calendly',
         });
-      },
-      { threshold: 0.3 },
-    );
+      }
+    }
 
-    observer.observe(section);
+    // Auto-load when section scrolls into view
+    if ('IntersectionObserver' in window) {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              loadCalendly();
+              observer.disconnect();
+            }
+          });
+        },
+        { rootMargin: '200px' } // Start loading 200px before visible
+      );
+      observer.observe(container);
+    } else {
+      // Fallback: load immediately for older browsers
+      loadCalendly();
+    }
   })();
 </script>

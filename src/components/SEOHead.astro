@@ -2,8 +2,9 @@
 import { siteConfig, type Locale } from '../data/site';
 
 const ogLocaleMap: Record<Locale, string> = {
-  de: 'de_DE',
+  nl: 'nl_NL',
   en: 'en_US',
+  es: 'es_ES',
 };
 
 interface Props {
@@ -27,7 +28,7 @@ const {
   hreflang = [],
   noindex = false,
   schemas = [],
-  locale = 'de',
+  locale = 'nl',
 } = Astro.props;
 
 const fullOgImage = ogImage

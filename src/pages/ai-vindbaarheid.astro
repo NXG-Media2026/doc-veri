@@ -1,0 +1,21 @@
+---
+import ClusterHubLayout from '../layouts/ClusterHubLayout.astro';
+import CTABand from '../components/CTABand.astro';
+import { getCluster } from '../lib/clusters';
+
+const cluster = getCluster('ai-vindbaarheid')!;
+const locale = 'nl';
+---
+
+<ClusterHubLayout cluster={cluster} locale={locale}>
+  <CTABand
+    title="Doe de AI-vindbaarheidsscan"
+    subtitle="Ontdek hoe zichtbaar jouw bedrijf is in AI-tools."
+    ctaText="Start de scan"
+    ctaHref="https://scanner.nxg-media.com"
+    eventName="scanner_request_submitted"
+    locale={locale}
+    pageType="cluster_hub"
+    pageSlug="ai-vindbaarheid"
+  />
+</ClusterHubLayout>

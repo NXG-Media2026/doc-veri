@@ -1,0 +1,89 @@
+---
+/**
+ * LogoMarquee — infinite horizontal scrolling logo strip.
+ * Shows logos at uniform size in their original colours.
+ * The track is duplicated so the animation loops seamlessly.
+ */
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
+interface LogoItem {
+  src: ImageMetadata;
+  alt: string;
+}
+
+interface Props {
+  logos: LogoItem[];
+  label?: string;
+  speed?: number; // seconds for one full loop — lower = faster
+}
+
+const {
+  logos,
+  label = 'Vertrouwd door coaches, experts en bedrijven',
+  speed = 35,
+} = Astro.props;
+
+// We need at least 2 copies for seamless loop
+const trackLogos = [...logos, ...logos];
+---
+
+<section class="py-10 md:py-14 overflow-hidden bg-bg-alt">
+  <div class="max-w-5xl mx-auto px-4 md:px-6">
+    {label && <p class="text-sm text-text-muted text-center mb-8">{label}</p>}
+  </div>
+
+  <div class="marquee-wrapper relative">
+    {/* Fade edges */}
+    <div class="pointer-events-none absolute inset-y-0 left-0 w-16 md:w-24 z-10 bg-gradient-to-r from-bg-alt to-transparent"></div>
+    <div class="pointer-events-none absolute inset-y-0 right-0 w-16 md:w-24 z-10 bg-gradient-to-l from-bg-alt to-transparent"></div>
+
+    <div
+      class="marquee-track flex items-center gap-12 md:gap-16 w-max"
+      style={`--marquee-speed: ${speed}s;`}
+    >
+      {trackLogos.map((logo) => (
+        <div class="shrink-0 flex items-center justify-center h-10 md:h-12">
+          <Image
+            src={logo.src}
+            alt={logo.alt}
+            height={48}
+            class="h-8 md:h-10 w-auto object-contain max-w-[140px]"
+            loading="lazy"
+            decoding="async"
+          />
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .marquee-track {
+    animation: marquee-scroll var(--marquee-speed, 35s) linear infinite;
+  }
+
+  @keyframes marquee-scroll {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+
+  /* Pause on hover for accessibility */
+  .marquee-wrapper:hover .marquee-track {
+    animation-play-state: paused;
+  }
+
+  /* Respect reduced motion preference */
+  @media (prefers-reduced-motion: reduce) {
+    .marquee-track {
+      animation: none;
+    }
+    .marquee-wrapper {
+      overflow-x: auto;
+    }
+  }
+</style>

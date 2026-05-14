@@ -1,0 +1,270 @@
+---
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import type { Testimonial } from '../data/testimonials';
+
+interface FeaturedCase {
+  testimonial: Testimonial;
+  period: string;
+  stats: { value: string; label: string }[];
+  caseHref?: string;
+}
+
+interface SmallResult {
+  name: string;
+  logo?: string;
+  period: string;
+  stats: { value: string; label: string }[];
+}
+
+interface Props {
+  title: string;
+  featuredCases: FeaturedCase[];
+  smallResults: SmallResult[];
+  otherTestimonials: Testimonial[];
+  caseLabel?: string;
+  allCasesHref?: string;
+  allCasesLabel?: string;
+  locale?: string;
+}
+
+const {
+  title,
+  featuredCases,
+  smallResults,
+  otherTestimonials,
+  caseLabel = 'Lees de case',
+  allCasesHref = '/cases/',
+  allCasesLabel = 'Bekijk alle cases',
+  locale = 'nl',
+} = Astro.props;
+
+const logoFiles = import.meta.glob<{ default: ImageMetadata }>(
+  '/src/assets/images/logos/*.{webp,avif,png,jpg}',
+  { eager: true },
+);
+
+function getImage(filename?: string): ImageMetadata | undefined {
+  if (!filename) return undefined;
+  const key = `/src/assets/images/logos/${filename}`;
+  return logoFiles[key]?.default;
+}
+
+function getInitials(name: string): string {
+  return name.split(' ').map((w) => w[0]).join('').toUpperCase().slice(0, 2);
+}
+
+function renderStars(rating: number = 5): string {
+  return '★'.repeat(rating) + '☆'.repeat(5 - rating);
+}
+
+const accentColors = ['bg-accent', 'bg-primary', 'bg-amber-500', 'bg-emerald-500', 'bg-rose-500'];
+---
+
+<section class="py-16 md:py-24 bg-bg-alt">
+  <div class="max-w-5xl mx-auto px-4 md:px-6">
+
+    <h2 class="font-heading text-2xl md:text-3xl text-text mb-12 text-center">{title}</h2>
+
+    {/* ── Featured Case Cards ── */}
+    <div class="space-y-6 mb-10">
+      {featuredCases.map((fc, i) => {
+        const t = fc.testimonial;
+        const photo = getImage(t.photo);
+        const logo = getImage(t.logo);
+        return (
+          <div class="bg-white rounded-card border border-border p-6 md:p-8 hover:shadow-lg transition-shadow">
+            {/* Top row: avatar + info left, logo right */}
+            <div class="flex items-start justify-between gap-4 mb-5">
+              <div class="flex items-center gap-4">
+                {photo ? (
+                  <div class="w-14 h-14 rounded-full overflow-hidden border-2 border-border shrink-0">
+                    <Image
+                      src={photo}
+                      alt={t.name}
+                      width={56}
+                      height={56}
+                      class="w-full h-full object-cover"
+                      loading="lazy"
+                    />
+                  </div>
+                ) : (
+                  <div class:list={[
+                    'w-14 h-14 rounded-full flex items-center justify-center text-white font-bold text-lg shrink-0',
+                    accentColors[i % accentColors.length],
+                  ]}>
+                    {getInitials(t.name)}
+                  </div>
+                )}
+                <div>
+                  <p class="font-heading text-lg text-text">{t.name}</p>
+                  {t.outcome && t.website ? (
+                    <a href={t.website} target="_blank" rel="noopener noreferrer" class="text-sm text-accent hover:text-accent-dark transition-colors underline underline-offset-2">
+                      {t.outcome}
+                    </a>
+                  ) : t.outcome ? (
+                    <p class="text-sm text-text-muted">{t.outcome}</p>
+                  ) : null}
+                  <p class="text-xs text-text-muted mt-0.5">{fc.period}</p>
+                </div>
+              </div>
+              {/* Company logo on right */}
+              {logo && (
+                <div class="w-16 h-16 md:w-20 md:h-20 shrink-0 rounded-lg bg-white border border-border/50 flex items-center justify-center p-2">
+                  <Image
+                    src={logo}
+                    alt={t.outcome ?? t.name}
+                    width={72}
+                    height={72}
+                    class="w-full h-full object-contain"
+                    loading="lazy"
+                  />
+                </div>
+              )}
+            </div>
+
+            {/* Stats row */}
+            <div class="flex flex-wrap gap-x-6 gap-y-2 mb-5">
+              {fc.stats.map((s) => (
+                <div class="flex items-baseline gap-1.5">
+                  <span class="text-lg md:text-xl font-bold text-accent">{s.value}</span>
+                  <span class="text-sm text-text-muted">{s.label}</span>
+                </div>
+              ))}
+            </div>
+
+            {/* Quote */}
+            <blockquote class="text-text-muted leading-relaxed text-sm md:text-base italic mb-4">
+              &ldquo;{t.text}&rdquo;
+            </blockquote>
+
+            {/* Stars + case link */}
+            <div class="flex items-center justify-between">
+              <div class="text-accent text-base tracking-wide" aria-label={`${t.rating ?? 5} ${locale === 'nl' ? 'van' : 'out of'} 5 ${locale === 'nl' ? 'sterren' : 'stars'}`}>
+                {renderStars(t.rating)}
+              </div>
+              {fc.caseHref && (
+                <a href={fc.caseHref} class="inline-flex items-center text-sm text-accent hover:text-accent-dark transition-colors font-medium">
+                  {caseLabel}
+                  <svg class="w-4 h-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" /></svg>
+                </a>
+              )}
+            </div>
+          </div>
+        );
+      })}
+    </div>
+
+    {/* ── Small Result Blocks ── */}
+    {smallResults.length > 0 && (
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-10">
+        {smallResults.map((sr) => {
+          const logo = getImage(sr.logo);
+          return (
+            <div class="bg-white/70 rounded-card border border-border/60 p-5">
+              <div class="flex items-center justify-between mb-3">
+                <div>
+                  <p class="font-heading text-sm text-text">{sr.name}</p>
+                  <p class="text-xs text-text-muted">{sr.period}</p>
+                </div>
+                {logo && (
+                  <div class="w-10 h-10 shrink-0 rounded bg-white border border-border/40 flex items-center justify-center p-1">
+                    <Image
+                      src={logo}
+                      alt={sr.name}
+                      width={32}
+                      height={32}
+                      class="w-full h-full object-contain"
+                      loading="lazy"
+                    />
+                  </div>
+                )}
+              </div>
+              <div class="space-y-1.5">
+                {sr.stats.map((s) => (
+                  <p class="text-xs text-text-muted">
+                    <strong class="text-accent font-semibold">{s.value}</strong>{' '}{s.label}
+                  </p>
+                ))}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    )}
+
+    {/* ── Other testimonials (Claire, Andrew, etc.) ── */}
+    {otherTestimonials.length > 0 && (
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {otherTestimonials.map((t, i) => {
+          const photo = getImage(t.photo);
+          const logo = getImage(t.logo);
+          return (
+            <div class="bg-white rounded-card border border-border p-5">
+              <div class="flex items-center justify-between gap-3 mb-3">
+                <div class="flex items-center gap-3">
+                  {photo ? (
+                    <div class="w-10 h-10 rounded-full overflow-hidden border-2 border-border shrink-0">
+                      <Image
+                        src={photo}
+                        alt={t.name}
+                        width={40}
+                        height={40}
+                        class="w-full h-full object-cover"
+                        loading="lazy"
+                      />
+                    </div>
+                  ) : (
+                    <div class:list={[
+                      'w-10 h-10 rounded-full flex items-center justify-center text-white font-bold text-sm shrink-0',
+                      accentColors[(i + 3) % accentColors.length],
+                    ]}>
+                      {getInitials(t.name)}
+                    </div>
+                  )}
+                  <div>
+                    <p class="font-heading text-sm text-text">{t.name}</p>
+                    {t.outcome && t.website ? (
+                      <a href={t.website} target="_blank" rel="noopener noreferrer" class="text-xs text-accent hover:text-accent-dark transition-colors underline underline-offset-2">
+                        {t.outcome}
+                      </a>
+                    ) : t.outcome ? (
+                      <p class="text-xs text-text-muted">{t.outcome}</p>
+                    ) : null}
+                  </div>
+                </div>
+                {logo && (
+                  <div class="w-10 h-10 shrink-0 rounded bg-white border border-border/40 flex items-center justify-center p-1">
+                    <Image
+                      src={logo}
+                      alt={t.outcome ?? t.name}
+                      width={36}
+                      height={36}
+                      class="w-full h-full object-contain"
+                      loading="lazy"
+                    />
+                  </div>
+                )}
+              </div>
+              <div class="text-accent text-sm mb-2 tracking-wide" aria-label={`${t.rating ?? 5} ${locale === 'nl' ? 'van' : 'out of'} 5 ${locale === 'nl' ? 'sterren' : 'stars'}`}>
+                {renderStars(t.rating)}
+              </div>
+              <blockquote class="text-text-muted leading-relaxed text-sm italic">
+                &ldquo;{t.text}&rdquo;
+              </blockquote>
+            </div>
+          );
+        })}
+      </div>
+    )}
+
+    {/* ── Link to all cases ── */}
+    <div class="text-center mt-10">
+      <a href={allCasesHref} class="inline-flex items-center text-accent hover:text-accent-dark transition-colors font-medium">
+        {allCasesLabel}
+        <svg class="w-4 h-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" /></svg>
+      </a>
+    </div>
+
+  </div>
+</section>

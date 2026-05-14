@@ -1,29 +1,21 @@
 ---
-/**
- * ClusterHubLayout — auto-rendered hub page for a content cluster.
- * Reads from cluster YAML config + resolves content graph at build time.
- *
- * Based on CLUSTER_ARCHITECTURE_V1.2.md §4.1
- */
 import BaseLayout from './BaseLayout.astro';
 import BreadcrumbNav from '../components/BreadcrumbNav.astro';
-import DefinitionBlock from '../components/DefinitionBlock.astro';
 import FAQAccordion from '../components/FAQAccordion.astro';
 import CTABand from '../components/CTABand.astro';
 import { siteConfig, type Locale } from '../data/site';
-import { generateBreadcrumbs, generateFAQPage, generateDefinedTerm } from '../data/schema';
-import { t, localizePath, getTranslatedPath, getCollectionBasePath } from '../i18n/utils';
-import { getHreflangForCluster } from '../i18n/hreflang';
+import { generateBreadcrumbs, generateFAQPage } from '../data/schema';
+import { t, localizePath, getCollectionBasePath } from '../i18n/utils';
 
-import type { ClusterConfig, CrossClusterLink } from '../lib/clusters';
+import type { ClusterConfig } from '../lib/clusters';
 import {
-  getCluster,
-  getClusterLocalized,
-  getClusterArticles,
-  getClusterGlossary,
-  getClusterPrimaryProduct,
+  getClusterCitableDefinition,
+  getClusterHubIntro,
+  getClusterFaqLocalized,
+  getClusterCases,
+  getClusterGuides,
   getClusterBridges,
-  getClusterFaq,
+  getCluster,
 } from '../lib/clusters';
 
 interface Props {
@@ -31,104 +23,87 @@ interface Props {
   locale?: Locale;
 }
 
-const { cluster, locale = 'de' } = Astro.props;
-const topicsBase = getCollectionBasePath('themen', locale);
-const blogBase = getCollectionBasePath('blog', locale);
-const glossaryBase = getCollectionBasePath('glossar', locale);
-const productsBase = getCollectionBasePath('produkte', locale);
-const pageUrl = `${topicsBase}/${cluster.hubSlug}`;
+const { cluster, locale = 'nl' } = Astro.props;
+const casesBase = getCollectionBasePath('cases', locale);
+const guidesBase = getCollectionBasePath('guides', locale);
 
-// ─── Resolve content graph ──────────────────────────────────────
-const articles = await getClusterArticles(cluster.slug, locale);
-const glossaryTerms = await getClusterGlossary(cluster.slug, locale);
-const primaryProduct = await getClusterPrimaryProduct(cluster.slug, locale);
+const citableDefinition = getClusterCitableDefinition(cluster, locale);
+const hubIntro = getClusterHubIntro(cluster, locale);
+const faqItems = getClusterFaqLocalized(cluster, locale);
+const cases = await getClusterCases(cluster.slug, locale);
+const guides = await getClusterGuides(cluster.slug, locale);
 const bridges = getClusterBridges(cluster.slug, 'hub');
-const faqItems = getClusterFaq(cluster.slug, locale);
 
-// Resolve which cross-cluster bridges have existing hub pages
 const resolvedBridges = bridges.map((bridge) => {
-  const targetCluster = locale === 'de' ? getCluster(bridge.cluster) : getClusterLocalized(bridge.cluster, locale);
-  const targetHubSlug = targetCluster?.hubSlug;
-  return {
-    ...bridge,
-    href: targetHubSlug ? `${topicsBase}/${targetHubSlug}` : null,
-  };
+  const targetCluster = getCluster(bridge.cluster);
+  const bridgeText = bridge.bridgeText[locale] ?? bridge.bridgeText.nl ?? '';
+  return { ...bridge, bridgeText: bridgeText, href: targetCluster ? `/${targetCluster.hubSlug}/` : null };
 });
 
-// Map cluster FAQ format { question, answer } → FAQAccordion format { q, a }
 const faqForComponent = faqItems.map((item) => ({
   q: item.question,
   a: item.answer,
 }));
 
-// ─── Breadcrumbs ────────────────────────────────────────────────
 const breadcrumbs = [
   { label: t('breadcrumb.home', locale), href: localizePath('/', locale) },
-  { label: t('breadcrumb.themen', locale), href: topicsBase },
   { label: cluster.shortTitle || cluster.title },
 ];
 
 const breadcrumbSchema = breadcrumbs.map((b) => ({
   name: b.label,
-  url: b.href ? `${siteConfig.url}${b.href}` : `${siteConfig.url}${pageUrl}`,
+  url: b.href ? `${siteConfig.url}${b.href}` : `${siteConfig.url}/${cluster.hubSlug}/`,
 }));
 
-// ─── SEO ────────────────────────────────────────────────────────
-const seoTitle = `${cluster.title} — ${t('cluster.evidenceBased', locale)} | ${siteConfig.name}`;
-const seoDescription = cluster.citableDefinition.trim().slice(0, 155);
-
-const baseCluster = getCluster(cluster.slug);
-const deHubSlug = baseCluster?.hubSlug ?? cluster.hubSlug;
-const enHubSlug = baseCluster?.locales?.en?.hubSlug;
-const hreflang = getHreflangForCluster(deHubSlug, enHubSlug);
+const seoTitle = `${cluster.title} | ${siteConfig.name}`;
+const seoDescription = citableDefinition.trim().slice(0, 155);
 ---
 
 <BaseLayout
   title={seoTitle}
   description={seoDescription}
-  hreflang={hreflang}
   schemas={[
     generateBreadcrumbs(breadcrumbSchema),
-    generateDefinedTerm({
-      term: cluster.title,
-      definition: cluster.citableDefinition.trim(),
-      slug: cluster.hubSlug,
-      url: `${siteConfig.url}${pageUrl}`,
-    }, locale),
-    ...(faqForComponent.length > 0 ? [generateFAQPage(faqForComponent)] : []),
+    ...(faqItems.length > 0 ? [generateFAQPage(faqItems)] : []),
   ]}
   locale={locale}
 >
   <BreadcrumbNav items={breadcrumbs} />
 
-  {/* ─── Hero / Definition ─────────────────────────────────────── */}
-  <DefinitionBlock
-    term={cluster.title}
-    definition={cluster.citableDefinition}
-  />
+  {/* Hero / Citable Definition */}
+  <section class="py-12 md:py-16 lg:py-20">
+    <div class="max-w-3xl mx-auto px-4 md:px-6">
+      <h1 class="font-heading text-3xl md:text-4xl lg:text-5xl text-text mb-6">
+        {cluster.title}
+      </h1>
+      <p class="text-lg text-text-muted leading-relaxed mb-8">
+        {citableDefinition}
+      </p>
+    </div>
+  </section>
 
-  {/* ─── Hub Intro (Verena's editorial voice) ──────────────────── */}
-  {cluster.hubIntro && cluster.hubIntro.trim() !== '' && (
-    <section class="py-12 md:py-16">
+  {/* Hub Intro */}
+  {hubIntro && hubIntro.trim() !== '' && (
+    <section class="py-12 md:py-16 bg-bg-alt">
       <div class="max-w-3xl mx-auto px-4 md:px-6">
         <div class="prose prose-lg max-w-none">
-          <p set:html={cluster.hubIntro} />
+          <p set:html={hubIntro} />
         </div>
       </div>
     </section>
   )}
 
-  {/* ─── Featured Articles ─────────────────────────────────────── */}
-  {articles.length > 0 && (
-    <section class="py-12 md:py-16 lg:py-20 bg-bg-alt">
+  {/* Featured Cases */}
+  {cases.length > 0 && (
+    <section class="py-12 md:py-16 lg:py-20">
       <div class="max-w-4xl mx-auto px-4 md:px-6">
         <h2 class="font-heading text-2xl md:text-3xl text-text mb-8 md:mb-12">
-          {t('cluster.articlesAbout', locale)} {cluster.shortTitle || cluster.title}
+          {t('proof.heading', locale)}
         </h2>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
-          {articles.map((article, idx) => (
+          {cases.map((caseItem, idx) => (
             <a
-              href={`${blogBase}/${article.data.pageSlug}`}
+              href={`${casesBase}/${caseItem.data.pageSlug}`}
               class:list={[
                 'group block bg-white border border-border rounded-card overflow-hidden',
                 'hover:border-accent/30 hover:shadow-lg transition-all duration-300',
@@ -136,35 +111,22 @@ const hreflang = getHreflangForCluster(deHubSlug, enHubSlug);
               ]}
               style={`--reveal-delay: ${idx * 100}ms`}
             >
-              {article.data.heroImage && (
-                <div class="aspect-[16/10] overflow-hidden">
-                  <img
-                    src={typeof article.data.heroImage === 'string' ? article.data.heroImage : article.data.heroImage.src}
-                    alt={article.data.title}
-                    class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    loading="lazy"
-                    decoding="async"
-                  />
-                </div>
-              )}
               <div class="p-6">
+                <span class="text-xs font-medium text-accent uppercase tracking-wider mb-2 block">
+                  {caseItem.data.clientType}
+                </span>
                 <h3 class="font-heading text-lg md:text-xl text-text mb-2 group-hover:text-accent transition-colors">
-                  {article.data.title}
+                  {caseItem.data.title}
                 </h3>
-                <p class="text-sm text-text-muted leading-relaxed mb-3 line-clamp-3">
-                  {article.data.excerpt}
-                </p>
-                <div class="flex items-center justify-between">
-                  <span class="text-xs text-text-muted">
-                    {article.data.readingTime} {t('blog.readingTime', locale)}
-                  </span>
-                  <span class="inline-flex items-center text-sm font-medium text-accent-dark group-hover:underline underline-offset-2">
-                    {t('blog.read', locale)}
-                    <svg class="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
-                    </svg>
-                  </span>
-                </div>
+                {caseItem.data.proofStats.length > 0 && (
+                  <div class="flex flex-wrap gap-3 mt-4">
+                    {caseItem.data.proofStats.slice(0, 3).map((stat) => (
+                      <span class="inline-flex items-center px-3 py-1 text-xs bg-bg-alt rounded-full">
+                        <strong class="text-accent mr-1">{stat.value}</strong> {stat.label}
+                      </span>
+                    ))}
+                  </div>
+                )}
               </div>
             </a>
           ))}
@@ -173,72 +135,22 @@ const hreflang = getHreflangForCluster(deHubSlug, enHubSlug);
     </section>
   )}
 
-  {/* ─── Primary Product ───────────────────────────────────────── */}
-  {primaryProduct && (
-    <section class="py-12 md:py-16 lg:py-20">
-      <div class="max-w-4xl mx-auto px-4 md:px-6">
-        <div class="bg-white border border-border rounded-card overflow-hidden md:flex items-stretch js-reveal">
-          {primaryProduct.data.heroImage && (
-            <div class="md:w-2/5 overflow-hidden">
-              <img
-                src={typeof primaryProduct.data.heroImage === 'string' ? primaryProduct.data.heroImage : primaryProduct.data.heroImage.src}
-                alt={primaryProduct.data.title}
-                class="w-full h-full object-cover"
-                loading="lazy"
-                decoding="async"
-              />
-            </div>
-          )}
-          <div class:list={['p-6 md:p-8 flex flex-col justify-center', primaryProduct.data.heroImage ? 'md:w-3/5' : 'w-full']}>
-            <span class="text-xs font-medium text-accent uppercase tracking-wider mb-2">{t('product.recommended', locale)}</span>
-            <h2 class="font-heading text-xl md:text-2xl text-text mb-3">
-              {primaryProduct.data.title}
-            </h2>
-            <p class="text-sm text-text-muted leading-relaxed mb-4">
-              {primaryProduct.data.shortDescription}
-            </p>
-            <div class="flex items-center gap-4">
-              <a
-                href={`${productsBase}/${primaryProduct.data.pageSlug}`}
-                class="inline-flex items-center px-5 py-2.5 text-sm font-medium text-text-inverse bg-primary hover:bg-primary-dark transition-colors rounded-button"
-              >
-                {t('cta.learnMore', locale)}
-              </a>
-              <span class="text-lg font-medium text-text">
-                {primaryProduct.data.price} &euro;
-              </span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  )}
-
-  {/* ─── Glossary Terms ────────────────────────────────────────── */}
-  {glossaryTerms.length > 0 && (
+  {/* Featured Guides */}
+  {guides.length > 0 && (
     <section class="py-12 md:py-16 bg-bg-alt">
-      <div class="max-w-3xl mx-auto px-4 md:px-6">
+      <div class="max-w-4xl mx-auto px-4 md:px-6">
         <h2 class="font-heading text-2xl md:text-3xl text-text mb-8">
-          {t('cluster.glossary', locale)}
+          {t('cluster.guidesAbout', locale)} {cluster.shortTitle}
         </h2>
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          {glossaryTerms.map((entry) => (
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          {guides.map((guide) => (
             <a
-              href={`${glossaryBase}/${entry.data.slug}`}
-              class="group block bg-white rounded-card p-5 border border-border hover:border-accent/30 hover:shadow-lg transition-all duration-300"
+              href={`${guidesBase}/${guide.data.pageSlug}`}
+              class="group block bg-white border border-border rounded-card p-5 hover:border-accent/30 hover:shadow-lg transition-all duration-300"
             >
-              <h3 class="font-medium text-text mb-1 group-hover:text-accent transition-colors">
-                {entry.data.term}
+              <h3 class="font-heading text-base md:text-lg text-text mb-2 group-hover:text-accent transition-colors">
+                {guide.data.title}
               </h3>
-              <p class="text-sm text-text-muted leading-relaxed line-clamp-3">
-                {entry.data.definition}
-              </p>
-              <span class="inline-flex items-center mt-2 text-xs font-medium text-accent-dark group-hover:underline underline-offset-2">
-                {t('cluster.readDefinition', locale)}
-                <svg class="w-3 h-3 ml-1 group-hover:translate-x-0.5 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
-                </svg>
-              </span>
             </a>
           ))}
         </div>
@@ -246,7 +158,7 @@ const hreflang = getHreflangForCluster(deHubSlug, enHubSlug);
     </section>
   )}
 
-  {/* ─── Cross-Cluster Bridges ─────────────────────────────────── */}
+  {/* Cross-Cluster Bridges */}
   {resolvedBridges.length > 0 && (
     <section class="py-12 md:py-16">
       <div class="max-w-3xl mx-auto px-4 md:px-6">
@@ -264,24 +176,17 @@ const hreflang = getHreflangForCluster(deHubSlug, enHubSlug);
                 </div>
                 <div>
                   <h3 class="font-medium text-text mb-1 capitalize">{bridge.cluster}</h3>
-                  <p class="text-sm text-text-muted leading-relaxed">
-                    {bridge.bridgeText}
-                  </p>
+                  <p class="text-sm text-text-muted leading-relaxed">{bridge.bridgeText}</p>
                 </div>
               </div>
             );
 
             return bridge.href ? (
-              <a
-                href={bridge.href}
-                class="block bg-white border border-border rounded-card p-6 js-reveal hover:border-accent/30 hover:shadow-lg transition-all duration-300"
-              >
+              <a href={bridge.href} class="block bg-white border border-border rounded-card p-6 js-reveal hover:border-accent/30 hover:shadow-lg transition-all duration-300">
                 {inner}
               </a>
             ) : (
-              <div class="bg-white border border-border rounded-card p-6 js-reveal">
-                {inner}
-              </div>
+              <div class="bg-white border border-border rounded-card p-6 js-reveal">{inner}</div>
             );
           })}
         </div>
@@ -289,25 +194,16 @@ const hreflang = getHreflangForCluster(deHubSlug, enHubSlug);
     </section>
   )}
 
-  {/* ─── FAQ ───────────────────────────────────────────────────── */}
+  {/* FAQ */}
   {faqForComponent.length > 0 && (
     <FAQAccordion
       items={faqForComponent}
       locale={locale}
-      pageType="pillar"
+      pageType="cluster_hub"
       pageSlug={cluster.hubSlug}
     />
   )}
 
-  {/* ─── CTA ───────────────────────────────────────────────────── */}
-  <CTABand
-    title={`${t('cluster.moreAbout', locale)} ${cluster.shortTitle || cluster.title}?`}
-    subtitle={t('layout.applyKnowledgeSub', locale)}
-    ctaText={t('layout.discoverOffers', locale)}
-    ctaHref={getTranslatedPath('/angebot', locale)}
-    eventName="product_cta_click"
-    locale={locale}
-    pageType="pillar"
-    pageSlug={cluster.hubSlug}
-  />
+  {/* Slot for additional page-specific content */}
+  <slot />
 </BaseLayout>

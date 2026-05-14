@@ -1,37 +1,42 @@
 export type EventName =
+  // Cluster pageviews
+  | 'expert_growth_cluster_pageview'
+  | 'ai_vindbaarheid_cluster_pageview'
+  // Content pageviews
+  | 'case_study_pageview'
+  | 'product_pageview'
+  // Service views
+  | 'expert_growth_service_view'
+  | 'ai_vindbaarheid_service_view'
+  // Calendly
+  | 'expert_growth_calendly_open'
+  | 'ai_vindbaarheid_calendly_open'
+  // Calls booked
+  | 'expert_growth_call_booked'
+  | 'ai_vindbaarheid_call_booked'
+  // Scanner
+  | 'scanner_request_submitted'
+  // Products
+  | 'instagram_playbook_purchase'
+  | 'diy_boekjes_purchase'
+  | 'product_checkout_click'
+  // Social & newsletter
+  | 'social_storytelling_card_click'
   | 'newsletter_signup'
-  | 'lead_magnet_download'
-  | 'product_cta_click'
-  | 'coaching_cta_click'
-  | 'community_cta_click'
-  | 'quiz_started'
-  | 'quiz_email_captured'
-  | 'quiz_completed'
+  // General
   | 'faq_expand'
   | 'external_link_click'
-  | 'discovery_call_click'
-  | 'social_card_click'
-  | 'masterclass_waitlist_signup'
-  | 'masterclass_cta_click'
-  | 'cross_cluster_link_click'
-  | 'bundle_upsell_click';
+  | 'cross_cluster_link_click';
 
 export type PageType =
   | 'homepage'
+  | 'cluster_hub'
+  | 'service'
   | 'product'
-  | 'coaching'
-  | 'membership'
-  | 'pillar'
-  | 'article'
-  | 'archetype'
-  | 'quiz'
-  | 'lead_magnet'
-  | 'glossary'
-  | 'faq'
+  | 'case'
+  | 'guide'
   | 'about'
   | 'contact'
-  | 'masterclass'
-  | 'dashboard'
   | 'page';
 
 export type CTALocation =
@@ -47,16 +52,15 @@ export interface EventProperties {
   page_type: PageType;
   page_slug: string;
   locale: string;
+  cluster?: string;
+  source_cluster?: string;
+  source_page_type?: PageType;
+  source_page_slug?: string;
+  product_type?: string;
   cta_location?: CTALocation;
   provider?: string;
-  // Cluster-enhanced properties (CLUSTER_ARCHITECTURE_V1.2 §6)
   product?: string;
-  product_type?: string;
-  product_cluster?: string;
-  source_page_type?: PageType;
-  source_cluster?: string;
   target_cluster?: string;
-  masterclass_slug?: string;
 }
 
 export function getTrackingScript(): string {

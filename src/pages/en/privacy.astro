@@ -2,68 +2,64 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import BreadcrumbNav from '../../components/BreadcrumbNav.astro';
 import { siteConfig } from '../../data/site';
-import { generateBreadcrumbs } from '../../data/schema';
 import { t, localizePath } from '../../i18n/utils';
 
 const locale = 'en';
-
 const breadcrumbs = [
   { label: t('breadcrumb.home', locale), href: localizePath('/', locale) },
-  { label: t('nav.privacy', locale) },
+  { label: 'Privacy' },
 ];
-
-const breadcrumbSchema = breadcrumbs.map((b) => ({
-  name: b.label,
-  url: b.href ? `${siteConfig.url}${b.href}` : `${siteConfig.url}/en/privacy`,
-}));
 ---
 
-<BaseLayout
-  title={`Privacy Policy | ${siteConfig.name}`}
-  description={`Privacy policy for ${siteConfig.name}.`}
-  noindex={true}
-  locale="en"
->
+<BaseLayout title={`Privacy Policy | ${siteConfig.name}`} description="Privacy policy of NXG Media — how we handle your personal data." locale={locale}>
   <BreadcrumbNav items={breadcrumbs} />
 
   <article class="py-12 md:py-16 lg:py-20">
-    <div class="max-w-3xl mx-auto px-4 md:px-6">
-      <h1 class="font-heading text-3xl md:text-4xl text-text mb-8">Privacy Policy</h1>
+    <div class="max-w-3xl mx-auto px-4 md:px-6 prose prose-lg">
+      <h1>Privacy Policy</h1>
+      <p class="text-sm text-text-muted">Last updated: 3 September 2025</p>
 
-      <div class="prose prose-lg max-w-none">
-        <div class="bg-bg-alt border border-border rounded-card p-6 mb-8">
-          <p class="text-text-muted text-sm mb-2">
-            <strong>Note:</strong> As {siteConfig.name} is operated from Germany, the legally binding privacy policy is available in German.
-          </p>
-          <a
-            href="/datenschutz"
-            class="inline-flex items-center text-sm font-medium text-accent hover:text-accent-dark transition-colors"
-          >
-            View privacy policy (German)
-            <svg class="w-4 h-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
-            </svg>
-          </a>
-        </div>
+      <p>NXG Media is registered in the Netherlands (KVK 78318122). Our privacy policy is governed by Dutch and EU law, including the GDPR.</p>
 
-        <h2>Summary</h2>
-        <p>
-          {siteConfig.name} is committed to protecting your personal data.
-          We process data only as necessary to provide our services and comply with legal obligations under the EU General Data Protection Regulation (GDPR).
-        </p>
+      <h2>Controller</h2>
+      <p>NXG-Media, also operating under the names Marketingmetjoost and Magic AI Hub.<br />
+      Amendijk 1, 3829DS Hooglanderveen, the Netherlands.<br />
+      Responsible person: Joost van Putten.<br />
+      Email: <a href="mailto:info@nxg-media.com">info@nxg-media.com</a></p>
 
-        <h2>Controller</h2>
-        <p>
-          {siteConfig.legal.responsiblePerson || siteConfig.founder.name}<br />
-          Email: <a href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a>
-        </p>
+      <h2>What data we process</h2>
+      <p>We may process: name, company details, contact information, payment data (via Plug & Pay / KNAB), account credentials, profile information, tool and course usage data, newsletter preferences, technical data (IP, browser), and video interaction data.</p>
 
-        <h2>Your rights</h2>
-        <p>
-          Under the GDPR, you have the right to access, rectification, erasure, restriction of processing, data portability, and the right to object.
-          To exercise your rights, please contact us at <a href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a>.
-        </p>
-      </div>
+      <h2>Purposes</h2>
+      <p>We use personal data for: service delivery, customer support, financial administration, newsletters and marketing (with consent only), lead generation and remarketing via Meta/Google/MailerLite, platform improvement, and security.</p>
+
+      <h2>Legal bases</h2>
+      <ul>
+        <li>Performance of a contract</li>
+        <li>Consent (marketing and tracking)</li>
+        <li>Legal obligation (accounting, tax)</li>
+        <li>Legitimate interest (optimisation, security, direct marketing)</li>
+      </ul>
+
+      <h2>Third parties</h2>
+      <p>We share data only with processors who help deliver our services, under data processing agreements: Calendly, Zapier/Make, OpenAI, MailerLite, Google Analytics, Meta Pixel, Plug & Pay / KNAB, Vimeo, YouTube, Notion.</p>
+
+      <h2>Retention</h2>
+      <ul>
+        <li>Sessions: max. 7 days</li>
+        <li>Payment data: min. 7 years (legal requirement)</li>
+        <li>Marketing data: up to 2 years after last interaction</li>
+        <li>User profiles: as long as you hold an account</li>
+      </ul>
+
+      <h2>Cookies</h2>
+      <p>We use functional, analytical (Google Analytics, anonymised), and marketing cookies (Meta Pixel, consent required). You can manage preferences via the cookie banner or your browser settings.</p>
+
+      <h2>Your rights</h2>
+      <p>Under GDPR you have the right to access, rectification, erasure, restriction, objection, portability, and withdrawal of consent. Contact <a href="mailto:info@nxg-media.com">info@nxg-media.com</a> — we respond within 30 days. You may also file a complaint with the <a href="https://autoriteitpersoonsgegevens.nl" target="_blank" rel="noopener noreferrer">Dutch Data Protection Authority (AP)</a>.</p>
+
+      <h2>Full version</h2>
+      <p>The legally binding privacy policy is available in Dutch at <a href="/privacy/">/privacy/</a>.</p>
     </div>
   </article>
 </BaseLayout>

@@ -1,0 +1,84 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import BreadcrumbNav from '../components/BreadcrumbNav.astro';
+import { siteConfig } from '../data/site';
+import { t, localizePath } from '../i18n/utils';
+
+const locale = 'nl';
+const breadcrumbs = [
+  { label: t('breadcrumb.home', locale), href: localizePath('/', locale) },
+  { label: 'Voorwaarden' },
+];
+---
+
+<BaseLayout title={`Algemene Voorwaarden | ${siteConfig.name}`} description="Algemene voorwaarden van NXG Media voor diensten, audits en digitale producten." locale={locale}>
+  <BreadcrumbNav items={breadcrumbs} />
+
+  <article class="py-12 md:py-16 lg:py-20">
+    <div class="max-w-3xl mx-auto px-4 md:px-6 prose prose-lg">
+      <h1>Algemene Voorwaarden</h1>
+      <p class="text-sm text-text-muted">Laatst bijgewerkt: 3 september 2025</p>
+
+      <h2>1. Identiteit van de ondernemer</h2>
+      <ul>
+        <li>Handelsnaam: NXG-Media (ook handelend als Marketingmetjoost en Magic AI Hub)</li>
+        <li>Vestigingsadres: Amendijk 1, 3829DS Hooglanderveen, Nederland</li>
+        <li>KVK-nummer: 78318122</li>
+        <li>BTW-identificatienummer: NL003318346B95</li>
+        <li>E-mail: <a href="mailto:info@nxg-media.com">info@nxg-media.com</a></li>
+        <li>Verantwoordelijke: Joost van Putten</li>
+      </ul>
+
+      <h2>2. Toepasselijkheid</h2>
+      <p>Deze algemene voorwaarden zijn van toepassing op alle aanbiedingen, offertes, overeenkomsten en leveringen van diensten en digitale producten door NXG Media, tenzij schriftelijk anders overeengekomen.</p>
+
+      <h2>3. Diensten en audits</h2>
+      <p>NXG Media levert online groeisystemen, strategisch advies, contentbegeleiding en AI-vindbaarheidsaudits. De specifieke dienstverlening wordt vastgelegd in een offerte of overeenkomst.</p>
+      <p>Audits en scans leveren een analyse en aanbevelingen op basis van de situatie op het moment van uitvoering. De uitkomsten zijn informatief en vormen geen garantie op specifieke resultaten, rankings of aanbevelingen door AI-tools of zoekmachines.</p>
+
+      <h2>4. AI-vindbaarheid disclaimer</h2>
+      <p>AI-vindbaarheid is een nieuw en zich ontwikkelend vakgebied. NXG Media garandeert geen rankings, vermeldingen of aanbevelingen in AI-tools zoals ChatGPT, Perplexity, Google AI Overviews of Gemini. De audit identificeert technische, inhoudelijke en autoriteitsgerelateerde verbeterpunten die de machine-leesbaarheid, citeerbaarheid en vertrouwenssignalen kunnen verbeteren.</p>
+
+      <h2>5. Digitale producten</h2>
+      <p>NXG Media biedt digitale producten aan zoals e-books, playbooks, templates en cursussen. Na aankoop ontvangt de koper toegang tot het digitale product via e-mail of een downloadlink.</p>
+      <p>Vanwege de aard van digitale producten is retournering na levering niet mogelijk, tenzij wettelijk anders bepaald. Bij technische problemen met de levering nemen wij binnen 48 uur contact op voor een oplossing.</p>
+
+      <h2>6. Betalingen</h2>
+      <p>Betalingen voor digitale producten verlopen via Plug & Pay. Betalingen voor diensten verlopen via factuur met een betalingstermijn van 14 dagen, tenzij anders overeengekomen.</p>
+      <p>Bij niet-tijdige betaling behoudt NXG Media zich het recht voor de dienstverlening op te schorten en wettelijke rente in rekening te brengen.</p>
+
+      <h2>7. Intellectueel eigendom</h2>
+      <p>Alle door NXG Media geproduceerde materialen, waaronder maar niet beperkt tot audits, rapporten, strategiedocumenten, templates, e-books en cursusmateriaal, blijven intellectueel eigendom van NXG Media, tenzij schriftelijk anders overeengekomen.</p>
+      <p>De klant ontvangt een niet-exclusief, niet-overdraagbaar gebruiksrecht voor eigen gebruik. Herdistributie, doorverkoop of publicatie van materialen zonder schriftelijke toestemming is niet toegestaan.</p>
+
+      <h2>8. Verantwoordelijkheden van de klant</h2>
+      <p>De klant is verantwoordelijk voor:</p>
+      <ul>
+        <li>Het tijdig aanleveren van benodigde informatie, toegang en materialen</li>
+        <li>De juistheid en volledigheid van aangeleverde gegevens</li>
+        <li>Het naleven van toepasselijke wet- en regelgeving bij gebruik van geleverde adviezen</li>
+        <li>Het maken van back-ups van eigen data en content</li>
+      </ul>
+
+      <h2>9. Geen resultaatsgarantie</h2>
+      <p>NXG Media levert inspanningsverplichtingen, geen resultaatsverplichtingen. Resultaten van online marketing, AI-vindbaarheid, contentstrategieën en groeisystemen zijn afhankelijk van externe factoren waarop NXG Media geen invloed heeft, waaronder marktomstandigheden, concurrentie, algoritmewijzigingen en de inzet van de klant.</p>
+
+      <h2>10. Aansprakelijkheid</h2>
+      <p>De aansprakelijkheid van NXG Media is beperkt tot het bedrag dat voor de betreffende dienst of het product is betaald. NXG Media is niet aansprakelijk voor indirecte schade, gevolgschade, gederfde winst of gemiste besparingen.</p>
+      <p>NXG Media is niet aansprakelijk voor schade die voortvloeit uit het handelen of nalaten van derden, waaronder hostingproviders, betalingsverwerkers of AI-platforms.</p>
+
+      <h2>11. Opzegging en beëindiging</h2>
+      <p>Lopende dienstverleningsovereenkomsten kunnen door beide partijen schriftelijk worden opgezegd met inachtneming van een opzegtermijn van 30 dagen, tenzij anders overeengekomen.</p>
+      <p>Bij opzegging door de klant blijven reeds gefactureerde bedragen verschuldigd. Reeds geleverde digitale producten worden niet gerestitueerd.</p>
+
+      <h2>12. Toepasselijk recht en geschillen</h2>
+      <p>Op deze voorwaarden is Nederlands recht van toepassing. Geschillen worden bij voorkeur in onderling overleg opgelost. Indien dat niet lukt, is de bevoegde rechter in het arrondissement Midden-Nederland te Utrecht exclusief bevoegd.</p>
+
+      <h2>13. Wijzigingen</h2>
+      <p>NXG Media behoudt zich het recht voor deze voorwaarden te wijzigen. De meest recente versie is altijd beschikbaar op deze pagina. Bij wezenlijke wijzigingen informeren wij bestaande klanten per e-mail.</p>
+
+      <h2>Contact</h2>
+      <p>Vragen over deze voorwaarden? Neem contact op via <a href="mailto:info@nxg-media.com">info@nxg-media.com</a>.</p>
+    </div>
+  </article>
+</BaseLayout>

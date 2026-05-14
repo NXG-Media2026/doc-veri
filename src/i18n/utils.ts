@@ -1,5 +1,5 @@
 import { ui, type UIKey } from './ui';
-import { routeSegments, getRouteKey, getRouteSegment } from './routes';
+import { getRouteKey, getRouteSegment } from './routes';
 import { siteConfig, type Locale } from '../data/site';
 
 const secondaryLocales = siteConfig.locales.filter((l) => l !== siteConfig.defaultLocale);
@@ -27,8 +27,8 @@ export function localizePath(path: string, locale: Locale): string {
   return stripped === '/' ? `/${locale}` : `/${locale}${stripped}`;
 }
 
-export function t(key: UIKey, locale: Locale = 'de'): string {
-  return ui[locale]?.[key] ?? ui.de[key] ?? key;
+export function t(key: UIKey, locale: Locale = 'nl'): string {
+  return ui[locale]?.[key] ?? ui.nl[key] ?? key;
 }
 
 export function getTranslatedPath(path: string, targetLocale: Locale): string {
@@ -52,8 +52,8 @@ export function getTranslatedPath(path: string, targetLocale: Locale): string {
 }
 
 export function getCollectionBasePath(
-  collection: 'produkte' | 'coaching' | 'blog' | 'themen' | 'glossar' | 'archetypen' | 'masterclass' | 'leadMagnet',
-  locale: Locale = 'de',
+  collection: 'cases' | 'diensten' | 'producten' | 'guides' | 'about' | 'contact' | 'privacy' | 'voorwaarden',
+  locale: Locale = 'nl',
 ): string {
   const segment = getRouteSegment(collection, locale);
   return localizePath(`/${segment}`, locale);

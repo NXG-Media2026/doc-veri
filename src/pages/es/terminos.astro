@@ -1,0 +1,49 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import BreadcrumbNav from '../../components/BreadcrumbNav.astro';
+import { siteConfig } from '../../data/site';
+import { t, localizePath } from '../../i18n/utils';
+
+const locale = 'es';
+const breadcrumbs = [
+  { label: t('breadcrumb.home', locale), href: localizePath('/', locale) },
+  { label: 'T&eacute;rminos' },
+];
+---
+
+<BaseLayout title={`T&eacute;rminos y Condiciones | ${siteConfig.name}`} description="T&eacute;rminos y condiciones de NXG Media para servicios, auditor&iacute;as y productos digitales." locale={locale}>
+  <BreadcrumbNav items={breadcrumbs} />
+
+  <article class="py-12 md:py-16 lg:py-20">
+    <div class="max-w-3xl mx-auto px-4 md:px-6 prose prose-lg">
+      <h1>T&eacute;rminos y Condiciones</h1>
+      <p class="text-sm text-text-muted">Actualizado: 3 de septiembre de 2025</p>
+
+      <p>NXG Media est&aacute; registrada en los Pa&iacute;ses Bajos (KVK 78318122). Estos t&eacute;rminos se rigen por la legislaci&oacute;n neerlandesa.</p>
+
+      <h2>Empresa</h2>
+      <p>NXG-Media, tambi&eacute;n operando bajo los nombres Marketingmetjoost y Magic AI Hub.<br />
+      Amendijk 1, 3829DS Hooglanderveen, Pa&iacute;ses Bajos.<br />
+      Responsable: Joost van Putten.<br />
+      Email: <a href="mailto:info@nxg-media.com">info@nxg-media.com</a></p>
+
+      <h2>Servicios y auditor&iacute;as</h2>
+      <p>NXG Media ofrece sistemas de crecimiento online, asesoramiento estrat&eacute;gico y auditor&iacute;as de visibilidad ante IA. Las auditor&iacute;as proporcionan an&aacute;lisis y recomendaciones basadas en la situaci&oacute;n en el momento de la ejecuci&oacute;n. Los resultados son informativos y no constituyen una garant&iacute;a.</p>
+
+      <h2>Visibilidad ante IA</h2>
+      <p>La visibilidad ante IA es un campo nuevo y en evoluci&oacute;n. NXG Media no garantiza posicionamiento, menciones o recomendaciones en herramientas de IA como ChatGPT, Perplexity, Google AI Overviews o Gemini.</p>
+
+      <h2>Productos digitales</h2>
+      <p>NXG Media ofrece productos digitales como e-books, playbooks, plantillas y cursos. Debido a la naturaleza de los productos digitales, no se aceptan devoluciones despu&eacute;s de la entrega, salvo que la ley lo exija.</p>
+
+      <h2>Responsabilidad</h2>
+      <p>La responsabilidad de NXG Media se limita al importe pagado por el servicio o producto correspondiente. NXG Media no es responsable de da&ntilde;os indirectos, p&eacute;rdida de beneficios o ahorros no realizados.</p>
+
+      <h2>Legislaci&oacute;n aplicable</h2>
+      <p>Estos t&eacute;rminos se rigen por la legislaci&oacute;n neerlandesa. Los tribunales de Utrecht (Pa&iacute;ses Bajos) tienen jurisdicci&oacute;n exclusiva.</p>
+
+      <h2>Versi&oacute;n vinculante</h2>
+      <p>Los t&eacute;rminos jur&iacute;dicamente vinculantes est&aacute;n disponibles en neerland&eacute;s en <a href="/voorwaarden/">/voorwaarden/</a>.</p>
+    </div>
+  </article>
+</BaseLayout>

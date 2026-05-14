@@ -1,31 +1,25 @@
 ---
 import { siteConfig, type Locale } from '../data/site';
 import { navigation } from '../data/navigation';
-import { t, localizePath, getTranslatedPath, getCollectionBasePath } from '../i18n/utils';
+import { t, localizePath, getCollectionBasePath } from '../i18n/utils';
 import { buildNewsletterPayload, serializePayload } from '../lib/emailCapture';
 
 interface Props {
   locale?: Locale;
 }
 
-const { locale = 'de' } = Astro.props;
+const { locale = 'nl' } = Astro.props;
 const navItems = navigation[locale];
 const year = new Date().getFullYear();
 const nlFormId = 'footer-newsletter';
 const nlPayloadJson = serializePayload(buildNewsletterPayload('', { route: 'footer' }));
 
-const topicsHref = getCollectionBasePath('themen', locale);
-const blogHref = getCollectionBasePath('blog', locale);
-const glossaryHref = getCollectionBasePath('glossar', locale);
-const masterclassHref = locale === 'en'
-  ? '/en/masterclass/hormones-histamine-cycle-superpower'
-  : '/masterclass/hormone-histamin-zyklus-superpower';
-const faqHref = getTranslatedPath('/faq', locale);
-const aboutHref = getTranslatedPath('/ueber', locale);
-const contactHref = getTranslatedPath('/kontakt', locale);
-const privacyHref = getTranslatedPath('/datenschutz', locale);
-const impressumHref = getTranslatedPath('/impressum', locale);
-const agbHref = getTranslatedPath('/agb', locale);
+const casesHref = getCollectionBasePath('cases', locale);
+const aboutHref = getCollectionBasePath('about', locale);
+const contactHref = getCollectionBasePath('contact', locale);
+
+const privacyHref = getCollectionBasePath('privacy', locale);
+const termsHref = getCollectionBasePath('voorwaarden', locale);
 ---
 
 <footer class="bg-primary-dark text-white/90">
@@ -117,50 +111,30 @@ const agbHref = getTranslatedPath('/agb', locale);
 
       <div>
         <h3 class="text-sm font-semibold uppercase tracking-wider text-white/60 mb-4">
-          {t('nav.angebot', locale)}
+          {t('nav.cases', locale)}
         </h3>
         <ul class="space-y-2.5">
-          {navItems
-            .find((item) => item.label === t('nav.angebot', locale))
-            ?.children?.map((child) => (
+          <li>
+            <a href={casesHref} class="text-sm text-white/70 hover:text-primary-light transition-colors">
+              {t('case.allCases', locale)}
+            </a>
+          </li>
+        </ul>
+
+        {locale !== 'es' && (
+          <>
+            <h3 class="text-sm font-semibold uppercase tracking-wider text-white/60 mb-4 mt-8">
+              {t('nav.guides', locale)}
+            </h3>
+            <ul class="space-y-2.5">
               <li>
-                <a href={child.href} class="text-sm text-white/70 hover:text-primary-light transition-colors">
-                  {child.label}
+                <a href={getCollectionBasePath('guides', locale)} class="text-sm text-white/70 hover:text-primary-light transition-colors">
+                  {t('guide.allGuides', locale)}
                 </a>
               </li>
-            ))}
-        </ul>
-
-        <h3 class="text-sm font-semibold uppercase tracking-wider text-white/60 mb-4 mt-8">
-          {t('general.wissen', locale)}
-        </h3>
-        <ul class="space-y-2.5">
-          <li>
-            <a href={topicsHref} class="text-sm text-white/70 hover:text-primary-light transition-colors">
-              {t('nav.themen', locale)}
-            </a>
-          </li>
-          <li>
-            <a href={blogHref} class="text-sm text-white/70 hover:text-primary-light transition-colors">
-              {t('nav.blog', locale)}
-            </a>
-          </li>
-          <li>
-            <a href={glossaryHref} class="text-sm text-white/70 hover:text-primary-light transition-colors">
-              {t('nav.glossar', locale)}
-            </a>
-          </li>
-          <li>
-            <a href={masterclassHref} class="text-sm text-white/70 hover:text-primary-light transition-colors">
-              {t('general.freeMasterclass', locale)}
-            </a>
-          </li>
-          <li>
-            <a href={faqHref} class="text-sm text-white/70 hover:text-primary-light transition-colors">
-              {t('nav.faq', locale)}
-            </a>
-          </li>
-        </ul>
+            </ul>
+          </>
+        )}
       </div>
 
       <div>
@@ -181,7 +155,7 @@ const agbHref = getTranslatedPath('/agb', locale);
         </ul>
 
         <h3 class="text-sm font-semibold uppercase tracking-wider text-white/60 mb-4 mt-8">
-          {t('general.kontakt', locale)}
+          {t('nav.contact', locale)}
         </h3>
         <ul class="space-y-3">
           <li>
@@ -207,11 +181,8 @@ const agbHref = getTranslatedPath('/agb', locale);
         <a href={privacyHref} class="text-xs text-white/70 hover:text-white transition-colors">
           {t('footer.privacy', locale)}
         </a>
-        <a href={impressumHref} class="text-xs text-white/70 hover:text-white transition-colors">
-          {t('footer.impressum', locale)}
-        </a>
-        <a href={agbHref} class="text-xs text-white/70 hover:text-white transition-colors">
-          {t('footer.agb', locale)}
+        <a href={termsHref} class="text-xs text-white/70 hover:text-white transition-colors">
+          {t('footer.voorwaarden', locale)}
         </a>
       </div>
     </div>
@@ -252,19 +223,18 @@ const agbHref = getTranslatedPath('/agb', locale);
       hideError();
       setLoading(true);
 
-      // Build payload from pre-serialized template
       var payloadTemplate = form.dataset.emailPayload;
       var payload = payloadTemplate ? JSON.parse(payloadTemplate) : {};
       payload.email = email;
 
-      var provider = 'placeholder'; // TODO: read from env when ESP is configured
+      var provider = 'placeholder';
 
       function onSuccess() {
         if (typeof trackEvent === 'function') {
           trackEvent('newsletter_signup', {
             page_type: 'page',
             page_slug: 'footer',
-            locale: form.dataset.locale || 'de',
+            locale: form.dataset.locale || 'nl',
             provider: provider,
           });
         }

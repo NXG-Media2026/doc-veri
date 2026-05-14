@@ -1,5 +1,5 @@
 ---
-import { t } from '../i18n/utils';
+import { t, getCollectionBasePath } from '../i18n/utils';
 import type { Locale } from '../data/site';
 
 interface Props {
@@ -10,15 +10,16 @@ interface Props {
   locale?: Locale;
 }
 
-const { authorName, authorSlug, publishedDate, reviewedDate, locale = 'de' } = Astro.props;
+const { authorName, authorSlug, publishedDate, reviewedDate, locale = 'nl' } = Astro.props;
 
-const profileHref = authorSlug ? `/ueber#${authorSlug}` : '/ueber';
+const aboutHref = getCollectionBasePath('about', locale);
+const profileHref = authorSlug ? `${aboutHref}#${authorSlug}` : aboutHref;
 
+const localeMap: Record<string, string> = { nl: 'nl-NL', en: 'en-US', es: 'es-ES' };
 const fmt = (d: string) =>
-  new Date(d).toLocaleDateString('de-DE', { year: 'numeric', month: 'long', day: 'numeric' });
+  new Date(d).toLocaleDateString(localeMap[locale] ?? 'nl-NL', { year: 'numeric', month: 'long', day: 'numeric' });
 
 const dateToShow = reviewedDate ?? publishedDate;
-const reviewedLabel = reviewedDate ? t('eeat.lastReviewed', locale) : null;
 ---
 
 <aside class="not-prose flex items-start gap-4 p-5 bg-bg-alt rounded-xl border border-border my-8">
@@ -36,10 +37,7 @@ const reviewedLabel = reviewedDate ? t('eeat.lastReviewed', locale) : null;
       </a>
     </p>
     <p class="text-xs text-text-muted mt-1">
-      {reviewedLabel
-        ? <>{reviewedLabel} <time datetime={reviewedDate}>{fmt(dateToShow)}</time></>
-        : <time datetime={publishedDate}>{fmt(publishedDate)}</time>
-      }
+      <time datetime={dateToShow}>{fmt(dateToShow)}</time>
       <span class="mx-1.5" aria-hidden="true">&middot;</span>
       <a href={profileHref} class="hover:text-accent transition-colors">{t('eeat.viewProfile', locale)} &rarr;</a>
     </p>

@@ -1,0 +1,21 @@
+---
+import ClusterHubLayout from '../../layouts/ClusterHubLayout.astro';
+import CTABand from '../../components/CTABand.astro';
+import { getCluster } from '../../lib/clusters';
+
+const cluster = getCluster('ai-vindbaarheid')!;
+const locale = 'es';
+---
+
+<ClusterHubLayout cluster={cluster} locale={locale}>
+  <CTABand
+    title="Solicita un análisis de visibilidad IA"
+    subtitle="Descubre cómo de visible es tu negocio en los asistentes de IA."
+    ctaText="Solicitar análisis"
+    ctaHref="https://scanner.nxg-media.com"
+    eventName="scanner_request_submitted"
+    locale={locale}
+    pageType="cluster_hub"
+    pageSlug="visibilidad-ia"
+  />
+</ClusterHubLayout>

@@ -1,30 +1,15 @@
 ---
-/**
- * SocialStorytellingGrid — curated Instagram-style cards.
- * Static config, no Instagram scripts, no live embeds.
- * Renders nothing if no posts are configured.
- */
 import { Image } from 'astro:assets';
-import { trackOnClick } from '../lib/analytics';
-import { t } from '../i18n/utils';
-import type { Locale } from '../data/site';
+import type { ImageMetadata } from 'astro';
 import type { SocialPost } from '../data/socialPosts';
 
 interface Props {
   posts: SocialPost[];
-  title?: string;
-  subtitle?: string;
-  locale?: Locale;
+  instagramUrl: string;
+  locale?: string;
 }
 
-const {
-  posts,
-  title = 'Folge mir auf Instagram',
-  subtitle = 'Wissenschaft, Alltag und ehrliche Einblicke — kein Hochglanz, keine leeren Versprechen.',
-  locale = 'de',
-} = Astro.props;
-
-if (posts.length === 0) return;
+const { posts, instagramUrl, locale = 'nl' } = Astro.props;
 
 const typeLabels: Record<SocialPost['type'], string> = {
   reel: 'Reel',
@@ -32,51 +17,34 @@ const typeLabels: Record<SocialPost['type'], string> = {
   post: 'Post',
   story: 'Story',
 };
+
+const ctaLabel = locale === 'en' ? 'Follow on Instagram' : 'Volg op Instagram';
 ---
 
-<section class="py-16 md:py-20 bg-bg-alt">
-  <div class="max-w-6xl mx-auto px-4 md:px-6">
-    <div class="text-center mb-10 md:mb-14">
-      <h2 class="font-heading text-2xl md:text-3xl lg:text-4xl text-text mb-3">
-        {title}
-      </h2>
-      <p class="text-text-muted max-w-xl mx-auto">
-        {subtitle}
-      </p>
-    </div>
+<section class="py-16 md:py-24">
+  <div class="max-w-5xl mx-auto px-4 md:px-6">
 
     <div class="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
-      {posts.map((post, idx) => (
+      {posts.slice(0, 6).map((post) => (
         <a
           href={post.url}
           target="_blank"
           rel="noopener noreferrer"
-          class:list={[
-            'group relative block aspect-square overflow-hidden rounded-card',
-            'hover:shadow-lg transition-all duration-300',
-            'js-reveal',
-          ]}
-          style={`--reveal-delay: ${idx * 80}ms`}
-          onclick={trackOnClick('social_card_click', {
-            page_type: 'homepage',
-            page_slug: locale === 'en' ? '/en' : '/',
-            locale,
-          })}
-          aria-label={post.title}
+          class="group relative aspect-square overflow-hidden rounded-card"
         >
           <Image
             src={post.image}
             alt={post.title}
-            width={400}
-            height={400}
-            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+            widths={[300, 450]}
+            sizes="(max-width: 768px) 50vw, 33vw"
+            class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
             loading="lazy"
             decoding="async"
           />
 
-          {/* Overlay on hover */}
-          <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4">
-            <span class="inline-flex self-start items-center px-2 py-0.5 text-[10px] font-medium uppercase tracking-wider bg-white/20 text-white rounded-full mb-2 backdrop-blur-sm">
+          {/* Hover overlay */}
+          <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4">
+            <span class="inline-block self-start text-[10px] font-bold uppercase tracking-wider text-accent bg-white/90 rounded-button px-2 py-0.5 mb-2">
               {typeLabels[post.type]}
             </span>
             <p class="text-white text-sm font-medium leading-snug line-clamp-2">
@@ -84,10 +52,10 @@ const typeLabels: Record<SocialPost['type'], string> = {
             </p>
           </div>
 
-          {/* Instagram icon corner */}
-          <div class="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-            <svg class="w-5 h-5 text-white drop-shadow-md" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
+          {/* Instagram icon — always visible */}
+          <div class="absolute top-3 right-3 text-white/70 group-hover:text-white transition-colors">
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z" />
             </svg>
           </div>
         </a>
@@ -97,21 +65,17 @@ const typeLabels: Record<SocialPost['type'], string> = {
     {/* Follow CTA */}
     <div class="text-center mt-8">
       <a
-        href="https://www.instagram.com/doc.veri/"
+        href={instagramUrl}
         target="_blank"
         rel="noopener noreferrer"
-        class="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-medium text-text border border-border rounded-button hover:border-accent/30 hover:text-accent transition-all"
-        onclick={trackOnClick('social_card_click', {
-          page_type: 'homepage',
-          page_slug: locale === 'en' ? '/en' : '/',
-          locale,
-        })}
+        class="inline-flex items-center gap-2 px-6 py-3 text-sm font-medium text-accent border-2 border-accent hover:bg-accent hover:text-white transition-colors rounded-button"
       >
-        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
+        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z" />
         </svg>
-        {t('social.followCta', locale)}
+        {ctaLabel}
       </a>
     </div>
+
   </div>
 </section>

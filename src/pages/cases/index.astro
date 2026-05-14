@@ -1,0 +1,42 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import BreadcrumbNav from '../../components/BreadcrumbNav.astro';
+import { siteConfig } from '../../data/site';
+import { t, localizePath } from '../../i18n/utils';
+
+const locale = 'nl';
+const cases = (await getCollection('cases')).filter((c) => c.data.locale === locale).sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99));
+
+const breadcrumbs = [
+  { label: t('breadcrumb.home', locale), href: localizePath('/', locale) },
+  { label: t('breadcrumb.cases', locale) },
+];
+---
+
+<BaseLayout title={`Cases | ${siteConfig.name}`} description="Bekijk hoe coaches, experts en praktijken groeien met NXG Media." locale={locale}>
+  <BreadcrumbNav items={breadcrumbs} />
+
+  <section class="py-12 md:py-16 lg:py-20">
+    <div class="max-w-4xl mx-auto px-4 md:px-6">
+      <h1 class="font-heading text-3xl md:text-4xl lg:text-5xl text-text mb-10">Cases</h1>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {cases.map((c) => (
+          <a href={`/cases/${c.data.pageSlug}/`} class="group block bg-white border border-border rounded-card p-6 hover:border-accent/30 hover:shadow-lg transition-all duration-300">
+            <span class="text-xs font-medium text-accent uppercase tracking-wider mb-2 block">{c.data.clientType}</span>
+            <h2 class="font-heading text-lg text-text mb-2 group-hover:text-accent transition-colors">{c.data.title}</h2>
+            {c.data.proofStats.length > 0 && (
+              <div class="flex flex-wrap gap-2 mt-3">
+                {c.data.proofStats.slice(0, 3).map((stat) => (
+                  <span class="inline-flex items-center px-2 py-1 text-xs bg-bg-alt rounded-full">
+                    <strong class="text-accent mr-1">{stat.value}</strong> {stat.label}
+                  </span>
+                ))}
+              </div>
+            )}
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+</BaseLayout>

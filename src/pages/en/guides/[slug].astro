@@ -1,0 +1,18 @@
+---
+import { getCollection } from 'astro:content';
+import GuideLayout from '../../../layouts/GuideLayout.astro';
+
+export async function getStaticPaths() {
+  const guides = await getCollection('guides');
+  return guides
+    .filter((g) => g.data.locale === 'en')
+    .map((g) => ({ params: { slug: g.data.pageSlug }, props: { entry: g } }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await entry.render();
+---
+
+<GuideLayout guide={entry.data} locale="en">
+  <Content />
+</GuideLayout>

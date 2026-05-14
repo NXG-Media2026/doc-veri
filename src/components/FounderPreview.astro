@@ -1,97 +1,100 @@
 ---
 import { Image } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
-import { siteConfig } from '../data/site';
-import type { Locale } from '../data/site';
-import { t, getTranslatedPath } from '../i18n/utils';
 
 interface Props {
-  locale?: Locale;
-  image?: ImageMetadata;
-  role?: string;
-  bio?: string;
-  qualifications?: string[];
+  name: string;
+  role: string;
+  bio: string;
+  image: ImageMetadata;
+  credentials: Array<{ name: string; issuer: string }>;
+  knowsAbout: string[];
+  aboutHref: string;
+  aboutLabel: string;
+  locale?: string;
 }
 
-const { locale = 'de', image, role, bio, qualifications } = Astro.props;
-const { founder } = siteConfig;
-const initials = founder.name.split(' ').map(w => w[0]).join('').slice(0, 2);
+const {
+  name,
+  role,
+  bio,
+  image,
+  credentials,
+  knowsAbout,
+  aboutHref,
+  aboutLabel,
+  locale = 'nl',
+} = Astro.props;
 
-const displayRole = role ?? founder.role;
-const displayBio = bio ?? founder.bio;
-const displayQualifications = qualifications ?? founder.qualifications;
-const aboutHref = getTranslatedPath('/ueber', locale);
-const aboutLinkText = locale === 'en' ? `More about ${founder.name}` : `Mehr über ${founder.name}`;
-const altText = locale === 'en'
-  ? `Portrait of ${founder.name} — ${displayRole}`
-  : `Porträt von ${founder.name} — ${displayRole}`;
+const visibleSkills = knowsAbout.slice(0, 4);
 ---
 
-<section class="py-16 md:py-24 lg:py-32 bg-bg">
+<section class="py-16 md:py-24">
   <div class="max-w-4xl mx-auto px-4 md:px-6">
-    <div class="grid grid-cols-1 md:grid-cols-5 gap-10 md:gap-12 items-center">
+    <div class="grid grid-cols-1 md:grid-cols-[auto_1fr] gap-10 md:gap-14 items-start">
 
-      <div class="md:col-span-2 flex justify-center js-reveal">
-        {image ? (
+      {/* Circular founder image */}
+      <div class="flex justify-center md:justify-start">
+        <div class="w-48 h-48 md:w-56 md:h-56 rounded-full overflow-hidden shadow-lg ring-4 ring-bg-alt shrink-0">
           <Image
             src={image}
-            alt={altText}
-            width={320}
-            height={320}
-            class="w-48 h-48 md:w-64 md:h-64 rounded-full object-cover shadow-lg"
+            alt={`${name} — ${role}`}
+            widths={[224, 320]}
+            sizes="(max-width: 768px) 192px, 224px"
+            class="w-full h-full object-cover"
             loading="lazy"
             decoding="async"
           />
-        ) : founder.image ? (
-          <img
-            src={founder.image}
-            alt={altText}
-            width="320"
-            height="320"
-            class="w-48 h-48 md:w-64 md:h-64 rounded-full object-cover shadow-lg"
-            loading="lazy"
-            decoding="async"
-          />
-        ) : (
-          <div class="w-48 h-48 md:w-64 md:h-64 rounded-full bg-accent-light flex items-center justify-center shadow-lg">
-            <span class="text-5xl md:text-6xl font-heading text-accent">{initials}</span>
-          </div>
-        )}
+        </div>
       </div>
 
-      <div class="md:col-span-3 js-reveal" style="--reveal-delay: 150ms">
-        <div class="w-12 h-1 bg-accent rounded-full mb-6"></div>
-        <h2 class="font-heading text-3xl md:text-4xl text-text mb-2">
-          {founder.name}
-        </h2>
-        <p class="text-sm font-medium text-accent mb-5">{displayRole}</p>
-        <p class="text-text-muted leading-relaxed mb-6">
-          {displayBio}
-        </p>
+      {/* Content */}
+      <div>
+        {/* Accent bar */}
+        <div class="w-12 h-1 bg-accent rounded-full mb-4"></div>
 
-        {displayQualifications.length > 0 && (
-          <ul class="space-y-2 mb-8">
-            {displayQualifications.map((q) => (
-              <li class="text-sm text-text-muted flex items-center gap-2">
-                <svg class="w-4 h-4 text-accent shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        <h2 class="font-heading text-2xl md:text-3xl text-text mb-1">{name}</h2>
+        <p class="text-sm text-text-muted mb-4">{role}</p>
+        <p class="text-text-muted leading-relaxed mb-6">{bio}</p>
+
+        {/* Credentials */}
+        {credentials.length > 0 && (
+          <div class="flex flex-wrap gap-2 mb-6">
+            {credentials.map((cred) => (
+              <span class="inline-flex items-center gap-1.5 text-xs bg-bg-alt border border-border rounded-button px-3 py-1.5">
+                <span class="font-medium text-text">{cred.name}</span>
+                <span class="text-text-muted">&middot; {cred.issuer}</span>
+              </span>
+            ))}
+          </div>
+        )}
+
+        {/* knowsAbout checkmark list */}
+        {visibleSkills.length > 0 && (
+          <ul class="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-8">
+            {visibleSkills.map((skill) => (
+              <li class="flex items-start gap-2 text-sm text-text-muted">
+                <svg class="w-4 h-4 mt-0.5 shrink-0 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
                 </svg>
-                {q}
+                {skill}
               </li>
             ))}
           </ul>
         )}
 
+        {/* More about link */}
         <a
           href={aboutHref}
-          class="inline-flex items-center text-base font-medium text-accent-dark hover:underline underline-offset-2 transition-colors"
+          class="inline-flex items-center text-accent hover:text-accent-dark transition-colors font-medium"
         >
-          {aboutLinkText}
-          <svg class="w-5 h-5 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+          {aboutLabel}
+          <svg class="w-4 h-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
           </svg>
         </a>
       </div>
+
     </div>
   </div>
 </section>

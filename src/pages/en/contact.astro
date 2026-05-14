@@ -1,126 +1,23 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import BreadcrumbNav from '../../components/BreadcrumbNav.astro';
+import CalendlyEmbed from '../../components/CalendlyEmbed.astro';
 import { siteConfig } from '../../data/site';
-import { generateBreadcrumbs } from '../../data/schema';
-import { t, localizePath } from '../../i18n/utils';
-import { buildHreflangPair } from '../../i18n/hreflang';
 
 const locale = 'en';
-
-const breadcrumbs = [
-  { label: t('breadcrumb.home', locale), href: localizePath('/', locale) },
-  { label: t('nav.contact', locale) },
-];
-
-const breadcrumbSchema = breadcrumbs.map((b) => ({
-  name: b.label,
-  url: b.href ? `${siteConfig.url}${b.href}` : `${siteConfig.url}/en/contact`,
-}));
 ---
 
-<BaseLayout
-  title={`Contact — Get in Touch | ${siteConfig.name}`}
-  description="Get in touch with Dr. Verena — questions about products, coaching, or collaboration."
-  hreflang={buildHreflangPair('/kontakt', '/en/contact')}
-  schemas={[generateBreadcrumbs(breadcrumbSchema)]}
-  locale="en"
->
-  <BreadcrumbNav items={breadcrumbs} />
-
-  <section class="py-16 md:py-24 lg:py-32 bg-bg">
-    <div class="max-w-2xl mx-auto px-4 md:px-6">
-      <div class="text-center mb-12 md:mb-16">
-        <h1 class="font-heading text-4xl md:text-5xl text-text mb-4">
-          Contact
-        </h1>
-        <p class="text-lg text-text-muted">
-          Have a question or want to learn more about coaching? I'd love to hear from you!
-        </p>
-      </div>
-
-      <div class="bg-white rounded-card border border-border p-8 md:p-10">
-        <div class="space-y-8">
-          <div class="flex items-start gap-4">
-            <div class="w-12 h-12 rounded-full bg-accent-light flex items-center justify-center shrink-0">
-              <svg class="w-5 h-5 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
-              </svg>
-            </div>
-            <div>
-              <h2 class="font-medium text-text mb-1">Email</h2>
-              <a
-                href={`mailto:${siteConfig.email}`}
-                class="text-accent hover:text-accent-dark transition-colors"
-              >
-                {siteConfig.email}
-              </a>
-              <p class="text-sm text-text-muted mt-2">
-                I usually reply within 24–48 hours.
-              </p>
-            </div>
-          </div>
-
-          {siteConfig.external.calendlyUrl && (
-            <div class="flex items-start gap-4">
-              <div class="w-12 h-12 rounded-full bg-accent-light flex items-center justify-center shrink-0">
-                <svg class="w-5 h-5 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
-                </svg>
-              </div>
-              <div>
-                <h2 class="font-medium text-text mb-1">Book a free call</h2>
-                <a
-                  href={siteConfig.external.calendlyUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="text-accent hover:text-accent-dark transition-colors"
-                >
-                  Schedule a free 20-minute consultation
-                </a>
-                <p class="text-sm text-text-muted mt-2">
-                  No obligation, completely personal — we'll figure out how I can best support you.
-                </p>
-              </div>
-            </div>
-          )}
-
-          {(siteConfig.socials.instagram || siteConfig.socials.linkedin) && (
-            <div class="flex items-start gap-4">
-              <div class="w-12 h-12 rounded-full bg-accent-light flex items-center justify-center shrink-0">
-                <svg class="w-5 h-5 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 01.865-.501 48.172 48.172 0 003.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z" />
-                </svg>
-              </div>
-              <div>
-                <h2 class="font-medium text-text mb-1">Social Media</h2>
-                <div class="flex gap-4">
-                  {siteConfig.socials.instagram && (
-                    <a
-                      href={siteConfig.socials.instagram}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      class="text-accent hover:text-accent-dark transition-colors"
-                    >
-                      Instagram
-                    </a>
-                  )}
-                  {siteConfig.socials.linkedin && (
-                    <a
-                      href={siteConfig.socials.linkedin}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      class="text-accent hover:text-accent-dark transition-colors"
-                    >
-                      LinkedIn
-                    </a>
-                  )}
-                </div>
-              </div>
-            </div>
-          )}
-        </div>
+<BaseLayout title={`Contact | ${siteConfig.name}`} description="Get in touch with NXG Media or book a call with Joost." locale={locale}>
+  <section class="py-12 md:py-16 lg:py-20">
+    <div class="max-w-3xl mx-auto px-4 md:px-6">
+      <h1 class="font-heading text-3xl md:text-4xl text-text mb-6">Contact</h1>
+      <p class="text-lg text-text-muted leading-relaxed mb-8">
+        Want to discuss what NXG Media can do for you? Book a no-obligation call or send an email.
+      </p>
+      <div class="bg-white rounded-card p-6 border border-border mb-8">
+        <p class="text-text mb-2"><strong>Email:</strong> <a href={`mailto:${siteConfig.email}`} class="text-accent hover:text-accent-dark">{siteConfig.email}</a></p>
+        <p class="text-text"><strong>LinkedIn:</strong> <a href={siteConfig.socials.linkedin} class="text-accent hover:text-accent-dark" target="_blank" rel="noopener noreferrer">Joost van Putten</a></p>
       </div>
     </div>
   </section>
+  <CalendlyEmbed pageType="contact" pageSlug="contact" locale={locale} />
 </BaseLayout>

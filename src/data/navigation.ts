@@ -4,43 +4,30 @@ export interface NavItem {
   label: string;
   href: string;
   children?: NavItem[];
+  isButton?: boolean;
 }
 
 export const navigation: Record<Locale, NavItem[]> = {
-  de: [
-    { label: 'Home', href: '/' },
-    {
-      label: 'Angebot',
-      href: '/angebot',
-      children: [
-        { label: 'Produkte', href: '/produkte' },
-        { label: 'Coaching', href: '/coaching' },
-        { label: 'Mitgliedschaft', href: '/mitgliedschaft' },
-      ],
-    },
-    { label: 'Themen', href: '/themen' },
-    { label: 'Blog', href: '/blog' },
-    { label: 'Masterclass', href: '/masterclass/hormone-histamin-zyklus-superpower' },
-    { label: 'Quiz', href: '/quiz' },
-    { label: 'Über mich', href: '/ueber' },
-    { label: 'FAQ', href: '/faq' },
-    { label: 'Kontakt', href: '/kontakt' },
+  nl: [
+    { label: 'Expert Growth', href: '/expert-growth-accelerator/' },
+    { label: 'AI Vindbaarheid', href: '/ai-vindbaarheid/' },
+    { label: 'Cases', href: '/cases/' },
+    { label: 'Producten', href: '/producten/' },
+    { label: 'Over Joost', href: '/over-joost/' },
+    { label: 'Contact', href: '/contact/', isButton: true },
   ],
   en: [
-    { label: 'Home', href: '/en' },
-    {
-      label: 'Offers',
-      href: '/en/offers',
-      children: [
-        { label: 'Products', href: '/en/products' },
-        { label: 'Coaching', href: '/en/coaching' },
-        { label: 'Membership', href: '/en/membership' },
-      ],
-    },
-    { label: 'Topics', href: '/en/topics' },
-    { label: 'Blog', href: '/en/blog' },
-    { label: 'Masterclass', href: '/en/masterclass/hormones-histamine-cycle-superpower' },
-    { label: 'About', href: '/en/about' },
-    { label: 'Contact', href: '/en/contact' },
+    { label: 'Expert Growth', href: '/en/expert-growth-accelerator/' },
+    { label: 'AI Visibility', href: '/en/ai-visibility/' },
+    { label: 'Cases', href: '/en/cases/' },
+    { label: 'Products', href: '/en/products/' },
+    { label: 'About Joost', href: '/en/about-joost/' },
+    { label: 'Contact', href: '/en/contact/', isButton: true },
+  ],
+  es: [
+    { label: 'Visibilidad IA', href: '/es/visibilidad-ia/' },
+    { label: 'Casos', href: '/es/casos/' },
+    { label: 'Sobre Joost', href: '/es/sobre-joost/' },
+    { label: 'Contacto', href: '/es/contacto/', isButton: true },
   ],
 };

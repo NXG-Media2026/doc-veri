@@ -1,0 +1,49 @@
+---
+import { Image } from 'astro:assets';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CalendlyEmbed from '../../components/CalendlyEmbed.astro';
+import { siteConfig } from '../../data/site';
+import { generateProfilePage, generateFounderPerson } from '../../data/schema';
+import founderPhoto from '../../assets/images/founder/joost-sitting-laptop-looking-working.webp';
+
+const locale = 'en';
+---
+
+<BaseLayout
+  title={`About Joost | ${siteConfig.name}`}
+  description="Joost van Putten — founder of NXG Media. Builds online growth systems for coaches, experts and local practices."
+  schemas={[generateProfilePage(), generateFounderPerson()]}
+  locale={locale}
+>
+  <section class="py-12 md:py-16 lg:py-20">
+    <div class="max-w-3xl mx-auto px-4 md:px-6">
+      <div class="flex flex-col md:flex-row gap-8 items-start mb-10">
+        <Image
+          src={founderPhoto}
+          alt="Joost van Putten — founder of NXG Media, builds online growth systems for coaches and experts"
+          widths={[200, 300, 400]}
+          sizes="(max-width: 768px) 200px, 300px"
+          class="rounded-card shadow-lg w-48 md:w-64 shrink-0"
+          loading="eager"
+        />
+        <div>
+          <h1 class="font-heading text-3xl md:text-4xl lg:text-5xl text-text mb-6">About Joost</h1>
+          <p class="text-lg text-text-muted leading-relaxed">{siteConfig.founder.description}</p>
+        </div>
+      </div>
+      <h2 class="font-heading text-xl text-text mb-4 mt-10">Expertise</h2>
+      <ul class="space-y-2">
+        {siteConfig.founder.knowsAbout.map((item) => (
+          <li class="flex items-start gap-3 text-text-muted">
+            <svg class="w-5 h-5 text-accent shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+            </svg>
+            {item}
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <CalendlyEmbed pageType="about" pageSlug="about-joost" locale={locale} />
+</BaseLayout>

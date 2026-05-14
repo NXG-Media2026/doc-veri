@@ -1,0 +1,18 @@
+---
+import { getCollection } from 'astro:content';
+import CaseLayout from '../../../layouts/CaseLayout.astro';
+
+export async function getStaticPaths() {
+  const cases = await getCollection('cases');
+  return cases
+    .filter((c) => c.data.locale === 'en')
+    .map((c) => ({ params: { slug: c.data.pageSlug }, props: { entry: c } }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await entry.render();
+---
+
+<CaseLayout caseData={entry.data} locale="en">
+  <Content />
+</CaseLayout>

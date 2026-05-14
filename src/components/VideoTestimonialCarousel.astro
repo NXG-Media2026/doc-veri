@@ -1,0 +1,199 @@
+---
+/**
+ * VideoTestimonialCarousel — horizontal scrolling carousel with video thumbnails,
+ * star ratings, names, companies, and quotes. Videos play in a lightbox overlay.
+ *
+ * Videos go in /src/assets/videos/testimonials/ (or provide a YouTube/external URL).
+ * Thumbnails go in /src/assets/images/testimonials/.
+ */
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import { siteConfig } from '../data/site';
+
+export interface VideoTestimonial {
+  id: string;
+  name: string;
+  company: string;
+  quote: string;
+  rating: number;
+  thumbnail: ImageMetadata;
+  videoUrl?: string; // YouTube/Vimeo URL or local path — empty = thumbnail only
+}
+
+interface Props {
+  title?: string;
+  subtitle?: string;
+  testimonials: VideoTestimonial[];
+}
+
+const {
+  title = 'Wat Klanten Zeggen Over Werken met Joost',
+  subtitle = 'Echte ervaringen van ondernemers die succesvol samenwerken met Joost',
+  testimonials,
+} = Astro.props;
+
+function renderStars(rating: number): string {
+  return '★'.repeat(Math.min(rating, 5)) + '☆'.repeat(Math.max(0, 5 - rating));
+}
+
+// Build VideoObject schema for each video with a URL
+const baseUrl = siteConfig.url;
+const videoSchemaScripts = testimonials
+  .filter((v) => v.videoUrl)
+  .map((v) => {
+    const schema = {
+      '@context': 'https://schema.org',
+      '@type': 'VideoObject',
+      name: `Testimonial ${v.name} — ${v.company}`,
+      description: v.quote,
+      contentUrl: v.videoUrl!.startsWith('http') ? v.videoUrl : `${baseUrl}${v.videoUrl}`,
+      thumbnailUrl: `${baseUrl}${v.thumbnail.src}`,
+      uploadDate: '2025-01-01',
+      inLanguage: /[a-z]{4,}/i.test(v.quote) && !/[àáâãäåèéêëìíîïòóôõöùúûü]/i.test(v.quote) ? 'en' : 'nl',
+      publisher: { '@type': 'Organization', name: siteConfig.name, url: baseUrl },
+    };
+    return `<script type="application/ld+json">${JSON.stringify(schema)}<\/script>`;
+  })
+  .join('\n');
+---
+
+<section class="py-16 md:py-24 overflow-hidden">
+  <div class="max-w-6xl mx-auto px-4 md:px-6">
+
+    {/* Heading */}
+    <div class="text-center mb-10">
+      <h2 class="font-heading text-2xl md:text-3xl lg:text-4xl text-text mb-3">{title}</h2>
+      {subtitle && <p class="text-text-muted max-w-xl mx-auto">{subtitle}</p>}
+    </div>
+
+    {/* Scroll indicator */}
+    <p class="text-sm text-text-muted text-center mb-6 md:hidden">
+      ← Scroll horizontaal voor meer testimonials →
+    </p>
+
+    {/* Carousel */}
+    <div class="vtc-track flex gap-6 overflow-x-auto snap-x snap-mandatory scrollbar-hide pb-4 -mx-4 px-4 md:-mx-0 md:px-0">
+      {testimonials.map((t) => (
+        <div class="vtc-card snap-start shrink-0 w-[280px] md:w-[300px] bg-bg-alt rounded-card border border-border flex flex-col overflow-hidden">
+
+          {/* Thumbnail */}
+          <div class="relative aspect-video bg-text/5 overflow-hidden group cursor-pointer" data-video-url={t.videoUrl ?? ''} data-video-title={`Testimonial ${t.name} — ${t.company}`}>
+            <Image
+              src={t.thumbnail}
+              alt={`Video testimonial van ${t.name}, ${t.company}`}
+              widths={[300, 450]}
+              sizes="300px"
+              class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+              loading="lazy"
+              decoding="async"
+            />
+            {/* Play button overlay */}
+            {t.videoUrl && (
+              <div class="absolute inset-0 flex items-center justify-center">
+                <div class="w-14 h-14 rounded-full bg-white/90 shadow-lg flex items-center justify-center group-hover:bg-white transition-colors">
+                  <svg class="w-6 h-6 text-accent ml-0.5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                    <path d="M8 5v14l11-7z" />
+                  </svg>
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Content */}
+          <div class="p-5 flex flex-col flex-1">
+            {/* Stars */}
+            <div class="text-accent text-lg tracking-wide mb-3" aria-label={`${t.rating} van 5 sterren`}>
+              {renderStars(t.rating)}
+            </div>
+
+            {/* Name + company */}
+            <p class="font-heading text-base text-text font-semibold">{t.name}</p>
+            <p class="text-xs text-text-muted mb-3">{t.company}</p>
+
+            {/* Quote */}
+            <blockquote class="text-sm text-text-muted leading-relaxed italic flex-1">
+              &ldquo;{t.quote}&rdquo;
+            </blockquote>
+          </div>
+        </div>
+      ))}
+    </div>
+
+  </div>
+</section>
+
+{/* VideoObject structured data for SEO */}
+<Fragment set:html={videoSchemaScripts} />
+
+{/* Video lightbox */}
+<div id="vtc-lightbox" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/80 backdrop-blur-sm p-4">
+  <button id="vtc-close" type="button" class="absolute top-4 right-4 w-10 h-10 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center text-white transition-colors" aria-label="Sluiten">
+    <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+    </svg>
+  </button>
+  <div id="vtc-player" class="w-full max-w-3xl aspect-video rounded-lg overflow-hidden bg-black"></div>
+</div>
+
+<style>
+  /* Hide scrollbar but keep scroll behavior */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+</style>
+
+<script>
+  (function () {
+    const lightbox = document.getElementById('vtc-lightbox');
+    const player = document.getElementById('vtc-player');
+    const closeBtn = document.getElementById('vtc-close');
+    if (!lightbox || !player || !closeBtn) return;
+
+    // Click on thumbnail opens video
+    document.querySelectorAll('[data-video-url]').forEach((el) => {
+      const url = (el as HTMLElement).dataset.videoUrl;
+      const videoTitle = (el as HTMLElement).dataset.videoTitle || 'Video testimonial';
+      if (!url) return;
+
+      el.addEventListener('click', () => {
+        // YouTube embed
+        if (url.includes('youtube.com') || url.includes('youtu.be')) {
+          const id = url.includes('youtu.be')
+            ? url.split('/').pop()
+            : new URLSearchParams(new URL(url).search).get('v');
+          player.innerHTML = `<iframe src="https://www.youtube-nocookie.com/embed/${id}?autoplay=1" class="w-full h-full" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen title="${videoTitle}"></iframe>`;
+        }
+        // Vimeo
+        else if (url.includes('vimeo.com')) {
+          const id = url.split('/').pop();
+          player.innerHTML = `<iframe src="https://player.vimeo.com/video/${id}?autoplay=1" class="w-full h-full" frameborder="0" allow="autoplay" allowfullscreen title="${videoTitle}"></iframe>`;
+        }
+        // Direct video file
+        else {
+          player.innerHTML = `<video src="${url}" class="w-full h-full" controls autoplay title="${videoTitle}" aria-label="${videoTitle}"></video>`;
+        }
+
+        lightbox.classList.remove('hidden');
+        lightbox.classList.add('flex');
+      });
+    });
+
+    function closeLightbox() {
+      lightbox.classList.add('hidden');
+      lightbox.classList.remove('flex');
+      player.innerHTML = '';
+    }
+
+    closeBtn.addEventListener('click', closeLightbox);
+    lightbox.addEventListener('click', (e) => {
+      if (e.target === lightbox) closeLightbox();
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeLightbox();
+    });
+  })();
+</script>

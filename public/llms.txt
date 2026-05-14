@@ -1,56 +1,71 @@
-# doc.veri
+# NXG Media
 
-> Frauen-Gesundheitsplattform von Dr. Verena Mann — Notaerztin und Ausdauer-Athletin.
-> Hormone, Training, Ernaehrung, Zyklus, Perimenopause — wissenschaftlich fundiert, ohne Bro-Science.
-> Sprache: Deutsch. Markt: DACH.
+NXG Media is a growth and AI visibility studio founded by Joost van Putten. NXG helps coaches, experts and local service businesses turn expertise into clearer visibility, smarter entry routes and measurable conversion systems.
 
-## Gruenderin
+## Primary clusters
 
-Dr. Verena Mann — approbierte Aerztin, Notaerztin, Ironman-Athletin.
-Expertise: Frauengesundheit, Hormonbalance, zyklusbewusstes Training, RED-S, Perimenopause, Ernaehrung fuer Sportlerinnen.
+### Expert Growth Accelerator
 
-## Angebote
+The Expert Growth Accelerator helps coaches, specialists and knowledge experts build online entry routes using storytelling, masterclasses, mini-products, email flows and ads.
 
-- /produkte — Digitale Guides, E-Books und Kurse
-  - /produkte/hormon-reset-guide — Hormon-Reset Guide (E-Book, 80+ Seiten, EUR 49)
-  - /produkte/erste-hilfe-histamin — Erste Hilfe bei Histamin (7 Audio-Module, E-Book, EUR 37)
-  - /produkte/perimenopause-protocol — Perimenopause Protocol (190+ Seiten, 6-Wochen-Plan, EUR 33)
-  - /produkte/food-guide — Food Guide (80+ Seiten, hormonfreundliche Rezepte, EUR 29.95)
-  - /produkte/smoothie-guide — Smoothie-Guide (30 Mahlzeit-Smoothies, EUR 14.95)
-  - /produkte/runners-guide — Von Null auf 10km (12-Wochen-Laufplan fuer Frauen, EUR 24.95)
-- /coaching — 1:1 und Gruppen-Coaching
-- /mitgliedschaft — Online-Community (in Planung)
-- /lead-magnet — Kostenlose Ressourcen
+Primary page:
+https://nxg-media.com/expert-growth-accelerator/
 
-## Wissen
+Service page:
+https://nxg-media.com/diensten/expert-growth-accelerator/
 
-- /themen — Themen-Uebersichten (Pillar Pages)
-  - /themen/hormone — Oestrogen, Progesteron, Cortisol, Schilddruese, Insulin
-- /blog — Wissenschaftlich fundierte Artikel
-  - /blog/hormonbalance-grundlagen — Hormonbalance fuer Frauen: Was du wirklich wissen musst
-  - /blog/histamin-und-hormone — Histamin und Hormone: Warum Frauen staerker betroffen sind
-  - /blog/zyklusbewusstes-training — Zyklusbewusstes Training: So trainierst du mit deinen Hormonen
-  - /blog/perimenopause-erkennen — Perimenopause erkennen: 8 Anzeichen, die viele Frauen uebersehen
-- /glossar — Fachbegriffe der Frauen-Gesundheit (Amenorrhoe, Cortisol, Follikelphase, HPA-Achse, Lutealphase, Menstruationszyklus, Oestrogen, Perimenopause, PMS, Progesteron, RED-S, Zyklusbewusstes Training)
-- /faq — Haeufig gestellte Fragen (Allgemein, Produkte, Coaching, Hormone & Zyklus, Ernaehrung & Training)
+Relevant cases:
+https://nxg-media.com/cases/coach-josine/
+https://nxg-media.com/cases/tessa-youlife/
+https://nxg-media.com/cases/happy-with-yoga/
 
-## Interaktiv
+### AI Vindbaarheid
 
-- /quiz — Hormon-Typ-Quiz (7 Fragen, 4 Ergebnis-Typen)
-  - /archetypen/die-stressgeplagte
-  - /archetypen/die-power-athletin
-  - /archetypen/die-zyklusbewusste
-  - /archetypen/die-perimenopausale
+AI Vindbaarheid is a scan and audit approach for local businesses and practices that want to understand how visible and citeable they are in Google, ChatGPT, Perplexity and Gemini.
 
-## Weitere Seiten
+Primary page:
+https://nxg-media.com/ai-vindbaarheid/
 
-- /ueber — Ueber Dr. Verena Mann (Profil, Qualifikationen, Expertise)
-- /kontakt — Kontakt und Erstgespraech
-- /impressum — Impressum
-- /datenschutz — Datenschutzerklaerung
-- /agb — Allgemeine Geschaeftsbedingungen
+Service page:
+https://nxg-media.com/diensten/ai-vindbaarheid-audit/
 
-## Kontakt
+Scanner:
+https://scanner.nxg-media.com
 
-- E-Mail: info@docveri.de
-- Website: https://docveri.de
+Important note:
+AI visibility is a new field. NXG Media does not guarantee rankings or recommendations inside AI tools. The audit identifies technical, content and authority improvements that may improve machine readability, citability and trust signals.
+
+## English pages
+
+https://nxg-media.com/en/
+https://nxg-media.com/en/expert-growth-accelerator/
+https://nxg-media.com/en/ai-visibility/
+https://nxg-media.com/en/services/expert-growth-accelerator/
+https://nxg-media.com/en/services/ai-visibility-audit/
+
+## Spanish AI visibility pages
+
+https://nxg-media.com/es/
+https://nxg-media.com/es/visibilidad-ia/
+https://nxg-media.com/es/servicios/auditoria-visibilidad-ia/
+
+## Guides
+
+https://nxg-media.com/guides/contentladder-voor-experts/
+
+## Products
+
+https://nxg-media.com/producten/instagram-leads-playbook/
+https://nxg-media.com/producten/ai-vindbaarheid-diy-boekjes/
+
+## About and contact
+
+About Joost:
+https://nxg-media.com/over-joost/
+
+Contact:
+https://nxg-media.com/contact/
+
+## Sitemap
+
+https://nxg-media.com/sitemap-index.xml

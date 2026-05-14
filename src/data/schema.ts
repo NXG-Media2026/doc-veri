@@ -3,7 +3,7 @@ import type { Testimonial } from './testimonials';
 import { t } from '../i18n/utils';
 import { localizePath } from '../i18n/utils';
 
-const founderUrl = `${siteConfig.url}/ueber#${siteConfig.founder.slug}`;
+const founderUrl = `${siteConfig.url}/over-joost#${siteConfig.founder.slug}`;
 const orgId = `${siteConfig.url}#org`;
 
 function localizeUrl(path: string, locale: Locale): string {
@@ -20,47 +20,28 @@ export function generateFounderPerson() {
     ? (founder.image.startsWith('http') ? founder.image : `${siteConfig.url}${founder.image}`)
     : undefined;
 
-  const hasCredential = (founder.credentials && founder.credentials.length > 0)
+  const credentials = founder.credentials.length > 0
     ? founder.credentials.map((c) => ({
         '@type': 'EducationalOccupationalCredential',
+        credentialCategory: 'Certificate',
         name: c.name,
-        ...(c.issuer && { recognizedBy: { '@type': 'Organization', name: c.issuer } }),
-        ...(c.year && c.year > 0 && { dateCreated: String(c.year) }),
+        recognizedBy: { '@type': 'Organization', name: c.issuer },
       }))
-    : founder.qualifications.map((q) => ({
-        '@type': 'EducationalOccupationalCredential',
-        name: q,
-      }));
-
-  const alumniOf = founder.education
-    ?.filter((e) => e.institution)
-    .map((e) => ({
-      '@type': 'EducationalOrganization',
-      name: e.institution,
-    })) ?? [];
-
-  const memberOf = founder.memberships
-    ?.filter(Boolean)
-    .map((m) => ({
-      '@type': 'Organization',
-      name: m,
-    })) ?? [];
+    : undefined;
 
   return JSON.stringify({
     '@context': 'https://schema.org',
-    '@type': ['Person', 'MedicalProfessional'],
+    '@type': 'Person',
     '@id': founderUrl,
     name: founder.name,
     url: founderUrl,
     jobTitle: founder.role,
     description: founder.description,
     worksFor: { '@id': orgId },
-    hasCredential,
-    ...(alumniOf.length > 0 && { alumniOf }),
-    ...(memberOf.length > 0 && { memberOf }),
     ...(founder.languages.length > 0 && { knowsLanguage: [...founder.languages] }),
     ...(founder.knowsAbout.length > 0 && { knowsAbout: [...founder.knowsAbout] }),
     ...(fullImage && { image: fullImage }),
+    ...(credentials && { hasCredential: credentials }),
   });
 }
 
@@ -71,14 +52,14 @@ export function generateOrganization() {
     '@type': 'Organization',
     '@id': orgId,
     name: siteConfig.name,
-    description: siteConfig.tagline.de,
+    description: siteConfig.tagline.nl,
     url: siteConfig.url,
     founder: { '@id': founderUrl },
     ...(sameAs.length > 0 && { sameAs }),
   });
 }
 
-export function generateWebSite(locale: Locale = 'de') {
+export function generateWebSite(locale: Locale = 'nl') {
   return JSON.stringify({
     '@context': 'https://schema.org',
     '@type': 'WebSite',
@@ -101,16 +82,16 @@ export function generateBreadcrumbs(items: Array<{ name: string; url: string }>)
   });
 }
 
-export function generateFAQPage(faqs: Array<{ q: string; a: string }>) {
+export function generateFAQPage(faqs: Array<{ question: string; answer: string }>) {
   return JSON.stringify({
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
     mainEntity: faqs.map((faq) => ({
       '@type': 'Question',
-      name: faq.q,
+      name: faq.question,
       acceptedAnswer: {
         '@type': 'Answer',
-        text: faq.a,
+        text: faq.answer,
       },
     })),
   });
@@ -120,7 +101,7 @@ export function generateProduct(product: {
   name: string;
   description: string;
   url: string;
-  price: string;
+  price: number | string;
   currency?: string;
   image?: string;
   reviews?: Testimonial[];
@@ -152,6 +133,10 @@ export function generateProduct(product: {
     }),
   }));
 
+  const priceStr = typeof product.price === 'number'
+    ? product.price.toFixed(2)
+    : product.price.replace(/[^0-9.,]/g, '');
+
   return JSON.stringify({
     '@context': 'https://schema.org',
     '@type': 'Product',
@@ -161,7 +146,7 @@ export function generateProduct(product: {
     brand: { '@id': orgId },
     offers: {
       '@type': 'Offer',
-      price: product.price.replace(/[^0-9.,]/g, ''),
+      price: priceStr,
       priceCurrency: product.currency ?? 'EUR',
       availability: 'https://schema.org/InStock',
     },
@@ -197,7 +182,7 @@ export function generateArticle(article: {
   image?: string;
   locale?: Locale;
 }, locale?: Locale) {
-  const lang = locale ?? article.locale ?? 'de';
+  const lang = locale ?? article.locale ?? 'nl';
   return JSON.stringify({
     '@context': 'https://schema.org',
     '@type': 'BlogPosting',
@@ -213,49 +198,6 @@ export function generateArticle(article: {
     ...(article.image && {
       image: article.image.startsWith('http') ? article.image : `${siteConfig.url}${article.image}`,
     }),
-  });
-}
-
-export function generateDefinedTermSet(
-  terms: Array<{ term: string; definition: string; slug: string; hasPage?: boolean }>,
-  locale: Locale = 'de',
-) {
-  const glossaryName = t('schema.glossaryName', locale);
-  const glossaryUrl = localizeUrl('/glossar', locale);
-
-  return JSON.stringify({
-    '@context': 'https://schema.org',
-    '@type': 'DefinedTermSet',
-    name: glossaryName,
-    url: glossaryUrl,
-    hasDefinedTerm: terms.map((term) => ({
-      '@type': 'DefinedTerm',
-      name: term.term,
-      description: term.definition,
-      url: term.hasPage
-        ? localizeUrl(`/glossar/${term.slug}`, locale)
-        : `${glossaryUrl}#${term.slug}`,
-    })),
-  });
-}
-
-export function generateDefinedTerm(
-  term: { term: string; definition: string; slug: string; url?: string },
-  locale: Locale = 'de',
-) {
-  const glossaryName = t('schema.glossaryName', locale);
-
-  return JSON.stringify({
-    '@context': 'https://schema.org',
-    '@type': 'DefinedTerm',
-    name: term.term,
-    description: term.definition,
-    url: term.url || localizeUrl(`/glossar/${term.slug}`, locale),
-    inDefinedTermSet: {
-      '@type': 'DefinedTermSet',
-      name: glossaryName,
-      url: localizeUrl('/glossar', locale),
-    },
   });
 }
 
@@ -294,42 +236,75 @@ export function generateReviewArray(set: Testimonial[]): string[] {
   );
 }
 
+export function generateCaseStudy(caseData: {
+  title: string;
+  url: string;
+  description: string;
+  clientName: string;
+  results: Array<{ value: string; label: string }>;
+}) {
+  return JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: caseData.title,
+    description: caseData.description,
+    url: caseData.url,
+    articleSection: 'Case Study',
+    author: { '@id': founderUrl },
+    publisher: { '@id': orgId },
+    about: {
+      '@type': 'Organization',
+      name: caseData.clientName,
+    },
+  });
+}
+
+export function generateVideoObject(video: {
+  name: string;
+  description: string;
+  thumbnailUrl: string;
+  contentUrl: string;
+  uploadDate?: string;
+  duration?: string; // ISO 8601 e.g. PT2M30S
+  inLanguage?: string;
+}) {
+  return JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'VideoObject',
+    name: video.name,
+    description: video.description,
+    thumbnailUrl: video.thumbnailUrl.startsWith('http') ? video.thumbnailUrl : `${siteConfig.url}${video.thumbnailUrl}`,
+    contentUrl: video.contentUrl.startsWith('http') ? video.contentUrl : `${siteConfig.url}${video.contentUrl}`,
+    uploadDate: video.uploadDate ?? new Date().toISOString().split('T')[0],
+    ...(video.duration && { duration: video.duration }),
+    inLanguage: video.inLanguage ?? 'nl',
+    publisher: { '@id': orgId },
+  });
+}
+
+export function generateVideoObjectArray(videos: Array<{
+  name: string;
+  description: string;
+  thumbnailUrl: string;
+  contentUrl: string;
+  inLanguage?: string;
+}>): string[] {
+  return videos.map((v) => generateVideoObject(v));
+}
+
 export function generatePerson(member: {
   slug?: string;
   name: string;
   role: string;
   description?: string;
-  qualifications: readonly string[];
-  credentials?: readonly { name: string; issuer: string; year?: number }[];
-  education?: readonly { institution: string; degree: string; year?: number }[];
+  qualifications?: readonly string[];
   languages?: readonly string[];
-  memberships?: readonly string[];
   image?: string;
 }) {
-  const personUrl = member.slug ? `${siteConfig.url}/ueber#${member.slug}` : `${siteConfig.url}/ueber`;
+  const personUrl = member.slug ? `${siteConfig.url}/over-joost#${member.slug}` : `${siteConfig.url}/over-joost`;
   const fullImage = member.image
     ? (member.image.startsWith('http') ? member.image : `${siteConfig.url}${member.image}`)
     : undefined;
-
-  const hasCredential = (member.credentials && member.credentials.length > 0)
-    ? member.credentials.map((c) => ({
-        '@type': 'EducationalOccupationalCredential',
-        name: c.name,
-        ...(c.issuer && { recognizedBy: { '@type': 'Organization', name: c.issuer } }),
-        ...(c.year && c.year > 0 && { dateCreated: String(c.year) }),
-      }))
-    : member.qualifications.map((q) => ({
-        '@type': 'EducationalOccupationalCredential',
-        name: q,
-      }));
-
-  const alumniOf = member.education
-    ?.filter((e) => e.institution)
-    .map((e) => ({ '@type': 'EducationalOrganization', name: e.institution })) ?? [];
-
-  const memberOf = member.memberships
-    ?.filter(Boolean)
-    .map((m) => ({ '@type': 'Organization', name: m })) ?? [];
 
   return JSON.stringify({
     '@context': 'https://schema.org',
@@ -340,9 +315,6 @@ export function generatePerson(member: {
     jobTitle: member.role,
     ...(member.description && { description: member.description }),
     worksFor: { '@id': orgId },
-    hasCredential,
-    ...(alumniOf.length > 0 && { alumniOf }),
-    ...(memberOf.length > 0 && { memberOf }),
     ...(member.languages && member.languages.length > 0 && { knowsLanguage: [...member.languages] }),
     ...(fullImage && { image: fullImage }),
   });

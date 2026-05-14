@@ -1,47 +1,42 @@
 import type { Locale } from '../data/site';
 
 export const routeSegments: Record<Locale, Record<string, string>> = {
-  de: {
-    angebot: 'angebot',
-    produkte: 'produkte',
-    coaching: 'coaching',
-    mitgliedschaft: 'mitgliedschaft',
-    about: 'ueber',
-    contact: 'kontakt',
-    faq: 'faq',
-    blog: 'blog',
-    themen: 'themen',
-    glossar: 'glossar',
-    quiz: 'quiz',
-    archetypen: 'archetypen',
-    masterclass: 'masterclass',
-    privacy: 'datenschutz',
-    agb: 'agb',
-    impressum: 'impressum',
-    leadMagnet: 'lead-magnet',
+  nl: {
+    'expert-growth': 'expert-growth-accelerator',
+    'ai-vindbaarheid': 'ai-vindbaarheid',
+    diensten: 'diensten',
+    cases: 'cases',
+    producten: 'producten',
+    guides: 'guides',
+    about: 'over-joost',
+    contact: 'contact',
+    privacy: 'privacy',
+    voorwaarden: 'voorwaarden',
   },
   en: {
-    angebot: 'offers',
-    produkte: 'products',
-    coaching: 'coaching',
-    mitgliedschaft: 'membership',
-    about: 'about',
+    'expert-growth': 'expert-growth-accelerator',
+    'ai-vindbaarheid': 'ai-visibility',
+    diensten: 'services',
+    cases: 'cases',
+    producten: 'products',
+    guides: 'guides',
+    about: 'about-joost',
     contact: 'contact',
-    faq: 'faq',
-    blog: 'blog',
-    themen: 'topics',
-    glossar: 'glossary',
-    quiz: 'quiz',
-    archetypen: 'archetypes',
-    masterclass: 'masterclass',
     privacy: 'privacy',
-    agb: 'terms',
-    impressum: 'legal-notice',
-    leadMagnet: 'free-resources',
+    voorwaarden: 'terms',
+  },
+  es: {
+    'ai-vindbaarheid': 'visibilidad-ia',
+    diensten: 'servicios',
+    cases: 'casos',
+    about: 'sobre-joost',
+    contact: 'contacto',
+    privacy: 'privacidad',
+    voorwaarden: 'terminos',
   },
 };
 
-type RouteKey = keyof typeof routeSegments.de;
+type RouteKey = keyof typeof routeSegments.nl;
 
 const reverseMap = new Map<string, { key: RouteKey; locale: Locale }>();
 for (const [locale, segments] of Object.entries(routeSegments)) {
@@ -56,5 +51,5 @@ export function getRouteKey(segment: string, locale: Locale): RouteKey | null {
 }
 
 export function getRouteSegment(key: string, locale: Locale): string {
-  return routeSegments[locale]?.[key] ?? routeSegments.de[key] ?? key;
+  return routeSegments[locale]?.[key] ?? routeSegments.nl[key] ?? key;
 }

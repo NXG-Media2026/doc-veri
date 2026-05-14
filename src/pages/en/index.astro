@@ -1,283 +1,349 @@
 ---
+import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import HeroSection from '../../components/HeroSection.astro';
 import TrustBar from '../../components/TrustBar.astro';
-import ApproachSection from '../../components/ApproachSection.astro';
-import ServicesGrid from '../../components/ServicesGrid.astro';
-import FounderPreview from '../../components/FounderPreview.astro';
-import TestimonialSlider from '../../components/TestimonialSlider.astro';
-import FAQAccordion from '../../components/FAQAccordion.astro';
+import ClientResults from '../../components/ClientResults.astro';
+import VideoTestimonialCarousel from '../../components/VideoTestimonialCarousel.astro';
+import LogoMarquee from '../../components/LogoMarquee.astro';
 import SocialStorytellingGrid from '../../components/SocialStorytellingGrid.astro';
-import CTABand from '../../components/CTABand.astro';
+import FounderPreview from '../../components/FounderPreview.astro';
+import FAQAccordion from '../../components/FAQAccordion.astro';
 import { siteConfig } from '../../data/site';
+import { generateOrganization, generateWebSite, generateFounderPerson, generateFAQPage } from '../../data/schema';
+import { buildHreflangTrilingual } from '../../i18n/hreflang';
 import { getTestimonials } from '../../data/testimonials';
 import { getSocialPosts } from '../../data/socialPosts';
-import { generateOrganization, generateFounderPerson, generateWebSite, generateFAQPage, generateReviewArray } from '../../data/schema';
-import { buildHreflangPair } from '../../i18n/hreflang';
-import { trackOnClick } from '../../lib/analytics';
+import { videoTestimonials } from '../../data/videoTestimonials';
 
-import heroImage from '../../assets/images/Founder/portrait-beach.jpg';
-import founderPortrait from '../../assets/images/Founder/portrait-doctor.jpg';
-import ctaBackground from '../../assets/images/Founder/lifestyle-laughing.jpg';
-
-import productHistamin from '../../assets/images/products/histamin-bundle.png';
-import productPerimenopause from '../../assets/images/products/perimenopause-protocol.png';
-import productSmoothie from '../../assets/images/products/smoothie-guide.png';
-import coachingImage from '../../assets/images/Founder/lifestyle-arms-up.jpg';
-import membershipImage from '../../assets/images/Founder/verena-community.jpg';
+import heroPhoto from '../../assets/images/founder/joost-standing-workinglaptop.webp';
+import founderPhoto from '../../assets/images/founder/joost-sitting-laptop-looking-working.webp';
 
 const locale = 'en';
+const hreflang = buildHreflangTrilingual('/', '/en/', '/es/');
 
-const testimonials = getTestimonials({ locale: 'en' });
-const reviewSchemas = generateReviewArray(testimonials);
+const testimonials = getTestimonials({ locale: 'nl' });
 const socialPosts = getSocialPosts(6);
 
+const logoFiles = import.meta.glob<{ default: ImageMetadata }>('/src/assets/images/logos/*.{webp,avif,png,jpg}', { eager: true });
+const logos = Object.entries(logoFiles)
+  .filter(([path]) => /logo/i.test(path.split('/').pop()!))
+  .map(([path, mod]) => {
+    const filename = path.split('/').pop()!.replace(/\.(webp|avif|png|jpg)$/, '');
+    const name = filename.replace(/[-_]?logo[-_]?/gi, '').replace(/[-_]/g, ' ').trim();
+    return { src: mod.default, alt: name };
+  });
+
+const guides = (await getCollection('guides'))
+  .filter((g) => g.data.locale === locale)
+  .sort((a, b) => new Date(b.data.publishedAt).getTime() - new Date(a.data.publishedAt).getTime())
+  .slice(0, 4);
+
 const trustItems = [
-  { value: 'MD', label: 'Licensed\nPhysician' },
-  { value: '100%', label: 'Evidence-\nBased' },
-  { value: '♀', label: 'By Women,\nFor Women' },
+  { value: '50+', label: 'Coaches guided' },
+  { value: '€5M+', label: 'Ad spend managed' },
+  { value: '5-7×', label: 'Average ROAS' },
+  { value: '7+', label: 'Years experience' },
 ];
 
-const approachItems = [
+const homepageFaq = [
   {
-    icon: 'evidence',
-    title: 'Science-backed',
-    description: 'All content is based on current research and medical expertise — no trends, no myths.',
+    q: 'What does it cost to work with NXG Media?',
+    a: 'It depends on your situation. Our micro-products start at €6.99 if you want to get started yourself. The Expert Growth Accelerator is a fixed programme with setup + monthly optimisation. <a href="/en/contact/">Get in touch</a> for a no-obligation conversation.',
   },
   {
-    icon: 'personalized',
-    title: 'Individual & practical',
-    description: 'No one-size-fits-all. My offerings consider your cycle, your training, and your life phase.',
+    q: 'Do you only work with coaches?',
+    a: 'No. We work with two clusters: Expert Growth (coaches, knowledge entrepreneurs, experts) and AI Visibility (local practices, SMBs). The approach differs, but the principle is the same: build a system, not isolated campaigns.',
   },
   {
-    icon: 'nonsurgical',
-    title: 'Holistic',
-    description: 'Hormones, training, nutrition, and lifestyle — everything is connected. I look at the big picture.',
+    q: 'How quickly will I see results?',
+    a: 'The first Expert Growth results typically appear within 2-4 weeks (first leads, first product sales). A fully running system takes 2-3 months. With AI Visibility, you can rescan immediately after applying the kits and see the difference.',
   },
   {
-    icon: 'multilingual',
-    title: 'Clearly explained',
-    description: 'Medical knowledge, presented so you can apply it immediately — without the jargon.',
-  },
-];
-
-const offerItems = [
-  {
-    title: 'Products',
-    slug: 'products',
-    href: '/en/products',
-    excerpt: 'Digital guides, e-books, and courses — evidence-based and ready to use. For hormones, training, nutrition, and more.',
-    coverImages: [
-      { src: productHistamin, alt: 'Histamine Bundle' },
-      { src: productPerimenopause, alt: 'Perimenopause Protocol' },
-      { src: productSmoothie, alt: 'Smoothie Guide' },
-    ],
+    q: "What makes NXG Media different from a regular marketing agency?",
+    a: 'We build complete growth systems — not standalone campaigns or websites. Storytelling, products, email flows, ads and AI visibility work together as one machine. That\'s the difference between "more visibility" and "predictable growth".',
   },
   {
-    title: 'Coaching',
-    slug: 'coaching',
-    href: '/en/coaching',
-    excerpt: 'Individual coaching for your health goals — personally guided, evidence-based, and tailored to you.',
-    image: coachingImage,
-    imageAlt: 'Dr. Verena Mann — Coaching',
-  },
-  {
-    title: 'Membership',
-    slug: 'membership',
-    href: '/en/membership',
-    excerpt: 'Community, ongoing support, and exclusive content — stronger together on the way to your health.',
-    image: membershipImage,
-    imageAlt: 'Community and support',
+    q: 'Do I need a large audience already?',
+    a: 'No. The system is designed to build your audience and your lead flow at the same time. With a small ad budget (€5-10/day) you attract 20-50 qualified followers daily.',
   },
 ];
 
-const homepageFAQs = [
-  {
-    q: 'What is doc.veri?',
-    a: "doc.veri is Dr. Verena's platform for evidence-based women's health. You'll find knowledge, products, and coaching on hormones, training, nutrition, and your cycle — all science-backed and practical.",
-  },
-  {
-    q: 'Who are these offerings for?',
-    a: "For women who do a lot right and still don't feel right — whether you're an athlete, a working professional, or navigating perimenopause. The content works for every fitness level and life phase.",
-  },
-  {
-    q: 'Is Dr. Verena really a physician?',
-    a: 'Yes! Dr. Verena is a licensed physician with a passion for endurance sports. She combines medical expertise with practical experience as an Ironman athlete.',
-  },
-  {
-    q: 'How is doc.veri different from other health platforms?',
-    a: 'doc.veri is committed to science over trends. All content is based on current research and created by a physician — no bro-science, no pseudoscience.',
-  },
-];
+const faqForSchema = homepageFaq.map((f) => ({ question: f.q, answer: f.a }));
 ---
 
 <BaseLayout
-  title={`Women's Health — Evidence-Based | ${siteConfig.name}`}
-  description="Hormones, training, nutrition, cycle, perimenopause — evidence-based, no bro-science. By Dr. Verena Mann, physician and endurance athlete."
-  hreflang={buildHreflangPair('/', '/en')}
-  schemas={[
-    generateOrganization(),
-    generateFounderPerson(),
-    generateWebSite('en'),
-    generateFAQPage(homepageFAQs),
-    ...reviewSchemas,
-  ]}
-  locale="en"
+  title={`${siteConfig.name} — ${siteConfig.tagline.en}`}
+  description="Build an online growth system around your expertise. Expert Growth for coaches and experts. AI visibility for local practices."
+  hreflang={hreflang}
+  schemas={[generateOrganization(), generateWebSite(locale), generateFounderPerson(), generateFAQPage(faqForSchema)]}
+  locale={locale}
 >
-  <HeroSection
-    title="You're not broken. The advice just wasn't built for your body."
-    subtitle="doc.veri helps you understand how hormones, cycle, histamine, nutrition and training interact — evidence-based, practical and made for women."
-    backgroundImage={heroImage}
-    backgroundAlt="Dr. Verena Mann — Physician and founder of doc.veri"
-    ctaText="Take the free quiz"
-    ctaHref="/en/quiz"
-    secondaryCtaText="Explore offers"
-    secondaryCtaHref="/en/offers"
-    locale="en"
-    pageType="homepage"
-    pageSlug="/en"
-    eventName="product_cta_click"
-  />
 
-  <TrustBar items={trustItems} />
-
-  <ApproachSection
-    title="My Approach"
-    items={approachItems}
-    locale="en"
-  />
-
-  <ServicesGrid
-    title="What I offer"
-    subtitle="Knowledge and guidance for every phase of your health journey."
-    services={offerItems}
-    locale="en"
-    pageType="homepage"
-    pageSlug="/en"
-    viewAllHref="/en/offers"
-    viewAllLabel="View all offers"
-  />
-
-  <FounderPreview
-    locale="en"
-    image={founderPortrait}
-    role="Emergency Physician & Endurance Athlete"
-    bio="Emergency physician, Ironman athlete, and founder of doc.veri. Dr. Verena Mann combines medical expertise with years of endurance training to explain what most health advice gets wrong about the female body."
-    qualifications={[
-      'Licensed Physician (Approbation)',
-      'Emergency Medicine Specialist',
-    ]}
-  />
-
-  {testimonials.length > 0 && (
-    <TestimonialSlider
-      testimonials={testimonials.map(t => ({
-        name: t.name,
-        text: t.text,
-        rating: t.rating,
-        outcome: t.outcome,
-      }))}
-      locale="en"
-    />
-  )}
-
-  <section class="py-16 md:py-20 bg-primary-dark text-white">
-    <div class="max-w-4xl mx-auto px-4 md:px-6 text-center">
-      <span class="inline-flex items-center px-3 py-1 text-xs font-medium bg-accent/20 text-accent-light rounded-full mb-6">
-        Free quiz &middot; 2 minutes
-      </span>
-      <h2 class="font-heading text-3xl md:text-4xl text-white mb-4">
-        Which hormone type are you?
-      </h2>
-      <p class="text-lg text-white/70 max-w-2xl mx-auto mb-8">
-        Answer a few questions and discover which patterns may be influencing your energy, cycle, training and wellbeing.
+  {/* ── Hero ── */}
+  <section class="relative py-20 md:py-28 lg:py-36 overflow-hidden">
+    <div class="absolute inset-0">
+      <Image
+        src={heroPhoto}
+        alt=""
+        widths={[800, 1200, 1600]}
+        sizes="100vw"
+        class="w-full h-full object-cover"
+        loading="eager"
+        decoding="async"
+      />
+      <div class="absolute inset-0 bg-gradient-to-r from-white/95 via-white/80 to-white/40"></div>
+    </div>
+    <div class="relative max-w-4xl mx-auto px-4 md:px-6">
+      <h1 class="font-heading text-4xl md:text-5xl lg:text-6xl text-text mb-6 leading-tight max-w-2xl">
+        Build an online growth system around your expertise
+      </h1>
+      <p class="text-lg md:text-xl text-text-muted leading-relaxed mb-10 max-w-xl">
+        For coaches and experts who want to turn their knowledge into predictable leads, product sales and coaching enquiries. And for local practices that want to be visible in AI tools.
       </p>
-      <a
-        href="/en/quiz"
-        class="inline-flex items-center px-8 py-4 text-base font-medium bg-accent hover:bg-accent-dark text-white transition-all duration-300 rounded-button shadow-lg shadow-accent/25"
-      >
-        Take the quiz
-        <svg class="ml-2 w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-        </svg>
-      </a>
+      <div class="flex flex-col sm:flex-row items-start gap-4">
+        <a
+          href="https://scanner.nxg-media.com"
+          class="inline-flex items-center px-8 py-4 text-base font-medium text-text-inverse bg-primary hover:bg-primary-dark transition-colors rounded-button shadow-lg"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Run the AI visibility scan
+          <svg class="ml-2 w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
+          </svg>
+        </a>
+        <a
+          href="/en/services/expert-growth-accelerator/"
+          class="inline-flex items-center px-8 py-4 text-base font-medium text-primary border-2 border-primary hover:bg-primary/5 transition-colors rounded-button"
+        >
+          Explore Expert Growth
+        </a>
+      </div>
     </div>
   </section>
 
-  <section class="py-16 md:py-20 bg-bg-alt">
+  {/* ── Trust Bar ── */}
+  <section class="bg-bg-alt border-y border-border">
     <div class="max-w-4xl mx-auto px-4 md:px-6">
-      <div class="md:flex items-center gap-10 lg:gap-14">
-        <div class="md:w-3/5 mb-8 md:mb-0">
-          <span class="inline-flex items-center px-3 py-1 text-xs font-medium bg-accent/10 text-accent rounded-full mb-4">
-            Free Masterclass
-          </span>
-          <h2 class="font-heading text-2xl md:text-3xl text-text mb-4">
-            Hormones, Histamine &amp; Your Cycle as a Superpower
-          </h2>
-          <p class="text-text-muted leading-relaxed mb-6">
-            You&rsquo;re doing a lot of things right — but still don&rsquo;t feel like yourself? In this free masterclass, Dr. Verena Mann shows you how hormones, your cycle, histamine and stress are connected — and what first steps actually make sense.
-          </p>
-          <a
-            href="/en/masterclass/hormones-histamine-cycle-superpower"
-            class="inline-flex items-center px-6 py-3 text-sm font-medium text-text-inverse bg-primary hover:bg-primary-dark rounded-button transition-colors"
-            onclick={trackOnClick('masterclass_cta_click', {
-              page_type: 'homepage',
-              page_slug: '/en',
-              locale: 'en',
-              masterclass_slug: 'hormones-histamine-cycle-superpower',
-              cta_location: 'inline',
-            })}
-          >
-            Join the waitlist
-            <svg class="ml-2 w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-            </svg>
-          </a>
+      <TrustBar items={trustItems} />
+    </div>
+  </section>
+
+  {/* ── Recognition ── */}
+  <section class="py-16 md:py-20 bg-primary">
+    <div class="max-w-3xl mx-auto px-4 md:px-6">
+      <h2 class="font-heading text-2xl md:text-3xl text-white mb-8">Does this sound familiar?</h2>
+      <div class="space-y-6">
+        <p class="text-white/80 leading-relaxed">You already have a solid coaching programme, but your lead flow peaks and dips. Three new clients one month, zero the next — and you don't know why.</p>
+        <p class="text-white/80 leading-relaxed">Or your practice is doing well, but when someone asks ChatGPT for a specialist in your area, you don't come up.</p>
+      </div>
+    </div>
+  </section>
+
+  {/* ── What NXG Media builds ── */}
+  <section class="py-12 md:py-16 bg-bg-alt">
+    <div class="max-w-4xl mx-auto px-4 md:px-6">
+      <h2 class="font-heading text-2xl md:text-3xl text-text mb-6">Not loose campaigns — one route from click to client</h2>
+      <p class="text-lg text-text-muted leading-relaxed mb-8 max-w-3xl">
+        You're not missing marketing. You're missing a system that works for you, even when you're busy with clients.
+      </p>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        <div class="bg-white rounded-card p-6 border border-border">
+          <h3 class="font-heading text-lg text-text mb-2">An entry point that pays for itself</h3>
+          <p class="text-sm text-text-muted">Your first online product — a guide, mini-course or masterclass — covers your ad spend from day 1. No months of waiting for returns.</p>
         </div>
-        <div class="md:w-2/5">
-          <div class="bg-white rounded-card border border-border p-6 text-center">
-            <div class="w-14 h-14 mx-auto rounded-full bg-accent/10 flex items-center justify-center mb-4">
-              <svg class="w-7 h-7 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                <path stroke-linecap="round" stroke-linejoin="round" d="M15.91 11.672a.375.375 0 010 .656l-5.603 3.113a.375.375 0 01-.557-.328V8.887c0-.286.307-.466.557-.327l5.603 3.112z" />
-              </svg>
-            </div>
-            <p class="text-sm font-medium text-text mb-1">Free</p>
-            <p class="text-xs text-text-muted">Join the waitlist and be the first to know when it launches.</p>
-          </div>
+        <div class="bg-white rounded-card p-6 border border-border">
+          <h3 class="font-heading text-lg text-text mb-2">Leads that qualify themselves</h3>
+          <p class="text-sm text-text-muted">Visitors follow an interactive route and show you what they need. You know exactly who's ready — without cold calling or endless DMs.</p>
+        </div>
+        <div class="bg-white rounded-card p-6 border border-border">
+          <h3 class="font-heading text-lg text-text mb-2">Follow-up that builds trust</h3>
+          <p class="text-sm text-text-muted">After the first signup, leads receive a personal series. By the time they see your programme, you don't need to convince them anymore.</p>
+        </div>
+        <div class="bg-white rounded-card p-6 border border-border">
+          <h3 class="font-heading text-lg text-text mb-2">One route, not loose campaigns</h3>
+          <p class="text-sm text-text-muted">Content, products, emails and ads form one path: from first click to paying client. That's the difference between "more visibility" and predictable growth.</p>
         </div>
       </div>
     </div>
   </section>
 
-  {socialPosts.length > 0 && (
-    <SocialStorytellingGrid
-      posts={socialPosts}
-      title="Follow me on Instagram"
-      subtitle="Science, everyday life, and honest insights — no glossy filters, no empty promises."
-      locale="en"
+  {/* ── Two clusters ── */}
+  <section class="py-16 md:py-20">
+    <div class="max-w-4xl mx-auto px-4 md:px-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div class="bg-white rounded-card p-8 border border-border hover:border-accent/30 hover:shadow-lg transition-all">
+          <span class="inline-flex items-center px-3 py-1 text-xs font-medium bg-accent/10 text-accent rounded-full mb-4">expert-growth</span>
+          <h2 class="font-heading text-xl text-text mb-3">Expert Growth Accelerator</h2>
+          <p class="text-text-muted text-sm leading-relaxed mb-6">
+            A fixed programme for coaches and experts who want to turn their expertise into an online growth engine — with storytelling, masterclasses, micro-products, email flows and ads that together drive buyers, clients or members.
+          </p>
+          <a href="/en/services/expert-growth-accelerator/" class="inline-flex items-center text-accent hover:text-accent-dark transition-colors font-medium text-sm">
+            Learn about Expert Growth
+            <svg class="w-4 h-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" /></svg>
+          </a>
+        </div>
+        <div class="bg-white rounded-card p-8 border border-border hover:border-accent/30 hover:shadow-lg transition-all">
+          <span class="inline-flex items-center px-3 py-1 text-xs font-medium bg-primary/10 text-primary rounded-full mb-4">ai-visibility</span>
+          <h2 class="font-heading text-xl text-text mb-3">AI Visibility</h2>
+          <p class="text-text-muted text-sm leading-relaxed mb-6">
+            AI visibility is still a new playing field. That's why we start with a practical scan: where do you stand, what's missing and which improvements make sense? From scan to kits to full audit.
+          </p>
+          <a href="/en/services/ai-visibility-audit/" class="inline-flex items-center text-accent hover:text-accent-dark transition-colors font-medium text-sm">
+            Learn about AI Visibility
+            <svg class="w-4 h-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" /></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {/* ── Client Results (merged proof wall + testimonials) ── */}
+  <ClientResults
+    title="Client results"
+    featuredCases={[
+      {
+        testimonial: testimonials.find((t) => t.id === 'rolf-happywithyoga')!,
+        period: 'Since 2022',
+        stats: [
+          { value: '30,000+', label: 'webinar leads' },
+          { value: '1,700+', label: 'mini-course sales' },
+          { value: '2,000', label: 'paying members' },
+        ],
+        caseHref: '/en/cases/happy-with-yoga/',
+      },
+      {
+        testimonial: testimonials.find((t) => t.id === 'tessa-youlife')!,
+        period: 'Since Feb 2025',
+        stats: [
+          { value: '~€10k/mo', label: 'online products' },
+          { value: '6', label: 'products launched' },
+          { value: '~10/mo', label: 'coaching clients' },
+        ],
+        caseHref: '/en/cases/youlife/',
+      },
+      {
+        testimonial: testimonials.find((t) => t.id === 'josine-coachjosine')!,
+        period: 'Since Oct 2025',
+        stats: [
+          { value: '600×', label: 'guide sold' },
+          { value: '80', label: 'masterclass signups' },
+        ],
+        caseHref: '/en/cases/coach-josine/',
+      },
+    ]}
+    smallResults={[
+      {
+        name: 'Manon van Bakel',
+        period: 'First month',
+        stats: [
+          { value: '120', label: 'signups in 2 weeks' },
+          { value: '~10%', label: 'conversion to programmes' },
+        ],
+      },
+      {
+        name: 'Kim Bongers',
+        period: '2 months',
+        stats: [
+          { value: '90', label: 'masterclass signups' },
+          { value: '350×', label: 'guide sold' },
+          { value: '8%', label: 'conversion' },
+        ],
+      },
+      {
+        name: 'MCM Research',
+        logo: 'mcm-research-logo.webp',
+        period: 'Client since 2022',
+        stats: [
+          { value: '2,500+', label: 'leads in Netherlands' },
+          { value: '500', label: 'applicants NL' },
+          { value: '1,500+', label: 'leads in Belgium' },
+          { value: '250', label: 'applicants BE' },
+        ],
+      },
+    ]}
+    otherTestimonials={testimonials.filter((t) => ['claire-ikrouwvanje', 'andrew-coreprogression'].includes(t.id))}
+    caseLabel="Read the case"
+    allCasesHref="/en/cases/"
+    allCasesLabel="View all cases"
+    locale="en"
+  />
+
+  {/* ── Client logos marquee ── */}
+  {logos.length > 0 && (
+    <LogoMarquee
+      logos={logos}
+      label="Trusted by coaches, experts and businesses"
+      speed={35}
     />
   )}
 
-  <FAQAccordion
-    items={homepageFAQs}
-    locale="en"
-    pageType="homepage"
-    pageSlug="/en"
-    maxItems={4}
-    showMoreLink={true}
+  {/* ── Video Testimonials Carousel ── */}
+  <VideoTestimonialCarousel
+    title="What Clients Say About Working with Joost"
+    subtitle="Real experiences from entrepreneurs who successfully collaborate with Joost"
+    testimonials={videoTestimonials}
   />
 
-  <CTABand
-    title="Ready to understand your body on your terms?"
-    subtitle="Products, coaching, and community — evidence-based and made for how women actually live."
-    ctaText="Explore offers"
-    ctaHref="/en/offers"
-    backgroundImage={ctaBackground}
-    backgroundAlt="Dr. Verena Mann"
-    eventName="product_cta_click"
+  {/* ── Blog / Guides preview ── */}
+  {guides.length > 0 && (
+    <section class="py-16 md:py-20">
+      <div class="max-w-4xl mx-auto px-4 md:px-6">
+        <h2 class="font-heading text-2xl md:text-3xl text-text mb-10 text-center">Latest articles</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {guides.map((g) => (
+            <a href={`/en/guides/${g.data.pageSlug}/`} class="group block bg-white border border-border rounded-card p-6 hover:border-accent/30 hover:shadow-lg transition-all">
+              {g.data.cluster && (
+                <span class="text-xs font-medium text-accent uppercase tracking-wider mb-2 block">{g.data.cluster}</span>
+              )}
+              <h3 class="font-heading text-lg text-text group-hover:text-accent transition-colors mb-2">{g.data.title}</h3>
+              <p class="text-sm text-text-muted">{g.data.contentSchema.primaryAnswer.slice(0, 120)}...</p>
+            </a>
+          ))}
+        </div>
+        <div class="text-center mt-8">
+          <a href="/en/guides/" class="inline-flex items-center text-accent hover:text-accent-dark transition-colors font-medium">
+            View all articles
+            <svg class="w-4 h-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" /></svg>
+          </a>
+        </div>
+      </div>
+    </section>
+  )}
+
+  {/* ── Instagram / Social Grid ── */}
+  <div class="bg-bg-alt">
+    <div class="max-w-5xl mx-auto px-4 md:px-6 pt-16 md:pt-20">
+      <h2 class="font-heading text-2xl md:text-3xl text-text text-center mb-2">Follow the journey</h2>
+      <p class="text-text-muted text-center">Behind-the-scenes, results and growth system tips on Instagram.</p>
+    </div>
+    <SocialStorytellingGrid posts={socialPosts} instagramUrl={siteConfig.socials.instagram} locale="en" />
+  </div>
+
+  {/* ── Founder Preview (EEAT) ── */}
+  <FounderPreview
+    name={siteConfig.founder.name}
+    role={siteConfig.founder.role}
+    bio="Founder of NXG Media. 7+ years of experience in online growth systems. Managed over €5 million in ad spend for coaches and experts. Builds systems that typically achieve 5-7x return on ad spend — with storytelling, product ladders, email flows, ads and AI visibility as core pillars."
+    image={founderPhoto}
+    credentials={siteConfig.founder.credentials.map((c) => ({ name: c.name, issuer: c.issuer }))}
+    knowsAbout={['Online growth systems for experts', 'Storytelling & content strategy', 'Micro-products & product ladders', 'Meta Ads for coaches & experts']}
+    aboutHref="/en/about-joost/"
+    aboutLabel="More about Joost"
     locale="en"
-    pageType="homepage"
-    pageSlug="/en"
   />
+
+  {/* ── Homepage FAQ ── */}
+  <div class="bg-bg-alt">
+    <FAQAccordion
+      title="Frequently asked questions"
+      items={homepageFaq}
+      locale="en"
+      pageType="homepage"
+      pageSlug="/en/"
+    />
+  </div>
+
 </BaseLayout>

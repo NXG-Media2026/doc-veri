@@ -10,8 +10,9 @@ interface Props {
 const { locale, currentPath, hreflang } = Astro.props;
 
 const localeLabels: Record<string, string> = {
-  de: 'DE',
+  nl: 'NL',
   en: 'EN',
+  es: 'ES',
 };
 
 const alternates = (hreflang ?? [])

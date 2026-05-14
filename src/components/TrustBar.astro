@@ -1,25 +1,16 @@
 ---
-interface TrustItem {
-  value: string;
-  label: string;
-}
-
 interface Props {
-  items: TrustItem[];
+  items: Array<{ value: string; label: string }>;
 }
 
 const { items } = Astro.props;
 ---
 
-<section class="bg-bg border-b border-border" aria-label="Trust indicators">
-  <div class="max-w-7xl mx-auto px-4 md:px-6 py-8 md:py-10">
-    <ul class="flex flex-wrap justify-center gap-8 md:gap-14 lg:gap-20">
-      {items.map((item) => (
-        <li class="flex items-center gap-3 text-center">
-          <span class="text-3xl md:text-4xl font-heading font-bold text-accent leading-none">{item.value}</span>
-          <span class="text-xs md:text-sm text-text-muted leading-tight whitespace-pre-line text-left">{item.label}</span>
-        </li>
-      ))}
-    </ul>
-  </div>
-</section>
+<div class="flex flex-wrap items-center justify-center gap-8 md:gap-14 py-8">
+  {items.map((item) => (
+    <div class="text-center">
+      <p class="text-3xl font-bold text-accent">{item.value}</p>
+      <p class="text-sm text-text-muted mt-1">{item.label}</p>
+    </div>
+  ))}
+</div>

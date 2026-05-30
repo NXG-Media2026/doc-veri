@@ -53,6 +53,7 @@ const produkte = defineCollection({
     featuredTestimonialIds: z.array(z.string()).optional(),
     relatedProductSlugs: z.array(z.string()).optional(),
     sortOrder: z.number().default(50),
+    hidden: z.boolean().default(false),
     seo: seoFields,
     ...i18nFields,
   }),

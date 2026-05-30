@@ -6,6 +6,7 @@ price: "33"
 currency: EUR
 plugAndPayUrl: "https://example.com/checkout/perimenopause-protocol"
 sortOrder: 1
+hidden: true
 cluster: "perimenopause"
 secondaryClusters:
   - "hormone-zyklus"

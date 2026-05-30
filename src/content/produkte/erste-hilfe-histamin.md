@@ -6,6 +6,7 @@ price: "37"
 currency: EUR
 plugAndPayUrl: "https://example.com/checkout/erste-hilfe-histamin"
 sortOrder: 3
+hidden: true
 cluster: "histamin"
 secondaryClusters:
   - "perimenopause"

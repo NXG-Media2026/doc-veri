@@ -42,7 +42,11 @@ expertPOV: "Glutenfrei muss nicht Verzicht bedeuten. Und es muss auch kein Lifes
 ctaBullets:
   - "Sofortiger Zugriff"
   - "7,99 €"
+partOfBundle:
+  product: "gluten-bundle"
+  reason: "Wenn du neben den Rezepten auch verstehen willst, warum du auf Gluten reagierst und was du gezielt tun kannst, bekommst du im Gluten-Bundle beides zusammen günstiger."
 relatedProductSlugs:
+  - "hilfe-bei-glutenunvertraeglichkeit"
   - "food-guide"
   - "histamin-bundle"
 faq:

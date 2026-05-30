@@ -14,6 +14,7 @@ const productsBase = getCollectionBasePath('produkte', locale);
 
 const products = (await getCollection('produkte'))
   .filter((p) => p.data.locale === 'en')
+  .filter((p) => !p.data.hidden)
   .sort((a, b) => (a.data.sortOrder ?? 50) - (b.data.sortOrder ?? 50));
 
 const breadcrumbs = [

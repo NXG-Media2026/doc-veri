@@ -31,9 +31,9 @@ export default {
         body: ['"Inter Variable"', '"Inter"', '-apple-system', 'BlinkMacSystemFont', '"Segoe UI"', 'sans-serif'],
       },
       borderRadius: {
-        card: '12px',
-        button: '8px',
-        image: '16px',
+        card: 'var(--radius-card)',
+        button: 'var(--radius-button)',
+        image: 'var(--radius-image)',
       },
       typography: ({ theme }) => ({
         DEFAULT: {

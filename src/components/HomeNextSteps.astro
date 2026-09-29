@@ -1,0 +1,122 @@
+---
+import { Image } from 'astro:assets';
+import type { Locale } from '../data/site';
+import { siteConfig } from '../data/site';
+import { getTranslatedPath } from '../i18n/utils';
+import { trackOnClick } from '../lib/analytics';
+import masterclassImage from '../assets/images/Founder/lifestyle-laughing.jpg';
+import runningImage from '../assets/images/Founder/lifestyle-running.jpg';
+import sportyImage from '../assets/images/Founder/portrait-smilingsporty.jpg';
+import waterImage from '../assets/images/Founder/lifestyle-water.jpg';
+interface Props { locale?: Locale; faqs: { q: string; a: string }[]; }
+const { locale = 'de', faqs } = Astro.props;
+const en = locale === 'en';
+const pageSlug = en ? '/en' : '/';
+const masterclassSlug = en ? 'hormones-histamine-cycle-superpower' : 'hormone-histamin-zyklus-superpower';
+const copy = en ? {
+  quizLabel: 'Free quiz · 2 minutes',
+  quizTitle: 'Which hormone type are you?',
+  quizText: 'Answer a few questions and discover which patterns may be influencing your energy, cycle, training and wellbeing.',
+  quizCta: 'Take the quiz',
+  masterclassLabel: 'Free masterclass',
+  masterclassTitle: 'Hormones, Histamine & Your Cycle as a Superpower',
+  masterclassText: 'You’re doing a lot of things right — but still don’t feel like yourself? In this free masterclass, Dr. Verena Mann shows you how hormones, your cycle, histamine and stress are connected — and what first steps actually make sense.',
+  masterclassCta: 'Join the waitlist',
+  masterclassNote: 'Be the first to know when it launches.',
+  journalLabel: 'Beyond the practice',
+  journalTitle: 'Medicine meets real life.',
+  journalText: 'Science, everyday life, and honest insights — no glossy filters, no empty promises.',
+  socialCta: 'Follow @doc.veri',
+  faqTitle: 'A little more clarity.',
+  faqLabel: 'Your questions',
+  faqCta: 'All questions & answers',
+  closeTitle: 'Ready to understand your body on your terms?',
+  closeText: 'Products, coaching, and community — evidence-based and made for how women actually live.',
+  closeCta: 'Explore offers',
+} : {
+  quizLabel: 'Kostenlos · 2 Minuten',
+  quizTitle: 'Welcher Hormon-Typ bist du?',
+  quizText: '7 kurze Fragen — und du bekommst personalisierte Empfehlungen für Ernährung, Training und Produkte, die zu dir passen.',
+  quizCta: 'Quiz starten',
+  masterclassLabel: 'Kostenlose Masterclass',
+  masterclassTitle: 'Hormone, Histamin & Zyklus als Superpower',
+  masterclassText: 'Du machst eigentlich vieles richtig — und fühlst dich trotzdem nicht wie du selbst? In dieser kostenlosen Masterclass zeigt dir Dr. Verena Mann, wie Hormone, Zyklus, Histamin und Stress zusammenhängen — und welche ersten Schritte wirklich sinnvoll sind.',
+  masterclassCta: 'Masterclass vormerken',
+  masterclassNote: 'Erfahre als Erste, wann es losgeht.',
+  journalLabel: 'Abseits der Medizin',
+  journalTitle: 'Mitten im echten Leben.',
+  journalText: 'Wissenschaft, Alltag und ehrliche Einblicke — kein Hochglanz, keine leeren Versprechen.',
+  socialCta: 'Folge @doc.veri',
+  faqTitle: 'Ein bisschen mehr Klarheit.',
+  faqLabel: 'Deine Fragen',
+  faqCta: 'Alle Fragen & Antworten',
+  closeTitle: 'Bereit, deinen Körper wirklich zu verstehen?',
+  closeText: 'Produkte, Coaching und Community — evidenzbasiert und gemacht für den weiblichen Körper.',
+  closeCta: 'Angebot entdecken',
+};
+---
+<section class="home-quiz editorial-section">
+  <div class="editorial-shell home-quiz__grid">
+    <div><p class="eyebrow">{copy.quizLabel}</p><h2 class="section-heading">{copy.quizTitle}</h2></div>
+    <div class="home-quiz__copy"><p>{copy.quizText}</p>
+      <a class="editorial-button" href={getTranslatedPath('/quiz', locale)}
+        onclick={trackOnClick('product_cta_click', { page_type: 'homepage', page_slug: pageSlug, locale, cta_location: 'inline' })}>
+        {copy.quizCta}<span aria-hidden="true">↗</span>
+      </a>
+    </div>
+  </div>
+</section>
+<section class="home-masterclass editorial-section editorial-shell">
+  <Image src={masterclassImage} alt={en ? 'Dr. Verena Mann at the beach' : 'Dr. Verena Mann am Strand'}
+    widths={[400, 700, 1000]} sizes="(min-width: 900px) 40vw, 100vw" class="home-masterclass__image" loading="lazy" />
+  <div>
+    <p class="eyebrow">{copy.masterclassLabel}</p>
+    <h2 class="section-heading">{copy.masterclassTitle}</h2>
+    <p>{copy.masterclassText}</p>
+    <a class="editorial-button" href={`${en ? '/en' : ''}/masterclass/${masterclassSlug}`}
+      onclick={trackOnClick('masterclass_cta_click', { page_type: 'homepage', page_slug: pageSlug, locale, masterclass_slug: masterclassSlug, cta_location: 'inline' })}>
+      {copy.masterclassCta}<span aria-hidden="true">↗</span>
+    </a>
+    <small>{copy.masterclassNote}</small>
+  </div>
+</section>
+<section class="home-journal editorial-section editorial-shell">
+  <div class="editorial-section-head">
+    <div><p class="eyebrow">{copy.journalLabel}</p><h2 class="section-heading">{copy.journalTitle}</h2></div>
+    <p>{copy.journalText}</p>
+  </div>
+  <div class="home-journal__photos">
+    <Image src={runningImage} alt={en ? 'Verena running' : 'Verena beim Laufen'} widths={[320, 600]} sizes="33vw" loading="lazy" />
+    <Image src={sportyImage} alt={en ? 'Verena in sportswear' : 'Verena in Sportkleidung'} widths={[240, 480]} sizes="25vw" loading="lazy" />
+    <Image src={waterImage} alt={en ? 'Verena by the water' : 'Verena am Wasser'} widths={[320, 600]} sizes="33vw" loading="lazy" />
+  </div>
+  <a class="editorial-link home-journal__link" href={siteConfig.socials.instagram} target="_blank" rel="noopener noreferrer"
+    onclick={trackOnClick('social_card_click', { page_type: 'homepage', page_slug: pageSlug, locale })}>
+    {copy.socialCta}<span aria-hidden="true">↗</span>
+  </a>
+</section>
+<section class="home-faq editorial-section editorial-shell">
+  <div><p class="eyebrow">{copy.faqLabel}</p><h2 class="section-heading">{copy.faqTitle}</h2></div>
+  <div>
+    {faqs.map(item => (
+      <details>
+        <summary data-home-faq onclick={trackOnClick('faq_expand', { page_type: 'homepage', page_slug: pageSlug, locale })}>
+          <h3>{item.q}</h3><span aria-hidden="true">+</span>
+        </summary>
+        <p>{item.a}</p>
+      </details>
+    ))}
+    <a class="editorial-link" href={getTranslatedPath('/faq', locale)}>{copy.faqCta}<span aria-hidden="true">→</span></a>
+  </div>
+</section>
+<section class="home-close editorial-section">
+  <div class="editorial-shell home-close__grid">
+    <h2 class="section-heading">{copy.closeTitle}</h2>
+    <div><p>{copy.closeText}</p>
+      <a class="editorial-button editorial-button--light" href={getTranslatedPath('/angebot', locale)}
+        onclick={trackOnClick('product_cta_click', { page_type: 'homepage', page_slug: pageSlug, locale, cta_location: 'inline' })}>
+        {copy.closeCta}<span aria-hidden="true">↗</span>
+      </a>
+    </div>
+  </div>
+</section>

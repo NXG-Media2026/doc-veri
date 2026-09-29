@@ -1,97 +1,31 @@
 ---
 import { Image } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
-import { siteConfig } from '../data/site';
-import type { Locale } from '../data/site';
-import { t, getTranslatedPath } from '../i18n/utils';
-
-interface Props {
-  locale?: Locale;
-  image?: ImageMetadata;
-  role?: string;
-  bio?: string;
-  qualifications?: string[];
-}
-
+import { siteConfig, type Locale } from '../data/site';
+import { getTranslatedPath } from '../i18n/utils';
+interface Props { locale?: Locale; image?: ImageMetadata; role?: string; bio?: string; qualifications?: string[]; }
 const { locale = 'de', image, role, bio, qualifications } = Astro.props;
 const { founder } = siteConfig;
-const initials = founder.name.split(' ').map(w => w[0]).join('').slice(0, 2);
-
 const displayRole = role ?? founder.role;
-const displayBio = bio ?? founder.bio;
-const displayQualifications = qualifications ?? founder.qualifications;
-const aboutHref = getTranslatedPath('/ueber', locale);
-const aboutLinkText = locale === 'en' ? `More about ${founder.name}` : `Mehr über ${founder.name}`;
-const altText = locale === 'en'
-  ? `Portrait of ${founder.name} — ${displayRole}`
-  : `Porträt von ${founder.name} — ${displayRole}`;
 ---
-
-<section class="py-16 md:py-24 lg:py-32 bg-bg">
-  <div class="max-w-4xl mx-auto px-4 md:px-6">
-    <div class="grid grid-cols-1 md:grid-cols-5 gap-10 md:gap-12 items-center">
-
-      <div class="md:col-span-2 flex justify-center js-reveal">
-        {image ? (
-          <Image
-            src={image}
-            alt={altText}
-            width={320}
-            height={320}
-            class="w-48 h-48 md:w-64 md:h-64 rounded-full object-cover shadow-lg"
-            loading="lazy"
-            decoding="async"
-          />
-        ) : founder.image ? (
-          <img
-            src={founder.image}
-            alt={altText}
-            width="320"
-            height="320"
-            class="w-48 h-48 md:w-64 md:h-64 rounded-full object-cover shadow-lg"
-            loading="lazy"
-            decoding="async"
-          />
-        ) : (
-          <div class="w-48 h-48 md:w-64 md:h-64 rounded-full bg-accent-light flex items-center justify-center shadow-lg">
-            <span class="text-5xl md:text-6xl font-heading text-accent">{initials}</span>
-          </div>
-        )}
-      </div>
-
-      <div class="md:col-span-3 js-reveal" style="--reveal-delay: 150ms">
-        <div class="w-12 h-1 bg-accent rounded-full mb-6"></div>
-        <h2 class="font-heading text-3xl md:text-4xl text-text mb-2">
-          {founder.name}
-        </h2>
-        <p class="text-sm font-medium text-accent mb-5">{displayRole}</p>
-        <p class="text-text-muted leading-relaxed mb-6">
-          {displayBio}
-        </p>
-
-        {displayQualifications.length > 0 && (
-          <ul class="space-y-2 mb-8">
-            {displayQualifications.map((q) => (
-              <li class="text-sm text-text-muted flex items-center gap-2">
-                <svg class="w-4 h-4 text-accent shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-                {q}
-              </li>
-            ))}
-          </ul>
-        )}
-
-        <a
-          href={aboutHref}
-          class="inline-flex items-center text-base font-medium text-accent-dark hover:underline underline-offset-2 transition-colors"
-        >
-          {aboutLinkText}
-          <svg class="w-5 h-5 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-          </svg>
-        </a>
-      </div>
-    </div>
+<section class="home-founder editorial-section editorial-shell">
+  <figure class="home-founder__portrait">
+    {image ? (
+      <Image src={image} alt={locale === 'en' ? 'Dr. Verena Mann at an Ironman finish line' : 'Dr. Verena Mann im Ironman-Ziel'} widths={[400, 640, 900]} sizes="(min-width: 900px) 38vw, 100vw" loading="lazy" />
+    ) : founder.image && (
+      <img src={founder.image} alt={founder.name} width="640" height="800" loading="lazy" />
+    )}
+    <figcaption class="eyebrow">doc.veri / {locale === 'en' ? 'Meet the founder' : 'Die Frau dahinter'}</figcaption>
+  </figure>
+  <div class="home-founder__copy">
+    <p class="eyebrow">{locale === 'en' ? 'Hi, I’m Verena.' : 'Hi, ich bin Verena.'}</p>
+    <h2 class="section-heading">{displayRole}</h2>
+    <p class="home-founder__bio">{bio ?? founder.bio}</p>
+    <ul class="home-founder__credentials">
+      {(qualifications ?? founder.qualifications).map(item => <li>{item}</li>)}
+    </ul>
+    <a class="editorial-link" href={getTranslatedPath('/ueber', locale)}>
+      {locale === 'en' ? 'More about Dr. Verena Mann' : 'Mehr über Dr. Verena Mann'}<span aria-hidden="true">↗</span>
+    </a>
   </div>
 </section>

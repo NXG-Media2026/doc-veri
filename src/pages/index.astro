@@ -1,34 +1,24 @@
 ---
+import HomeNextSteps from '../components/HomeNextSteps.astro';
+import '../styles/home.css';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import HeroSection from '../components/HeroSection.astro';
 import TrustBar from '../components/TrustBar.astro';
 import ApproachSection from '../components/ApproachSection.astro';
 import ServicesGrid from '../components/ServicesGrid.astro';
 import FounderPreview from '../components/FounderPreview.astro';
-import TestimonialSlider from '../components/TestimonialSlider.astro';
-import FAQAccordion from '../components/FAQAccordion.astro';
-import SocialStorytellingGrid from '../components/SocialStorytellingGrid.astro';
-import CTABand from '../components/CTABand.astro';
 import { siteConfig } from '../data/site';
-import { getTestimonials } from '../data/testimonials';
-import { getSocialPosts } from '../data/socialPosts';
-import { generateOrganization, generateFounderPerson, generateWebSite, generateFAQPage, generateReviewArray } from '../data/schema';
+import { generateOrganization, generateFounderPerson, generateWebSite, generateFAQPage } from '../data/schema';
 import { buildHreflangPair } from '../i18n/hreflang';
-import { trackOnClick } from '../lib/analytics';
 
-import heroImage from '../assets/images/Founder/portrait-beach.jpg';
-import founderPortrait from '../assets/images/Founder/portrait-doctor.jpg';
-import ctaBackground from '../assets/images/Founder/lifestyle-laughing.jpg';
+import heroImage from '../assets/images/Founder/verena-linkedin.png';
+import founderPortrait from '../assets/images/Founder/hero-ironman.jpg';
 
 import productHistamin from '../assets/images/products/histamin-bundle.png';
-import productPerimenopause from '../assets/images/products/perimenopause-protocol.png';
 import productSmoothie from '../assets/images/products/smoothie-guide.png';
 import coachingImage from '../assets/images/Founder/lifestyle-arms-up.jpg';
 import membershipImage from '../assets/images/Founder/verena-community.jpg';
 
-const testimonials = getTestimonials();
-const reviewSchemas = generateReviewArray(testimonials);
-const socialPosts = getSocialPosts(6);
 
 const trustItems = [
   { value: 'MD', label: 'Approbierte\nÄrztin' },
@@ -67,7 +57,6 @@ const angebotItems = [
     excerpt: 'Digitale Guides, E-Books und Kurse — wissenschaftlich fundiert und sofort umsetzbar. Für Hormone, Training, Ernährung und mehr.',
     coverImages: [
       { src: productHistamin, alt: 'Histamin Bundle' },
-      { src: productPerimenopause, alt: 'Perimenopause Protocol' },
       { src: productSmoothie, alt: 'Smoothie Guide' },
     ],
   },
@@ -118,7 +107,6 @@ const homepageFAQs = [
     generateFounderPerson(),
     generateWebSite('de'),
     generateFAQPage(homepageFAQs),
-    ...reviewSchemas,
   ]}
   locale="de"
 >
@@ -137,7 +125,9 @@ const homepageFAQs = [
     eventName="product_cta_click"
   />
 
-  <TrustBar items={trustItems} />
+  <TrustBar items={trustItems} locale="de" />
+
+  <FounderPreview locale="de" image={founderPortrait} />
 
   <ApproachSection
     title="Mein Ansatz"
@@ -156,112 +146,5 @@ const homepageFAQs = [
     viewAllLabel="Alle Angebote ansehen"
   />
 
-  <FounderPreview locale="de" image={founderPortrait} />
-
-  {testimonials.length > 0 && (
-    <TestimonialSlider
-      testimonials={testimonials.map(t => ({
-        name: t.name,
-        text: t.text,
-        rating: t.rating,
-        outcome: t.outcome,
-      }))}
-      locale="de"
-    />
-  )}
-
-  <section class="py-16 md:py-20 bg-primary-dark text-white">
-    <div class="max-w-4xl mx-auto px-4 md:px-6 text-center">
-      <span class="inline-flex items-center px-3 py-1 text-xs font-medium bg-accent/20 text-accent-light rounded-full mb-6">
-        Kostenlos &middot; 2 Minuten
-      </span>
-      <h2 class="font-heading text-3xl md:text-4xl text-white mb-4">
-        Welcher Hormon-Typ bist du?
-      </h2>
-      <p class="text-lg text-white/70 max-w-2xl mx-auto mb-8">
-        7 kurze Fragen — und du bekommst personalisierte Empfehlungen für Ernährung, Training und Produkte, die zu dir passen.
-      </p>
-      <a
-        href="/quiz"
-        class="inline-flex items-center px-8 py-4 text-base font-medium bg-accent hover:bg-accent-dark text-white transition-all duration-300 rounded-button shadow-lg shadow-accent/25"
-      >
-        Quiz starten
-        <svg class="ml-2 w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-        </svg>
-      </a>
-    </div>
-  </section>
-
-  <section class="py-16 md:py-20 bg-bg-alt">
-    <div class="max-w-4xl mx-auto px-4 md:px-6">
-      <div class="md:flex items-center gap-10 lg:gap-14">
-        <div class="md:w-3/5 mb-8 md:mb-0">
-          <span class="inline-flex items-center px-3 py-1 text-xs font-medium bg-accent/10 text-accent rounded-full mb-4">
-            Kostenlose Masterclass
-          </span>
-          <h2 class="font-heading text-2xl md:text-3xl text-text mb-4">
-            Hormone, Histamin &amp; Zyklus als Superpower
-          </h2>
-          <p class="text-text-muted leading-relaxed mb-6">
-            Du machst eigentlich vieles richtig — und f&uuml;hlst dich trotzdem nicht wie du selbst? In dieser kostenlosen Masterclass zeigt dir Dr. Verena Mann, wie Hormone, Zyklus, Histamin und Stress zusammenh&auml;ngen — und welche ersten Schritte wirklich sinnvoll sind.
-          </p>
-          <a
-            href="/masterclass/hormone-histamin-zyklus-superpower"
-            class="inline-flex items-center px-6 py-3 text-sm font-medium text-text-inverse bg-primary hover:bg-primary-dark rounded-button transition-colors"
-            onclick={trackOnClick('masterclass_cta_click', {
-              page_type: 'homepage',
-              page_slug: '/',
-              locale: 'de',
-              masterclass_slug: 'hormone-histamin-zyklus-superpower',
-              cta_location: 'inline',
-            })}
-          >
-            Masterclass vormerken
-            <svg class="ml-2 w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-            </svg>
-          </a>
-        </div>
-        <div class="md:w-2/5">
-          <div class="bg-white rounded-card border border-border p-6 text-center">
-            <div class="w-14 h-14 mx-auto rounded-full bg-accent/10 flex items-center justify-center mb-4">
-              <svg class="w-7 h-7 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                <path stroke-linecap="round" stroke-linejoin="round" d="M15.91 11.672a.375.375 0 010 .656l-5.603 3.113a.375.375 0 01-.557-.328V8.887c0-.286.307-.466.557-.327l5.603 3.112z" />
-              </svg>
-            </div>
-            <p class="text-sm font-medium text-text mb-1">Kostenlos</p>
-            <p class="text-xs text-text-muted">Trag dich in die Warteliste ein und erfahre als Erste, wann es losgeht.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  {socialPosts.length > 0 && (
-    <SocialStorytellingGrid posts={socialPosts} />
-  )}
-
-  <FAQAccordion
-    items={homepageFAQs}
-    locale="de"
-    pageType="homepage"
-    pageSlug="/"
-    maxItems={4}
-    showMoreLink={true}
-  />
-
-  <CTABand
-    title="Bereit, deinen Körper wirklich zu verstehen?"
-    subtitle="Produkte, Coaching und Community — evidenzbasiert und gemacht für den weiblichen Körper."
-    ctaText="Angebot entdecken"
-    ctaHref="/angebot"
-    backgroundImage={ctaBackground}
-    backgroundAlt="Dr. Verena Mann am Strand"
-    eventName="product_cta_click"
-    locale="de"
-    pageType="homepage"
-    pageSlug="/"
-  />
+  <HomeNextSteps locale="de" faqs={homepageFAQs} />
 </BaseLayout>

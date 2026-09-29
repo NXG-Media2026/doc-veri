@@ -1,36 +1,26 @@
 ---
+import HomeNextSteps from '../../components/HomeNextSteps.astro';
+import '../../styles/home.css';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import HeroSection from '../../components/HeroSection.astro';
 import TrustBar from '../../components/TrustBar.astro';
 import ApproachSection from '../../components/ApproachSection.astro';
 import ServicesGrid from '../../components/ServicesGrid.astro';
 import FounderPreview from '../../components/FounderPreview.astro';
-import TestimonialSlider from '../../components/TestimonialSlider.astro';
-import FAQAccordion from '../../components/FAQAccordion.astro';
-import SocialStorytellingGrid from '../../components/SocialStorytellingGrid.astro';
-import CTABand from '../../components/CTABand.astro';
 import { siteConfig } from '../../data/site';
-import { getTestimonials } from '../../data/testimonials';
-import { getSocialPosts } from '../../data/socialPosts';
-import { generateOrganization, generateFounderPerson, generateWebSite, generateFAQPage, generateReviewArray } from '../../data/schema';
+import { generateOrganization, generateFounderPerson, generateWebSite, generateFAQPage } from '../../data/schema';
 import { buildHreflangPair } from '../../i18n/hreflang';
-import { trackOnClick } from '../../lib/analytics';
 
-import heroImage from '../../assets/images/Founder/portrait-beach.jpg';
-import founderPortrait from '../../assets/images/Founder/portrait-doctor.jpg';
-import ctaBackground from '../../assets/images/Founder/lifestyle-laughing.jpg';
+import heroImage from '../../assets/images/Founder/verena-linkedin.png';
+import founderPortrait from '../../assets/images/Founder/hero-ironman.jpg';
 
 import productHistamin from '../../assets/images/products/histamin-bundle.png';
-import productPerimenopause from '../../assets/images/products/perimenopause-protocol.png';
 import productSmoothie from '../../assets/images/products/smoothie-guide.png';
 import coachingImage from '../../assets/images/Founder/lifestyle-arms-up.jpg';
 import membershipImage from '../../assets/images/Founder/verena-community.jpg';
 
 const locale = 'en';
 
-const testimonials = getTestimonials({ locale: 'en' });
-const reviewSchemas = generateReviewArray(testimonials);
-const socialPosts = getSocialPosts(6);
 
 const trustItems = [
   { value: 'MD', label: 'Licensed\nPhysician' },
@@ -69,7 +59,6 @@ const offerItems = [
     excerpt: 'Digital guides, e-books, and courses — evidence-based and ready to use. For hormones, training, nutrition, and more.',
     coverImages: [
       { src: productHistamin, alt: 'Histamine Bundle' },
-      { src: productPerimenopause, alt: 'Perimenopause Protocol' },
       { src: productSmoothie, alt: 'Smoothie Guide' },
     ],
   },
@@ -120,7 +109,6 @@ const homepageFAQs = [
     generateFounderPerson(),
     generateWebSite('en'),
     generateFAQPage(homepageFAQs),
-    ...reviewSchemas,
   ]}
   locale="en"
 >
@@ -139,7 +127,18 @@ const homepageFAQs = [
     eventName="product_cta_click"
   />
 
-  <TrustBar items={trustItems} />
+  <TrustBar items={trustItems} locale="en" />
+
+  <FounderPreview
+    locale="en"
+    image={founderPortrait}
+    role="Emergency Physician & Endurance Athlete"
+    bio="Emergency physician, Ironman athlete, and founder of doc.veri. Dr. Verena Mann combines medical expertise with years of endurance training to explain what most health advice gets wrong about the female body."
+    qualifications={[
+      'Licensed Physician (Approbation)',
+      'Emergency Medicine Specialist',
+    ]}
+  />
 
   <ApproachSection
     title="My Approach"
@@ -158,126 +157,5 @@ const homepageFAQs = [
     viewAllLabel="View all offers"
   />
 
-  <FounderPreview
-    locale="en"
-    image={founderPortrait}
-    role="Emergency Physician & Endurance Athlete"
-    bio="Emergency physician, Ironman athlete, and founder of doc.veri. Dr. Verena Mann combines medical expertise with years of endurance training to explain what most health advice gets wrong about the female body."
-    qualifications={[
-      'Licensed Physician (Approbation)',
-      'Emergency Medicine Specialist',
-    ]}
-  />
-
-  {testimonials.length > 0 && (
-    <TestimonialSlider
-      testimonials={testimonials.map(t => ({
-        name: t.name,
-        text: t.text,
-        rating: t.rating,
-        outcome: t.outcome,
-      }))}
-      locale="en"
-    />
-  )}
-
-  <section class="py-16 md:py-20 bg-primary-dark text-white">
-    <div class="max-w-4xl mx-auto px-4 md:px-6 text-center">
-      <span class="inline-flex items-center px-3 py-1 text-xs font-medium bg-accent/20 text-accent-light rounded-full mb-6">
-        Free quiz &middot; 2 minutes
-      </span>
-      <h2 class="font-heading text-3xl md:text-4xl text-white mb-4">
-        Which hormone type are you?
-      </h2>
-      <p class="text-lg text-white/70 max-w-2xl mx-auto mb-8">
-        Answer a few questions and discover which patterns may be influencing your energy, cycle, training and wellbeing.
-      </p>
-      <a
-        href="/en/quiz"
-        class="inline-flex items-center px-8 py-4 text-base font-medium bg-accent hover:bg-accent-dark text-white transition-all duration-300 rounded-button shadow-lg shadow-accent/25"
-      >
-        Take the quiz
-        <svg class="ml-2 w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-        </svg>
-      </a>
-    </div>
-  </section>
-
-  <section class="py-16 md:py-20 bg-bg-alt">
-    <div class="max-w-4xl mx-auto px-4 md:px-6">
-      <div class="md:flex items-center gap-10 lg:gap-14">
-        <div class="md:w-3/5 mb-8 md:mb-0">
-          <span class="inline-flex items-center px-3 py-1 text-xs font-medium bg-accent/10 text-accent rounded-full mb-4">
-            Free Masterclass
-          </span>
-          <h2 class="font-heading text-2xl md:text-3xl text-text mb-4">
-            Hormones, Histamine &amp; Your Cycle as a Superpower
-          </h2>
-          <p class="text-text-muted leading-relaxed mb-6">
-            You&rsquo;re doing a lot of things right — but still don&rsquo;t feel like yourself? In this free masterclass, Dr. Verena Mann shows you how hormones, your cycle, histamine and stress are connected — and what first steps actually make sense.
-          </p>
-          <a
-            href="/en/masterclass/hormones-histamine-cycle-superpower"
-            class="inline-flex items-center px-6 py-3 text-sm font-medium text-text-inverse bg-primary hover:bg-primary-dark rounded-button transition-colors"
-            onclick={trackOnClick('masterclass_cta_click', {
-              page_type: 'homepage',
-              page_slug: '/en',
-              locale: 'en',
-              masterclass_slug: 'hormones-histamine-cycle-superpower',
-              cta_location: 'inline',
-            })}
-          >
-            Join the waitlist
-            <svg class="ml-2 w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-            </svg>
-          </a>
-        </div>
-        <div class="md:w-2/5">
-          <div class="bg-white rounded-card border border-border p-6 text-center">
-            <div class="w-14 h-14 mx-auto rounded-full bg-accent/10 flex items-center justify-center mb-4">
-              <svg class="w-7 h-7 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                <path stroke-linecap="round" stroke-linejoin="round" d="M15.91 11.672a.375.375 0 010 .656l-5.603 3.113a.375.375 0 01-.557-.328V8.887c0-.286.307-.466.557-.327l5.603 3.112z" />
-              </svg>
-            </div>
-            <p class="text-sm font-medium text-text mb-1">Free</p>
-            <p class="text-xs text-text-muted">Join the waitlist and be the first to know when it launches.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  {socialPosts.length > 0 && (
-    <SocialStorytellingGrid
-      posts={socialPosts}
-      title="Follow me on Instagram"
-      subtitle="Science, everyday life, and honest insights — no glossy filters, no empty promises."
-      locale="en"
-    />
-  )}
-
-  <FAQAccordion
-    items={homepageFAQs}
-    locale="en"
-    pageType="homepage"
-    pageSlug="/en"
-    maxItems={4}
-    showMoreLink={true}
-  />
-
-  <CTABand
-    title="Ready to understand your body on your terms?"
-    subtitle="Products, coaching, and community — evidence-based and made for how women actually live."
-    ctaText="Explore offers"
-    ctaHref="/en/offers"
-    backgroundImage={ctaBackground}
-    backgroundAlt="Dr. Verena Mann"
-    eventName="product_cta_click"
-    locale="en"
-    pageType="homepage"
-    pageSlug="/en"
-  />
+  <HomeNextSteps locale="en" faqs={homepageFAQs} />
 </BaseLayout>
